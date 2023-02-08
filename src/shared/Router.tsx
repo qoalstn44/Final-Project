@@ -10,9 +10,9 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/Login" element={<Logepage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/landing" element={<Logepage />} />
+        <Route path="/Login" element={<MainPage />} />
         <Route path="/:id" element={<DetailPage />} />
         <Route path="/mypage" element={<MyPage />} />
       </Routes>
