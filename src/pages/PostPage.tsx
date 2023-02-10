@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from '../components/PostPage/Button';
+import ReactHtmlParser from 'react-html-parser';
+import { v4 as uuidv4 } from 'uuid';
 
 const PostPage = () => {
   const [inputPost, setInputPost] = useState({
     title: '',
     contents: '',
+    id: uuidv4(),
   });
-  const [viewPost, setViewPost] = useState([]);
+  const [viewPost, setViewPost] = useState<any[]>([]);
   const handleForm = (event: any) => {
     event.preventDefault();
   };
@@ -19,14 +22,19 @@ const PostPage = () => {
       ...inputPost,
       [name]: value,
     });
-    console.log(inputPost);
   };
   return (
     <div>
       <StyledOutputDiv>
         <StyledOutput>
-          <h1>제목</h1>
-          <p>내용</p>
+          {viewPost.map((item: any) => {
+            return (
+              <div key={item.id}>
+                <h2>{item.title}</h2>
+                <p>{ReactHtmlParser(item.contents)}</p>
+              </div>
+            );
+          })}
         </StyledOutput>
       </StyledOutputDiv>
       <StyledForm onClick={handleForm}>
@@ -38,7 +46,7 @@ const PostPage = () => {
         />
         <CKEditor
           editor={ClassicEditor}
-          data="<p>여기에 글을 작성해주세요.</p>"
+          data="<p></p>"
           onReady={(editor: any) => {
             // console.log('Editor is ready to use!', editor);
           }}
@@ -64,7 +72,7 @@ const PostPage = () => {
               setViewPost(viewPost.concat({ ...inputPost }));
             }}
           >
-            완료
+            입력
           </Button>
           {/* <Button>취소</Button> */}
         </StyledButtonDiv>
