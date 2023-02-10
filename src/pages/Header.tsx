@@ -1,16 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <div>
       <HeadBox>
-        <HeadButton>로고</HeadButton>
-        <HeadButton>커뮤니티</HeadButton>
-        <HeadButton>제품리뷰</HeadButton>
-        <HeadButton>뉴스</HeadButton>
-
+        <HeadButton onClick={() => navigate('/')}>로고</HeadButton>
+        <HeadButton onClick={() => navigate('/CommunityPage')}>
+          커뮤니티
+        </HeadButton>
+        <HeadButton onClick={() => navigate('/ItemPage')}>제품리뷰</HeadButton>
+        <HeadButton onClick={() => navigate('/NewsPage')}>뉴스</HeadButton>
         <SmallButton
           style={{
             marginLeft: '500px',
@@ -18,8 +21,8 @@ function Header() {
         >
           검색
         </SmallButton>
-        <SmallButton>글쓰기</SmallButton>
-        <SmallButton>로그인</SmallButton>
+        <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
+        <SmallButton onClick={() => navigate('/LoginPage')}>로그인</SmallButton>
       </HeadBox>
     </div>
   );
@@ -29,7 +32,7 @@ export default Header;
 
 const HeadBox = styled.div`
   width: 100%;
-  height: 100px;
+  height: 10%;
   background-color: black;
   display: flex;
   flex-direction: row;
@@ -38,9 +41,10 @@ const HeadBox = styled.div`
 const HeadButton = styled.button`
   width: 200px;
   height: 100px;
-  background-color: white;
+  background-color: black;
   margin-left: 50px;
   margin-right: 50px;
+  color: white;
 `;
 const SmallButton = styled.button`
   width: 150px;
