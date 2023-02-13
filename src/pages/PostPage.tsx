@@ -85,11 +85,11 @@ const PostPage = () => {
           >
             입력
           </Button>
-          {/* {postModalOpen && (
+          {postModalOpen && (
             <PostModal setPostModalOpen={setPostModalOpen}>
               작성이 되었습니다.
             </PostModal>
-          )} */}
+          )}
           <Button
             onClick={() => {
               deleteModal();
@@ -97,11 +97,11 @@ const PostPage = () => {
           >
             취소
           </Button>
-          {/* {postModalDelete && (
+          {postModalDelete && (
             <PostModal setPostModalDelete={setPostModalDelete}>
               작성이 취소되었습니다.
             </PostModal>
-          )} */}
+          )}
         </StyledButtonDiv>
       </StyledForm>
     </div>
