@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { authService } from '../common/firebase';
-// import Router from '../shared/Router';
-// import styled from 'styled-components';
 import { getDatabase, ref, set } from 'firebase/database';
 
 const DetailPage = () => {
@@ -51,8 +49,8 @@ const DetailPage = () => {
           maxLength={200}
           required
         />
+        <button type="submit">작성완료</button>
       </div>
-      <button type="submit">작성완료</button>
     </div>
   );
 };
