@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Community() {
-  return <div></div>;
+  return <div>asd</div>;
 }
 
 export default Community;

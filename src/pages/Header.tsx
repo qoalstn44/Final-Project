@@ -36,6 +36,9 @@ const HeadBox = styled.div`
   background-color: black;
   display: flex;
   flex-direction: row;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 `;
 
 const HeadButton = styled.button`
