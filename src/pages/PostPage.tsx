@@ -1,3 +1,4 @@
+// PostPage.tsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -105,7 +106,7 @@ const PostPage = () => {
               setPostModalDelete={setPostModalDelete}
               setPostModalOpen={undefined}
             >
-              작성이 취소되었습니다.
+              작성이 취소 되었습니다.
             </PostModal>
           )}
         </StyledButtonDiv>
