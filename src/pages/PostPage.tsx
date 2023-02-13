@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
 
 function PostPage() {
   return (
-    <div>
-      <h1>PostPage</h1>
-    </div>
-  );
+    <div>PostPage</div>
+  )
 }
 
-export default PostPage;
+export default PostPage
