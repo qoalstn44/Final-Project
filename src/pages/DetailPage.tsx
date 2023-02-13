@@ -7,16 +7,24 @@ import { getDatabase, ref, set } from 'firebase/database';
 const DetailPage = () => {
   // 로그인 체크 기능
 
+  const database = getDatabase();
   const [comment, setComment] = useState('');
-  const onSubmit = async (event: any) => {
-    event.preventDefault();
-    const db = getDatabase();
-    await set(ref(db, 'comments/' + comment), {
+  const onSubmit = async (
+    userId: any,
+    name: any,
+    email: any,
+    imageUrl: any,
+  ) => {
+    await set(ref(database, 'comments/' + comment), {
       comment,
+      userId,
+      name,
+      email,
+      imageUrl,
     });
     setComment('');
   };
-  const onChange = (event: any) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
@@ -24,7 +32,17 @@ const DetailPage = () => {
   };
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <div
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit(
+            authService.currentUser?.uid,
+            authService.currentUser?.displayName,
+            authService.currentUser?.email,
+            authService.currentUser?.photoURL,
+          );
+        }}
+      >
         <p>댓글작성</p>
         <input
           value={comment}
@@ -33,8 +51,8 @@ const DetailPage = () => {
           maxLength={200}
           required
         />
-        <input type="submit" value="작성완료" />
-      </form>
+      </div>
+      <button type="submit">작성완료</button>
     </div>
   );
 };
