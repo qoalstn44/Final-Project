@@ -12,17 +12,21 @@ const PostModal = ({
   setPostModalDelete,
   children,
 }: Props) => {
-  const closePostModal = () => {
+  const OpenPostModal = () => {
     setPostModalOpen(false);
   };
-  const DeletePostModal = () => {
+
+  const deletePostModal = () => {
     setPostModalDelete(false);
   };
+
   return (
     <StyledPostModalBackground>
       <StyledPostModalDiv>
         <StyledPostP>{children}</StyledPostP>
-        <StyledPostModalButton onClick={closePostModal}>
+        <StyledPostModalButton
+          onClick={setPostModalOpen ? OpenPostModal : deletePostModal}
+        >
           확인
         </StyledPostModalButton>
       </StyledPostModalDiv>

@@ -86,7 +86,10 @@ const PostPage = () => {
             입력
           </Button>
           {postModalOpen && (
-            <PostModal setPostModalOpen={setPostModalOpen}>
+            <PostModal
+              setPostModalOpen={setPostModalOpen}
+              setPostModalDelete={undefined}
+            >
               작성이 되었습니다.
             </PostModal>
           )}
@@ -98,7 +101,10 @@ const PostPage = () => {
             취소
           </Button>
           {postModalDelete && (
-            <PostModal setPostModalDelete={setPostModalDelete}>
+            <PostModal
+              setPostModalDelete={setPostModalDelete}
+              setPostModalOpen={undefined}
+            >
               작성이 취소되었습니다.
             </PostModal>
           )}
