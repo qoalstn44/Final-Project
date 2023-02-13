@@ -5,6 +5,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from '../components/PostPage/Button';
 import ReactHtmlParser from 'react-html-parser';
 import { v4 as uuidv4 } from 'uuid';
+import PostModal from '../components/PostPage/PostModal';
 
 const PostPage = () => {
   const [inputPost, setInputPost] = useState({
@@ -13,6 +14,8 @@ const PostPage = () => {
     id: uuidv4(),
   });
   const [viewPost, setViewPost] = useState<any[]>([]);
+  const [postModalOpen, setPostModalOpen] = useState(false);
+  const [postModalDelete, setPostModalDelete] = useState(false);
   const handleForm = (event: any) => {
     event.preventDefault();
   };
@@ -22,6 +25,13 @@ const PostPage = () => {
       ...inputPost,
       [name]: value,
     });
+  };
+
+  const openModal = () => {
+    setPostModalOpen(true);
+  };
+  const deleteModal = () => {
+    setPostModalDelete(true);
   };
   return (
     <div>
@@ -70,11 +80,28 @@ const PostPage = () => {
           <Button
             onClick={() => {
               setViewPost(viewPost.concat({ ...inputPost }));
+              openModal();
             }}
           >
             입력
           </Button>
-          {/* <Button>취소</Button> */}
+          {/* {postModalOpen && (
+            <PostModal setPostModalOpen={setPostModalOpen}>
+              작성이 되었습니다.
+            </PostModal>
+          )} */}
+          <Button
+            onClick={() => {
+              deleteModal();
+            }}
+          >
+            취소
+          </Button>
+          {/* {postModalDelete && (
+            <PostModal setPostModalDelete={setPostModalDelete}>
+              작성이 취소되었습니다.
+            </PostModal>
+          )} */}
         </StyledButtonDiv>
       </StyledForm>
     </div>

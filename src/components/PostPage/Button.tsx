@@ -18,7 +18,9 @@ export default Button;
 
 const StyledButton = styled.button`
   padding: 0.5rem 2rem;
-  background-color: skyblue;
+  background-color: #e65925;
+  border-radius: 12px;
+  color: white;
   margin-top: 2rem;
   border: none;
   cursor: pointer;
