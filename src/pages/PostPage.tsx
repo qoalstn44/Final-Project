@@ -1,4 +1,3 @@
-// PostPage.tsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -106,7 +105,7 @@ const PostPage = () => {
               setPostModalDelete={setPostModalDelete}
               setPostModalOpen={undefined}
             >
-              작성이 취소 되었습니다.
+              작성이 취소되었습니다.
             </PostModal>
           )}
         </StyledButtonDiv>
@@ -115,4 +114,45 @@ const PostPage = () => {
   );
 };
 
-export default PostPage
+export default PostPage;
+
+const StyledOutputDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StyledOutput = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+  border: 1px solid #333;
+  padding: 10px 0 30px 0;
+  border-radius: 5px;
+  margin-bottom: 3rem;
+  margin-top: 8rem;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledInput = styled.input`
+  padding: 1rem 0;
+  padding-right: 20rem;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+`;
+
+const StyledButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
