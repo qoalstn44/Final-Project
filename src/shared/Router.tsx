@@ -10,8 +10,8 @@ import CommunityPage from '../pages/CommunityPage';
 import NewsPage from '../pages/NewsPage';
 import Header from '../pages/Header';
 import Footer from '../pages/Footer';
-
-function Router({ isLoggedIn }: any) {
+import styled from 'styled-components';
+function Router() {
   return (
     <BrowserRouter>
       <Header />

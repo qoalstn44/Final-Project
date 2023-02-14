@@ -1,11 +1,10 @@
-import React from "react";
+import { configureStore } from '@reduxjs/toolkit';
+import postSlice from '../modules/postSlice';
 
-function configStore() {
-  return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
-  );
-}
+const store = configureStore({
+  reducer: {
+    postSlice,
+  },
+});
 
-export default configStore;
+export default store;
