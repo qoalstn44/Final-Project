@@ -4,9 +4,7 @@ import styled from 'styled-components';
 function Footer() {
   return (
     <div>
-      <FooterBox>
-        <h1>asd</h1>
-      </FooterBox>
+      <FooterBox></FooterBox>
     </div>
   );
 }
