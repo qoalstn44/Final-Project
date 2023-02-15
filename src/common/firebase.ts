@@ -1,8 +1,10 @@
+import { collection } from 'firebase/firestore';
+/* eslint-disable @typescript-eslint/no-redeclare */
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getDatabase } from "firebase/database";
+import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD524cf8eNVcs8MfCPBIWw_tP7kLt6odZs',
@@ -21,4 +23,3 @@ const storageService = getStorage(app);
 const database = getDatabase(app);
 
 export { database, app, authService, dbService, storageService };
-

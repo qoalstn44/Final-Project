@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -12,24 +12,46 @@ const PostModal = ({
   setPostModalDelete,
   children,
 }: Props) => {
-  const OpenPostModal = () => {
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const openPostModal = () => {
     setPostModalOpen(false);
   };
 
+  const deletePostModalChange = () => {
+    setPageNumber(1);
+  };
   const deletePostModal = () => {
     setPostModalDelete(false);
   };
 
   return (
     <StyledPostModalBackground>
-      <StyledPostModalDiv>
-        <StyledPostP>{children}</StyledPostP>
-        <StyledPostModalButton
-          onClick={setPostModalOpen ? OpenPostModal : deletePostModal}
-        >
-          확인
-        </StyledPostModalButton>
-      </StyledPostModalDiv>
+      {pageNumber === 0 && (
+        <StyledPostModalDiv>
+          <StyledX
+            onClick={setPostModalOpen ? openPostModal : deletePostModal}
+            src="img/x.png"
+            alt="X"
+          />
+          <StyledPostP>{children}</StyledPostP>
+          <StyledPostModalButton
+            onClick={setPostModalOpen ? openPostModal : deletePostModalChange}
+          >
+            확인
+          </StyledPostModalButton>
+        </StyledPostModalDiv>
+      )}
+      {pageNumber === 1 && (
+        <StyledPostModalDiv>
+          <StyledPostP>취소 되었습니다.</StyledPostP>
+          <StyledPostModalButton
+            onClick={setPostModalOpen ? openPostModal : deletePostModal}
+          >
+            확인
+          </StyledPostModalButton>
+        </StyledPostModalDiv>
+      )}
     </StyledPostModalBackground>
   );
 };
@@ -60,6 +82,14 @@ const StyledPostModalDiv = styled.div`
   position: relative;
   top: 39%;
   left: 36%;
+`;
+
+const StyledX = styled.img`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  width: 1.3rem;
 `;
 
 const StyledPostP = styled.p`
