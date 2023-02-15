@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { FaUserAlt } from 'react-icons/fa';
-import Modal from 'react-modal';
+import { FaUserAlt, FaLock } from 'react-icons/fa';
 import SignUpForm from '../components/Login/SignUpForm';
+import { authService } from '../common/firebase';
+
 const User = {
   Email: 'qoalstn44@naver.com',
   Password: '!ekfmstkfkd1',
@@ -65,6 +66,20 @@ function LoginPage() {
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
 
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+
   return (
     <Page>
       <LoginBox>
@@ -95,7 +110,7 @@ function LoginPage() {
           </Id>
           <Line />
           <Password>
-            <InputTitle>비밀번호</InputTitle>
+            <FaLock />
             <PwInputWrap>
               <Input
                 type="password"
@@ -117,7 +132,7 @@ function LoginPage() {
           </LoginButton>
         </Bottom>
         <Bottom>
-          <SignUpForm isOpen={undefined} />
+          <SignUpForm isOpen={undefined} /> {/* 회원가입 모달 */}
         </Bottom>
       </LoginBox>
     </Page>
