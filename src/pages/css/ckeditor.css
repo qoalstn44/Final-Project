@@ -1,4 +1,5 @@
 .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
   min-height: 20rem;
-  /* margin-bottom: 20px; */
+  max-height: 10rem;
+  max-width: 38.2rem;
 }

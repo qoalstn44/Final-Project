@@ -1,5 +1,3 @@
-import { collection } from 'firebase/firestore';
-/* eslint-disable @typescript-eslint/no-redeclare */
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';

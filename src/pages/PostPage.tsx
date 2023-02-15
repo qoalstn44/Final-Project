@@ -9,14 +9,10 @@ import PostModal from '../components/PostPage/PostModal';
 import { collection, addDoc } from 'firebase/firestore';
 import { dbService } from '../common/firebase';
 import './css/ckeditor.css';
-import {
-  ImageCaption,
-  ImageResize,
-  ImageStyle,
-  ImageToolbar,
-} from '@ckeditor/ckeditor5-image';
+import { useNavigate } from 'react-router';
 
 const PostPage = () => {
+  const navigate = useNavigate();
   // 글쓰기 게시판
   const [inputPost, setInputPost] = useState({
     title: '',
@@ -66,7 +62,7 @@ const PostPage = () => {
           {viewPost.map((item: any) => {
             return (
               <div key={item.id}>
-                <h2>{item.title}</h2>
+                <h1>{item.title}</h1>
                 <p>{ReactHtmlParser(item.contents)}</p>
               </div>
             );
@@ -85,18 +81,6 @@ const PostPage = () => {
             editor={ClassicEditor}
             config={{
               placeholder: '내용을 입력하세요.',
-              plugins: [ImageToolbar, ImageCaption, ImageStyle, ImageResize],
-              image: {
-                toolbar: [
-                  'imageStyle:block',
-                  'imageStyle:side',
-                  '|',
-                  'toggleImageCaption',
-                  'imageTextAlternative',
-                  '|',
-                  'linkImage',
-                ],
-              },
             }}
             data="<p></p>"
             onReady={(editor: any) => {
@@ -152,6 +136,13 @@ const PostPage = () => {
               취소 하시겠습니까?
             </PostModal>
           )}
+          <Button
+            onClick={() => {
+              navigate('/dummyPage');
+            }}
+          >
+            네비게이터
+          </Button>
         </StyledButtonDiv>
       </StyledForm>
     </div>
@@ -173,7 +164,7 @@ const StyledOutput = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  width: 80%;
+  width: 39.5rem;
   border: 1px solid #333;
   padding: 10px 0 30px 0;
   border-radius: 5px;

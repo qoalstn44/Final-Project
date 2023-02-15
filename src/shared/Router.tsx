@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DetailPage from '../pages/DetailPage';
 import MainPage from '../pages/MainPage';
@@ -10,6 +9,8 @@ import CommunityPage from '../pages/CommunityPage';
 import NewsPage from '../pages/NewsPage';
 import Header from '../pages/Header';
 import Footer from '../pages/Footer';
+import DummyPage from '../pages/DummyPage';
+
 function Router() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/postpage" element={<PostPage />} />
         <Route path="/communitypage" element={<CommunityPage />} />
         <Route path="/newspage" element={<NewsPage />} />
+        <Route path="/dummypage" element={<DummyPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

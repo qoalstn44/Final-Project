@@ -5,6 +5,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
     "@ckeditor/ckeditor5-image": "^36.0.1",
+    "@ckeditor/ckeditor5-link": "^36.0.1",
     "@ckeditor/ckeditor5-media-embed": "^36.0.1",
     "@ckeditor/ckeditor5-react": "^5.0.6",
     "@reduxjs/toolkit": "^1.9.2",
