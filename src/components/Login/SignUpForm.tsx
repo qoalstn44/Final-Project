@@ -6,7 +6,11 @@ interface IUser {
   password: string;
 }
 
-const SignUpForm: React.FC = () => {
+interface Props {
+  isOpen: any;
+}
+
+const SignUpForm = ({ isOpen }: Props) => {
   const [user, setUser] = useState<IUser>({
     name: '',
     email: '',
@@ -42,9 +46,9 @@ const SignUpForm: React.FC = () => {
 
   return (
     <div>
-      <button onClick={() => setModalIsOpen(true)}>Sign Up</button>
+      <button onClick={() => setModalIsOpen(true)}>회원가입</button>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        <h2>Sign Up</h2>
+        <h2>회원가입</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name">Name:</label>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FaUserAlt } from 'react-icons/fa';
+import Modal from 'react-modal';
 import SignUpForm from '../components/Login/SignUpForm';
 const User = {
   Email: 'qoalstn44@naver.com',
@@ -22,6 +23,7 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
+  const [joinModal, setJoinModal] = useState(false);
 
   const onClickLogin = () => {
     if (email === User.Email && password === User.Password) {
@@ -49,6 +51,10 @@ function LoginPage() {
     } else {
       setPasswordValid(false);
     }
+  };
+
+  const handleButtonClickJoinModal = () => {
+    setJoinModal(true);
   };
 
   useEffect(() => {
@@ -111,7 +117,7 @@ function LoginPage() {
           </LoginButton>
         </Bottom>
         <Bottom>
-          <SignUpButton onClick={SignUpForm}>회원가입</SignUpButton>
+          <SignUpForm isOpen={undefined} />
         </Bottom>
       </LoginBox>
     </Page>
