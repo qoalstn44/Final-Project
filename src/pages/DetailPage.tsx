@@ -7,66 +7,72 @@ import { readComment } from './api';
 
 const DetailPage = () => {
   {
-
     //카테고리 선택
     const categories = [
       { value: '강아지', label: '강아지' },
       { value: '고양이', label: '고양이' },
     ];
-      const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
-  
+    const [selectedCategory, setSelectedCategory] = useState(
+      categories[0].value,
+    );
+
     // 댓글 가져오기
     const { data: CommentData, isLoading: CommentLoading } = useQuery(
       'Comments',
-      readComment
+      readComment,
     );
 
     // 스크롤을 0, 0으로 맞춤 (맨 위)
     useEffect(() => {
       window.scrollTo(0, 0);
     }, []);
-  
+
     let itemData: CommentType[];
     if (CommentData === undefined) {
       itemData = [];
     } else {
       itemData = CommentData?.filter((data: CommentType) => data.userId);
     }
-  
+
     if (CommentLoading) {
       return <div>댓글 로딩중...</div>;
     }
     return (
       <StyledPost>
-      <StyledTitle>여기는 글 제목 입니다. </StyledTitle>
-      <StyledInfo>
-        <StyledId>ID</StyledId>
-        <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"/>
-      </StyledInfo>
-      <StyledContent>여기는 게시글 입니다 이러쿵 저러쿵 궁시렁 궁시렁 </StyledContent>
-      <StyledImgContainer>
-        <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"/>
-      </StyledImgContainer>
-      <div>
-      <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-    {categories.map((category) => (
-      <option key={category.value} value={category.value}>
-        {category.label}
-      </option>
-      ))}
-      </select>
-      </div>
-      <CommentListWrap>   
-        <CommentList itemData={itemData} userId={''} /> : <></>{'}'}
+        <StyledTitle>여기는 글 제목 입니다. </StyledTitle>
+        <StyledInfo>
+          <StyledId>ID</StyledId>
+          <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+        </StyledInfo>
+        <StyledContent>
+          여기는 게시글 입니다 이러쿵 저러쿵 궁시렁 궁시렁{' '}
+        </StyledContent>
+        <StyledImgContainer>
+          <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+        </StyledImgContainer>
+        <div>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <CommentListWrap>
+          <CommentList itemData={itemData} userId={''} /> : <></>
+          {'}'}
         </CommentListWrap>
       </StyledPost>
     );
-  };
-}
-  export default DetailPage;
+  }
+};
+export default DetailPage;
 
-
-  const StyledPost = styled.div`
+const StyledPost = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

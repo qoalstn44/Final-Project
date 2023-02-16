@@ -17,8 +17,3 @@ const FooterBox = styled.div`
   background-color: black;
   color: white;
 `;
-
-const BigBox = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
