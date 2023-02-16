@@ -1,7 +1,9 @@
-import React from 'react';
+import React from 'react'
 
 function CommunityPage() {
-  return <div>Community Page</div>;
+  return (
+    <div>CommunityPage</div>
+  )
 }
 
-export default CommunityPage;
+export default CommunityPage

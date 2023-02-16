@@ -1,99 +1,106 @@
-    import React, { useState, useEffect } from "react";
-    import styled from "styled-components";
+    import React ,{useEffect, useState}from 'react'
+    import styled from 'styled-components';
+    import { DocumentData, onSnapshot, QuerySnapshot } from 'firebase/firestore';
+    import { productCollection } from '../common/firebase';
+    import { ProductType } from '../components/types/Product';
 
+    function ProductCard() {
 
-    interface Post {
-    id: number;
-    title: string;
-    body: string;
-    timestamp: number;
-    }
-    
-    const ItemPage = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [sortBy, setSortBy] = useState<"popularity" | "latest">("latest");
+    const [products, setProducts] = useState< ProductType[]>([])
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-        const response = await fetch("");
-        const data = await response.json();
-        setPosts(data);
-        };
-
-        fetchPosts();
-    }, []);
-
-    const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSortBy(event.target.value as "popularity" | "latest");
-    };
-
-    let sortedPosts = posts;
-    if (sortBy === "popularity") {
-        sortedPosts = sortedPosts.sort((a, b) => b.id - a.id);
-    } else if (sortBy === "latest") {
-        sortedPosts = sortedPosts.sort((a, b) => b.timestamp - a.timestamp);
-    }
-
+    useEffect(
+        () => 
+    onSnapshot(productCollection, (snapshot:
+        QuerySnapshot<DocumentData>) => {
+        setProducts(
+        snapshot.docs.map((doc) => {
+        return{
+            id: doc.id,
+            ...doc.data(),
+        }
+        })
+        )
+        }),
+        []
+    )
+    console.log(products,'product');
     return (
-        <Container>
-        <Header>
-            <input type="text" placeholder='검색' />
-            <SortSelect value={sortBy} onChange={handleSortChange}>
-            <option value="latest">최신순</option>
-            <option value="popularity">인기순</option>
-            </SortSelect>
-        </Header>
-        <PostList>
         
-            {sortedPosts.map((post) => (
-            <PostCard key={post.id}>
-                <h2>{post.title}</h2>
-                <p>{post.body}</p>
-            </PostCard>
-            ))}
-        </PostList>
-        </Container>
-    );
-    };
+        <MainContainer>
+            <StyledPost>
+            <StyledTitle>여기는 글 제목 입니다. </StyledTitle>
+            
+            <StyledInfo>
+            <StyledId>ID</StyledId>
+            <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"/>
+            </StyledInfo>
+            <StyledContent>여기는 게시글 입니다 이러쿵 저러쿵 궁시렁 궁시렁 </StyledContent>
+            <StyledImgContainer>
+            <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"/>
+            </StyledImgContainer>
+            </StyledPost>
 
-    const Container = styled.div`
+        </MainContainer>
+    )
+    }
+
+    export default ProductCard
+
+    const MainContainer = styled.div`
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
-    margin: 20px auto;
+    max-width: 50%;
     `;
 
-    const Header = styled.header`
-    width: 100%;
+    const StyledPost = styled.div`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    width: 50%;
+    margin: 10rem auto;
+    border: 0.0625rem solid lightgray;
+    padding: 1rem;
+    `;
+    const StyledTitle = styled.h2`
+    font-size: 3rem;
+    margin-bottom: 1rem;
     `;
 
-    const SortSelect = styled.select`
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    `;
-
-    const PostList = styled.ul`
-    width: 100%;
+    const StyledInfo = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
     `;
 
-    const PostCard = styled.li`
-    list-style: none;
-    margin: 20px;
-    width: 300px;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10
-    `
-export default ItemPage;
-    
+    const StyledId = styled.p`
+    font-size: 2rem;
+    margin-right: 1rem;
+    `;
+
+    const StyledImg = styled.img`
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    `;
+
+    const StyledContent = styled.p`
+    font-size: 2rem;
+    text-align: justify;
+    margin-bottom: 1rem;
+    `;
+
+    const StyledImgContainer = styled.div`
+    width: 100%;
+    text-align: center;
+    `;
+
+    const StyledImgContent = styled.img`
+    width: 40%;
+    height: auto;
+    margin-bottom: 1rem;
+    `;
+
+    const Information = styled.div`
+    `;
