@@ -55,42 +55,44 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <h2>Sign Up</h2>
-      {error && <div>{error}</div>}
-      <form onSubmit={handleSignUp}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Loading...' : 'Sign Up'}
-        </button>
-      </form>
-    </Modal>
+    <>
+      <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
+        <h2>Sign Up</h2>
+        {error && <div>{error}</div>}
+        <form onSubmit={handleSignUp}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              required
+            />
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Sign Up'}
+          </button>
+        </form>
+      </Modal>
+    </>
   );
 };
 
