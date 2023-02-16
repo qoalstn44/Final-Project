@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
-import SignUpForm from '../components/Login/SignUpForm';
-import { authService } from '../common/firebase';
+import SignUpModal from '../components/Login/SignUpModal';
+import PasswordResetModal from '../components/Login/PasswordResetModal';
 
 const User = {
   Email: 'qoalstn44@naver.com',
@@ -25,6 +25,8 @@ function LoginPage() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
   const [joinModal, setJoinModal] = useState(false);
+  const [isPasswordResetModalOpen, setIsPasswordResetModalOpen] =
+    useState(false);
 
   const onClickLogin = () => {
     if (email === User.Email && password === User.Password) {
@@ -52,10 +54,6 @@ function LoginPage() {
     } else {
       setPasswordValid(false);
     }
-  };
-
-  const handleButtonClickJoinModal = () => {
-    setJoinModal(true);
   };
 
   useEffect(() => {
@@ -131,9 +129,14 @@ function LoginPage() {
             로그인
           </LoginButton>
         </Bottom>
-        <Bottom>
-          <SignUpForm isOpen={undefined} /> {/* 회원가입 모달 */}
-        </Bottom>
+        <LoginButton>
+          <SignUpModal
+            isOpen={false}
+            onRequestClose={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+          ></SignUpModal>
+        </LoginButton>
       </LoginBox>
     </Page>
   );
