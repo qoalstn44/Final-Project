@@ -1,24 +1,19 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
-import SignUpForm from '../components/Login/SignUpForm';
-import { authService, provider } from '../common/firebase';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { provider } from '../common/firebase';
+import { signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router';
-import PostModal from '../components/PostPage/PostModal';
+import SignUpModal from '../components/Login/SignUpModal';
+import PasswordResetModal from '../components/Login/PasswordResetModal';
+import IDFindModal from '../components/Login/IDFindModal';
 
 const User = {
   Email: 'qoalstn44@naver.com',
   Password: '!ekfmstkfkd1',
 };
-
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -28,8 +23,16 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
-  const [joinModal, setJoinModal] = useState(false);
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
   const onClickLogin = () => {
     if (email === User.Email && password === User.Password) {
       alert('로그인 성공');
@@ -56,10 +59,6 @@ function LoginPage() {
     } else {
       setPasswordValid(false);
     }
-  };
-
-  const handleButtonClickJoinModal = () => {
-    setJoinModal(true);
   };
 
   useEffect(() => {
@@ -123,11 +122,11 @@ function LoginPage() {
             </ErrorMessageWrap>
           </Password>
         </Top>
-        <Bottom>
+        <Button>
           <LoginButton onClick={onClickLogin} disabled={notAllowed}>
             로그인
           </LoginButton>
-        </Bottom>
+        </Button>
         <StyledGoogleLoginDiv>
           <StyledGoogleLoginButton onClick={handleButtonClickGoogleButton}>
             <StyledGoogleLogin>
@@ -136,9 +135,17 @@ function LoginPage() {
             </StyledGoogleLogin>
           </StyledGoogleLoginButton>
         </StyledGoogleLoginDiv>
-        <Bottom>
-          <SignUpForm isOpen={undefined} /> {/* 회원가입 모달 */}
-        </Bottom>
+        <Button>
+          <SignUpButton onClick={openModal}>아이디 찾기</SignUpButton>
+          <IDFindModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+          <SignUpButton onClick={openModal}>비밀번호 찾기</SignUpButton>
+          <PasswordResetModal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+          />
+          <SignUpButton onClick={openModal}>회원가입</SignUpButton>
+          <SignUpModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+        </Button>
       </LoginBox>
     </Page>
   );
@@ -234,7 +241,7 @@ const Password = styled.div`
   align-items: center;
 `;
 
-const Bottom = styled.div`
+const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -256,15 +263,14 @@ const LoginButton = styled.button`
 `;
 
 const SignUpButton = styled.button`
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  width: 8rem;
+  height: 2rem;
+  background: #f39340;
+  border-radius: 20px;
   cursor: pointer;
+  :disabled {
+    background: #c6c6c3;
+  }
 `;
 
 const StyledGoogleLoginDiv = styled.div`

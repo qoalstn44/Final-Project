@@ -3324,6 +3324,7 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+<<<<<<< HEAD
 "@types/glob@*":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-8.0.1.tgz#6e3041640148b7764adf21ce5c7138ad454725b0"
@@ -3331,6 +3332,14 @@
   dependencies:
     "@types/minimatch" "^5.1.2"
     "@types/node" "*"
+=======
+"@types/firebase@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@types/firebase/-/firebase-3.2.1.tgz#17c1c8fee7485ab09668d2461e34540bdf44b3b1"
+  integrity sha512-G8XgHMu2jHlElfc2xVNaYP50F0qrqeTCjgeG1v5b4SRwWG4XKC4fCuEdVZuZaMRmVygcnbRZBAo9O7RsDvmkGQ==
+  dependencies:
+    firebase "*"
+>>>>>>> dev
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.6"
@@ -6983,6 +6992,7 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+<<<<<<< HEAD
 firebase-tools@9.12.1:
   version "9.12.1"
   resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-9.12.1.tgz#c4676f77f95bbaba0a7399c18c15d7edc633cf7b"
@@ -7047,6 +7057,9 @@ firebase-tools@9.12.1:
     ws "^7.2.3"
 
 firebase@^9.17.1:
+=======
+firebase@*, firebase@^9.17.1:
+>>>>>>> dev
   version "9.17.1"
   resolved "https://registry.npmjs.org/firebase/-/firebase-9.17.1.tgz"
   integrity sha512-MSZaTRaaRLgDFLqoEnoPYK8zkLwQNvYeLZ3YSKdcQxG8hDifNO22ywS1cSA1ZCGHlQeOsDtfDwBejKcANf/RQw==
