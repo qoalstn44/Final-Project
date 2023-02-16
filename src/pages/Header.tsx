@@ -70,14 +70,18 @@ const HeadButton = styled.button`
   width: 200px;
   height: 100px;
   background-color: black;
-  margin-left: 50px;
-  margin-right: 50px;
+
   color: white;
+  border-color: black;
+  font-size: 20px;
+  margin: auto;
 `;
 const SmallButton = styled.button`
   width: 150px;
-  height: 100px;
-  background-color: green;
-  margin-left: 20px;
-  margin-right: 20px;
+  height: 80px;
+  background-color: black;
+  margin: auto;
+  border-color: black;
+  color: white;
+  font-size: 15px;
 `;
