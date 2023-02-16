@@ -1,9 +1,28 @@
 // import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getAuth } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 function Header() {
   const navigate = useNavigate();
+  const user = useSelector((state): any => state.login.user);
+
+  //로그아웃
+  const auth = getAuth();
+  const onClickLogout = (): void => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        alert('로그아웃 되었습니다.');
+        navigate('/');
+      })
+      .catch((error: any) => {
+        // An error happened.
+        console.log('error:', error);
+      });
+  };
 
   return (
     <div>
@@ -22,7 +41,13 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        <SmallButton onClick={() => navigate('/LoginPage')}>로그인</SmallButton>
+        {!user.uid ? (
+          <SmallButton onClick={() => navigate('/LoginPage')}>
+            LOG IN
+          </SmallButton>
+        ) : (
+          <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
+        )}
       </HeadBox>
     </div>
   );
