@@ -5,17 +5,12 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
+import IDFindModal from '../components/Login/IDFindModal';
 
 const User = {
   Email: 'qoalstn44@naver.com',
   Password: '!ekfmstkfkd1',
 };
-
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -24,10 +19,16 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
-  const [joinModal, setJoinModal] = useState(false);
-  const [isPasswordResetModalOpen, setIsPasswordResetModalOpen] =
-    useState(false);
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
   const onClickLogin = () => {
     if (email === User.Email && password === User.Password) {
       alert('로그인 성공');
@@ -72,9 +73,7 @@ function LoginPage() {
       console.log(user);
       // ...
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+    .catch(() => {
       // ..
     });
 
@@ -124,19 +123,22 @@ function LoginPage() {
             </ErrorMessageWrap>
           </Password>
         </Top>
-        <Bottom>
+        <Button>
           <LoginButton onClick={onClickLogin} disabled={notAllowed}>
             로그인
           </LoginButton>
-        </Bottom>
-        <LoginButton>
-          <SignUpModal
-            isOpen={false}
-            onRequestClose={function (): void {
-              throw new Error('Function not implemented.');
-            }}
-          ></SignUpModal>
-        </LoginButton>
+        </Button>
+        <Button>
+          <SignUpButton onClick={openModal}>아이디 찾기</SignUpButton>
+          <IDFindModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+          <SignUpButton onClick={openModal}>비밀번호 찾기</SignUpButton>
+          <PasswordResetModal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+          />
+          <SignUpButton onClick={openModal}>회원가입</SignUpButton>
+          <SignUpModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+        </Button>
       </LoginBox>
     </Page>
   );
@@ -228,7 +230,7 @@ const Password = styled.div`
   align-items: center;
 `;
 
-const Bottom = styled.div`
+const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -248,13 +250,12 @@ const LoginButton = styled.button`
 `;
 
 const SignUpButton = styled.button`
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  width: 8rem;
+  height: 2rem;
+  background: #f39340;
+  border-radius: 20px;
   cursor: pointer;
+  :disabled {
+    background: #c6c6c3;
+  }
 `;
