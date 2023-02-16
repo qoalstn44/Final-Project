@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
+import { provider } from '../common/firebase';
+import { signInWithPopup } from 'firebase/auth';
+import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
@@ -13,6 +16,7 @@ const User = {
 };
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -65,27 +69,22 @@ function LoginPage() {
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
 
+  // 구글 로그인
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch(() => {
-      // ..
-    });
+  const handleButtonClickGoogleButton = () => {
+    signInWithPopup(auth, provider)
+      .then(() => {
+        console.log('로그인 되었습니다.');
+        navigate('/');
+      })
+      .catch(() => {
+        console.log('로그인이 실패 하였습니다.');
+      });
+  };
 
   return (
     <Page>
       <LoginBox>
-        <Logoimg src="https://user-images.githubusercontent.com/77392444/104844569-1b2b4a00-5912-11eb-9b1a-1b2b1b2b1b2b.png" />
-        <TitleWrap>
-          이메일과 비밀번호를
-          <br />
-          입력해주세요.
-        </TitleWrap>
         <Top>
           <Id>
             <InputTitle>
@@ -94,14 +93,14 @@ function LoginPage() {
             <IdInputWrap>
               <Input
                 type="text"
-                placeholder="user@gmail.com"
+                placeholder="아이디"
                 value={email}
                 onChange={handleChangeEmail}
               />
             </IdInputWrap>
             <ErrorMessageWrap>
               {!emailValid && email.length > 0 && (
-                <div>이메일 형식이 올바르지 않습니다.</div>
+                <p>이메일 형식이 올바르지 않습니다.</p>
               )}
             </ErrorMessageWrap>
           </Id>
@@ -111,7 +110,7 @@ function LoginPage() {
             <PwInputWrap>
               <Input
                 type="password"
-                placeholder="영문, 숫자, 특수문자 포함 8자 이상 입렵해주세요."
+                placeholder="비밀번호"
                 value={password}
                 onChange={handleChangePassword}
               />
@@ -128,6 +127,14 @@ function LoginPage() {
             로그인
           </LoginButton>
         </Button>
+        <StyledGoogleLoginDiv>
+          <StyledGoogleLoginButton onClick={handleButtonClickGoogleButton}>
+            <StyledGoogleLogin>
+              <StyledGoogle src="img/google.png" alt="구글" />
+              <h3>구글계정으로 시작하기</h3>
+            </StyledGoogleLogin>
+          </StyledGoogleLoginButton>
+        </StyledGoogleLoginDiv>
         <Button>
           <SignUpButton onClick={openModal}>아이디 찾기</SignUpButton>
           <IDFindModal isOpen={modalIsOpen} onRequestClose={closeModal} />
@@ -150,7 +157,7 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff7db;
+  background-color: black;
   height: 100vh;
   width: 100vw;
 `;
@@ -176,7 +183,10 @@ const IdInputWrap = styled.div`
 `;
 
 const Line = styled.div`
-  border: 1px solid #c6c6c3;
+  border: 0.5px solid #c6c6c3;
+  width: 32rem;
+  position: relative;
+  right: 1rem;
 `;
 const PwInputWrap = styled.div`
   display: flex;
@@ -185,37 +195,38 @@ const PwInputWrap = styled.div`
 `;
 
 const Input = styled.input`
-  width: 25vh;
+  padding: 1rem 13rem;
+  padding-left: 1rem;
   outline: none;
   border: none;
   background-color: transparent;
 `;
 
 const ErrorMessageWrap = styled.div`
-  margin-top: 8px;
   font-size: 12px;
   color: #ff0000;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
-const Logoimg = styled.img`
-  width: 100px;
-  height: 100px;
-  background-color: green;
+const LoginBox = styled.div`
+  background-color: white;
+  padding: 3rem;
+  border-radius: 30px;
 `;
-
-const LoginBox = styled.div``;
 
 const Top = styled.div`
-  border: 1px solid #c6c6c3;
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 45rem;
+  border: 1px solid #c6c6c3;
+  background-color: #f4f4f4;
+  border-radius: 30px;
+  width: 30rem;
   height: 8rem;
+  padding: 1rem;
 `;
 
 const Id = styled.div`
@@ -237,12 +248,14 @@ const Button = styled.div`
 `;
 
 const LoginButton = styled.button`
-  width: 30rem;
+  width: 28rem;
   height: 4rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
   background: #f39340;
+  color: white;
   border-radius: 40px;
+  border: none;
   cursor: pointer;
   :disabled {
     background: #c6c6c3;
@@ -258,4 +271,30 @@ const SignUpButton = styled.button`
   :disabled {
     background: #c6c6c3;
   }
+`;
+
+const StyledGoogleLoginDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StyledGoogleLoginButton = styled.button`
+  border: 1px solid #c6c6c3;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border-radius: 40px;
+`;
+
+const StyledGoogleLogin = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledGoogle = styled.img`
+  width: 3rem;
+  height: 3.4rem;
+  margin-right: 1rem;
 `;

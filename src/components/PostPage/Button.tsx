@@ -25,6 +25,9 @@ const StyledButton = styled.button`
   border: none;
   cursor: pointer;
   margin-left: 1rem;
+  position: relative;
+  top: 17rem;
+  left: 13rem;
   :hover {
     background-color: pink;
   }
