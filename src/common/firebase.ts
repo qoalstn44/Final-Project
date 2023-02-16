@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { collection,  getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getDatabase } from 'firebase/database';
 import { GoogleAuthProvider } from 'firebase/auth';
@@ -23,3 +23,7 @@ const database = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 export { database, app, authService, dbService, storageService, provider };
+
+// Product Collection
+export const productCollection = collection
+(dbService,'Product');
