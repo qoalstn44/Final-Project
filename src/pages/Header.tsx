@@ -7,7 +7,7 @@ import { signOut } from 'firebase/auth';
 
 function Header() {
   const navigate = useNavigate();
-  const user = useSelector((state): any => state.login.user);
+  // const user = useSelector((state): any => state.login.user);
 
   //로그아웃
   const auth = getAuth();
@@ -41,13 +41,13 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        {!user.uid ? (
+        {/* {!user.uid ? (
           <SmallButton onClick={() => navigate('/LoginPage')}>
             LOG IN
           </SmallButton>
         ) : (
           <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
-        )}
+        )} */}
       </HeadBox>
     </div>
   );
