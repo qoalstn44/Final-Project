@@ -30,9 +30,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 1.25rem;
-
   border-radius: 0.625rem;
-
   background-color: #eee;
   margin-bottom: 1.25rem;
 `;

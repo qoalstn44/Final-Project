@@ -1,11 +1,11 @@
-// import React, { Component } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+  // import React, { Component } from 'react';
+  import styled from 'styled-components';
+  import { useNavigate } from 'react-router-dom';
+  // import { useSelector } from 'react-redux';
+  import { getAuth } from 'firebase/auth';
+  import { signOut } from 'firebase/auth';
 
-function Header() {
+  function Header() {
   const navigate = useNavigate();
   // const user = useSelector((state): any => state.login.user);
 
@@ -41,21 +41,16 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        {/* {!user.uid ? (
-          <SmallButton onClick={() => navigate('/LoginPage')}>
-            LOG IN
-          </SmallButton>
-        ) : (
-          <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
-        )} */}
+        <SmallButton onClick={() => navigate('/LoginPage')}>LOG IN</SmallButton>
+        {/* <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton> */}
       </HeadBox>
     </div>
   );
-}
+  }
 
-export default Header;
+  export default Header;
 
-const HeadBox = styled.div`
+  const HeadBox = styled.div`
   width: 100%;
   height: 10%;
   background-color: black;
@@ -64,24 +59,24 @@ const HeadBox = styled.div`
   position: fixed;
   top: 0;
   z-index: 1;
-`;
+  `;
 
-const HeadButton = styled.button`
-  width: 200px;
-  height: 100px;
+  const HeadButton = styled.button`
+  width: 35rem;
+  height: 2rem;
   background-color: black;
 
   color: white;
   border-color: black;
   font-size: 20px;
   margin: auto;
-`;
-const SmallButton = styled.button`
-  width: 150px;
-  height: 80px;
+  `;
+  const SmallButton = styled.button`
+  width: 20rem;
+  height: 1rem;
   background-color: black;
   margin: auto;
   border-color: black;
   color: white;
   font-size: 15px;
-`;
+  `;

@@ -1,12 +1,12 @@
-import { collection, getDocs } from 'firebase/firestore';
-import styled from 'styled-components';
-import { dbService } from '../common/firebase';
+  import { collection, getDocs } from 'firebase/firestore';
+  import styled from 'styled-components';
+  import { dbService } from '../common/firebase';
 
-interface forEach {
+  interface forEach {
   forEach: any;
-}
+  }
 
-const DummyPage = () => {
+  const DummyPage = () => {
   const fetchData = async () => {
     const querySnapshot = await getDocs(collection(dbService, 'post'));
     querySnapshot.forEach((doc) => {
@@ -25,11 +25,11 @@ const DummyPage = () => {
       </div>
     </StyledDummyDiv>
   );
-};
+  };
 
-export default DummyPage;
+  export default DummyPage;
 
-const StyledDummyDiv = styled.div`
+  const StyledDummyDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,9 +40,9 @@ const StyledDummyDiv = styled.div`
   position: relative;
   top: 10rem;
   left: 30rem;
-`;
+  `;
 
-const StyledDummyImg = styled.img`
+  const StyledDummyImg = styled.img`
   width: 10rem;
   height: 10rem;
-`;
+  `;
