@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
+import { useDispatch } from 'react-redux';
+import { isLogin } from '../redux/modules/loginSlice';
+import { authService } from '../common/firebase';
 
 const User = {
   Email: 'qoalstn44@naver.com',
@@ -16,6 +19,7 @@ const User = {
 };
 
 function LoginPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -157,6 +161,7 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   background-color: black;
   height: 100vh;
   width: 100vw;
