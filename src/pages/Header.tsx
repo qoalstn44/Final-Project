@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
-import { useAppSelector } from '../hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { notLogin } from '../redux/modules/loginSlice';
 
 function Header() {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.login.user);
+  const dispatch = useAppDispatch();
 
   //로그아웃
   const auth = getAuth();
@@ -16,6 +18,7 @@ function Header() {
       .then(() => {
         // Sign-out successful.
         alert('로그아웃 되었습니다.');
+        dispatch(notLogin());
         navigate('/');
       })
       .catch((error: any) => {
@@ -41,7 +44,7 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        {!user.uid ? (
+        {!user?.uid ? (
           <SmallButton onClick={() => navigate('/LoginPage')}>
             LOG IN
           </SmallButton>
