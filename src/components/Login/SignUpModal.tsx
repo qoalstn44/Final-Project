@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import styled from 'styled-components';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FaEye } from 'react-icons/fa';
 
 // auth를 사용하는 코드
@@ -23,8 +24,15 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const Sinup = async () => {
+    const auth = getAuth();
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    console.log(result);
+  };
+
+  const handleSignUp = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log(handleSignUp);
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -34,12 +42,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
     try {
       setLoading(true);
 
-      // 이메일 중복 확인
+      // 이메일 중복 확인navigate
       const signInMethods = await firebase
         .auth()
         .fetchSignInMethodsForEmail(email);
       if (signInMethods.length > 0) {
-        setError('The email is already in use');
+        setError('이메일이 중복 되었습니다.');
         setLoading(false);
         return;
       }
@@ -80,7 +88,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
           <h2>회원가입</h2>
 
           {error && <div>{error}</div>}
-          <form onSubmit={handleSignUp}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Label>이메일</Label>
             <div>
               <Input
@@ -111,8 +123,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
               ></Input>
             </div>
           </form>
-          <CompleteButton type="submit" disabled={loading}>
-            {loading ? 'Loading...' : '회원가입'}
+          <CompleteButton type="submit" onClick={Sinup} disabled={loading}>
+            회원가입
           </CompleteButton>
         </StyledModal>
       </StyledBock>

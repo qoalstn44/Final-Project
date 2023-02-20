@@ -55,9 +55,6 @@ function LoginPage() {
       setEmailValid(false);
     }
   };
-  const handleShowPasswordClick = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
