@@ -4,14 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { useAppSelector } from '../hooks/useRedux';
-import { useDispatch } from 'react-redux';
-import { notLogin } from '../redux/modules/loginSlice';
 
 function Header() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.login.user);
-  console.log(user);
 
   //로그아웃
   const auth = getAuth();

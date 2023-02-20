@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import login from '../modules/loginSlice';
+import post from '../modules/postSlice';
 
 const store = configureStore({
-  reducer: { login },
+  reducer: { post, login },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
