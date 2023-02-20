@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
+<<<<<<< HEAD
 import { useAppSelector } from '../hooks/useRedux';
+=======
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { notLogin } from '../redux/modules/loginSlice';
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
 
 function Header() {
   const navigate = useNavigate();
@@ -16,6 +21,10 @@ function Header() {
       .then(() => {
         // Sign-out successful.
         alert('로그아웃 되었습니다.');
+<<<<<<< HEAD
+=======
+        dispatch(notLogin());
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
         navigate('/');
       })
       .catch((error: any) => {
@@ -41,7 +50,11 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
+<<<<<<< HEAD
         {!user.uid ? (
+=======
+        {!user?.uid ? (
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
           <SmallButton onClick={() => navigate('/LoginPage')}>
             LOG IN
           </SmallButton>
