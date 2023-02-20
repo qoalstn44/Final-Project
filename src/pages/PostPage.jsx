@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from '../components/PostPage/Button';
-import ReactHtmlParser from 'react-html-parser';
-import { v4 as uuidv4 } from 'uuid';
 import PostModal from '../components/PostPage/PostModal';
-import { collection, addDoc } from 'firebase/firestore';
 import { dbService } from '../common/firebase';
-import './css/ckeditor.css';
 import { useNavigate } from 'react-router';
-
+import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import { Editor } from '@toast-ui/react-editor';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { authService } from '../common/firebase';
 const PostPage = () => {
   const navigate = useNavigate();
   // 글쓰기 게시판
-  const [inputPost, setInputPost] = useState({
-    title: '',
-    contents: '',
-    id: uuidv4(),
-  });
-  const [viewPost, setViewPost] = useState<any[]>([]);
-  const handleForm = (event: any) => {
-    event.preventDefault();
+  const [title, setTitle] = useState('');
+  const handleTitleInput = (event) => {
+    setTitle(event.target.value);
   };
-  const getValue = (event: any) => {
-    const { name, value } = event.target;
-    setInputPost({
-      ...inputPost,
-      [name]: value,
+  const editorRef = useRef(null);
+  const handleText = () => {
+    const test = editorRef.current?.getInstance().getHTML();
+    console.log(test);
+  };
+
+  // 데이터 베이스에 전송
+  const handleForm = async () => {
+    await addDoc(collection(dbService, 'post'), {
+      title,
+      contents: editorRef.current?.getInstance().getHTML(),
+      timeStamp: serverTimestamp(),
     });
+    console.log(title);
   };
 
   // 입력 모달
@@ -42,72 +50,46 @@ const PostPage = () => {
     setPostModalDelete(true);
   };
 
-  // database 입력
-  const data = async () => {
-    try {
-      const docRef = await addDoc(collection(dbService, 'post'), {
-        title: `${inputPost.title}`,
-        contents: `${inputPost.contents}`,
-      });
-      console.log('Document written with ID: ', docRef.id);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  };
+  // const onUploadImage = async (blob, callback) => {
+  //   const url = await uploadImage(blob);
+  //   callback(url, 'alt text');
+  //   return false;
+  // };
 
   return (
     <div>
       <StyledOutputDiv>
-        <StyledOutput>
-          {viewPost.map((item: any) => {
-            return (
-              <div key={item.id}>
-                <h1>{item.title}</h1>
-                <p>{ReactHtmlParser(item.contents)}</p>
-              </div>
-            );
-          })}
-        </StyledOutput>
+        <StyledOutput></StyledOutput>
       </StyledOutputDiv>
-      <StyledForm onClick={handleForm}>
+      <StyledFormDiv>
         <StyledInput
           name="title"
           type="text"
           placeholder="제목"
-          onChange={getValue}
+          value={title}
+          onChange={handleTitleInput}
         />
-        <StyledCKEditor>
-          <CKEditor
-            editor={ClassicEditor}
-            config={{
-              placeholder: '내용을 입력하세요.',
-            }}
-            data="<p></p>"
-            onReady={(editor: any) => {
-              // console.log('Editor is ready to use!', editor);
-            }}
-            onChange={(event: any, editor: any) => {
-              const data = editor.getData();
-              // console.log({ event, editor, data });
-              setInputPost({
-                ...inputPost,
-                contents: data,
-              });
-              console.log(inputPost);
-            }}
-            onBlur={(event: any, editor: any) => {
-              // console.log('Blur.', editor);
-            }}
-            onFocus={(event: any, editor: any) => {
-              // console.log('Focus.', editor);
-            }}
-          />
-        </StyledCKEditor>
+        <Editor
+          initialValue=""
+          placeholder="글을 작성해주세요."
+          previewStyle="vertical"
+          height="25rem"
+          initialEditType="wysiwyg"
+          useCommandShortcut={false}
+          language="ko-KR"
+          previewHighlight={false}
+          hideModeSwitch={true}
+          ref={editorRef}
+          theme="dark"
+          // hooks={{
+          //   addImageBlobHook: onUploadImage,
+          // }}
+        />
         <StyledButtonDiv>
           <Button
             onClick={() => {
-              setViewPost(viewPost.concat({ ...inputPost }));
-              data();
+              handleForm();
+              handleText();
               openModal();
             }}
           >
@@ -144,7 +126,7 @@ const PostPage = () => {
             네비게이터
           </Button>
         </StyledButtonDiv>
-      </StyledForm>
+      </StyledFormDiv>
     </div>
   );
 };
@@ -172,7 +154,7 @@ const StyledOutput = styled.div`
   margin-top: 8rem;
 `;
 
-const StyledForm = styled.form`
+const StyledFormDiv = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -181,7 +163,7 @@ const StyledForm = styled.form`
 
 const StyledInput = styled.input`
   padding: 1rem 0;
-  padding-right: 28rem;
+  padding-right: 39.8rem;
   padding-left: 1rem;
   margin-bottom: 2rem;
   font-size: 1rem;
@@ -190,8 +172,4 @@ const StyledInput = styled.input`
 const StyledButtonDiv = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const StyledCKEditor = styled.div`
-  height: 5rem;
 `;
