@@ -27,6 +27,7 @@ const DummyPage = () => {
       console.log(error);
     }
   };
+  // 데이터 전체 가져오기
   const unsub2 = () => {
     try {
       const q = query(

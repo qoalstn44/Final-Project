@@ -5,6 +5,8 @@ import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
+import { useState } from 'react';
+import PostModal from '../components/PostPage/PostModal';
 
 function Header() {
   const navigate = useNavigate();
@@ -17,14 +19,20 @@ function Header() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        alert('로그아웃 되었습니다.');
         dispatch(notLogin());
+        setPostModalOpen(true);
         navigate('/');
       })
       .catch((error: any) => {
         // An error happened.
         console.log('error:', error);
       });
+  };
+
+  // 입력 모달
+  const [postModalOpen, setPostModalOpen] = useState(false);
+  const openModal = () => {
+    setPostModalOpen(true);
   };
 
   return (
@@ -43,17 +51,32 @@ function Header() {
         >
           검색
         </SmallButton>
-        <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
         {!user?.uid ? (
-          <SmallButton onClick={() => navigate('/LoginPage')}>
-            LOG IN
-          </SmallButton>
+          <>
+            <SmallButton
+              onClick={() => {
+                navigate('/LoginPage');
+              }}
+            >
+              LOG IN
+            </SmallButton>
+          </>
         ) : (
           <>
+            <SmallButton onClick={() => navigate('/PostPage')}>
+              글쓰기
+            </SmallButton>
             <SmallButton onClick={() => navigate('/Mypage')}>
               마이페이지
             </SmallButton>
-            <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
+            <SmallButton
+              onClick={() => {
+                onClickLogout();
+                openModal();
+              }}
+            >
+              LOGOUT
+            </SmallButton>
           </>
         )}
       </HeadBox>
