@@ -4,7 +4,13 @@ import styled from 'styled-components';
 function Footer() {
   return (
     <div>
-      <FooterBox></FooterBox>
+      <FooterBox>
+        {' '}
+        <img
+          src="img/Petalk.png.png"
+          style={{ width: '15rem', height: '3rem' }}
+        />
+      </FooterBox>
     </div>
   );
 }
@@ -16,4 +22,6 @@ const FooterBox = styled.div`
   height: 10%;
   background-color: black;
   color: white;
+  display: flex;
+  flex-direction: column;
 `;

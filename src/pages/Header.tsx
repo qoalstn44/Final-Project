@@ -1,13 +1,14 @@
-// import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-import { getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { notLogin } from '../redux/modules/loginSlice';
+import { FaSearch } from 'react-icons/fa';
 
 function Header() {
   const navigate = useNavigate();
-  // const user = useSelector((state): any => state.login.user);
+  const user = useAppSelector((state) => state.login.user);
+  const dispatch = useAppDispatch();
 
   //로그아웃
   const auth = getAuth();
@@ -15,7 +16,7 @@ function Header() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        alert('로그아웃 되었습니다.');
+        dispatch(notLogin());
         navigate('/');
       })
       .catch((error: any) => {
@@ -38,16 +39,47 @@ function Header() {
             marginLeft: '500px',
           }}
         >
+          <FaSearch
+            className="icon"
+            size="24"
+            color="white"
+            style={{
+              marginRight: '10px',
+            }}
+          />
           검색
         </SmallButton>
-        <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        <SmallButton onClick={() => navigate('/LoginPage')}>LOG IN</SmallButton>
-        {/* <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton> */}
+        {!user?.uid ? (
+          <>
+            <SmallButton
+              onClick={() => {
+                navigate('/LoginPage');
+              }}
+            >
+              LOG IN
+            </SmallButton>
+          </>
+        ) : (
+          <>
+            <SmallButton onClick={() => navigate('/PostPage')}>
+              글쓰기
+            </SmallButton>
+            <SmallButton onClick={() => navigate('/Mypage')}>
+              마이페이지
+            </SmallButton>
+            <SmallButton
+              onClick={() => {
+                onClickLogout();
+              }}
+            >
+              LOGOUT
+            </SmallButton>
+          </>
+        )}
       </HeadBox>
     </div>
   );
 }
-
 export default Header;
 
 const HeadBox = styled.div`
