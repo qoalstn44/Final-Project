@@ -94,8 +94,8 @@ const HeadBox = styled.div`
 `;
 
 const HeadButton = styled.button`
-  width: 200px;
-  height: 100px;
+  width: 35rem;
+  height: 2rem;
   background-color: black;
 
   color: white;
@@ -104,8 +104,8 @@ const HeadButton = styled.button`
   margin: auto;
 `;
 const SmallButton = styled.button`
-  width: 150px;
-  height: 80px;
+  width: 20rem;
+  height: 1rem;
   background-color: black;
   margin: auto;
   border-color: black;

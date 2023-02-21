@@ -14,9 +14,8 @@ import {
   serverTimestamp,
   setDoc,
 } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { authService } from '../common/firebase';
-
 const PostPage = () => {
   const navigate = useNavigate();
   // 글쓰기 게시판
@@ -25,23 +24,19 @@ const PostPage = () => {
     setTitle(event.target.value);
   };
   const editorRef = useRef(null);
-
-  const handle = () => {
-    editorRef.current?.getInstance().getHTML();
+  const handleText = () => {
+    const test = editorRef.current?.getInstance().getHTML();
+    console.log(test);
   };
 
   // 데이터 베이스에 전송
   const handleForm = async () => {
-    try {
-      await addDoc(collection(dbService, 'posts'), {
-        title,
-        contents: editorRef.current?.getInstance().getHTML(),
-        timeStamp: serverTimestamp(),
-        uid: authService.currentUser.uid,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await addDoc(collection(dbService, 'post'), {
+      title,
+      contents: editorRef.current?.getInstance().getHTML(),
+      timeStamp: serverTimestamp(),
+    });
+    console.log(title);
   };
 
   // 입력 모달
@@ -55,8 +50,17 @@ const PostPage = () => {
     setPostModalDelete(true);
   };
 
+  // const onUploadImage = async (blob, callback) => {
+  //   const url = await uploadImage(blob);
+  //   callback(url, 'alt text');
+  //   return false;
+  // };
+
   return (
     <div>
+      <StyledOutputDiv>
+        <StyledOutput></StyledOutput>
+      </StyledOutputDiv>
       <StyledFormDiv>
         <StyledInput
           name="title"
@@ -76,6 +80,7 @@ const PostPage = () => {
           previewHighlight={false}
           hideModeSwitch={true}
           ref={editorRef}
+          theme="dark"
           // hooks={{
           //   addImageBlobHook: onUploadImage,
           // }}
@@ -84,6 +89,7 @@ const PostPage = () => {
           <Button
             onClick={() => {
               handleForm();
+              handleText();
               openModal();
             }}
           >
@@ -153,7 +159,6 @@ const StyledFormDiv = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rem;
 `;
 
 const StyledInput = styled.input`
