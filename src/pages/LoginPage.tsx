@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
+import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/useRedux';
+import { isLogin } from '../redux/modules/loginSlice';
 
 const User = {
   Email: 'qoalstn44@naver.com',
@@ -17,6 +20,7 @@ const User = {
 
 function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -73,8 +77,10 @@ function LoginPage() {
   const auth = getAuth();
   const handleButtonClickGoogleButton = () => {
     signInWithPopup(auth, provider)
-      .then(() => {
+      .then((result) => {
         console.log('로그인 되었습니다.');
+        console.log(result);
+        dispatch(isLogin(result.user));
         navigate('/');
       })
       .catch(() => {

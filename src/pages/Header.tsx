@@ -25,7 +25,6 @@ function Header() {
         console.log('error:', error);
       });
   };
-
   return (
     <div>
       <HeadBox>
@@ -67,10 +66,20 @@ function Header() {
             <SmallButton onClick={() => navigate('/PostPage')}>
               글쓰기
             </SmallButton>
+            <SmallButton onClick={() => navigate('/PostPage')}>
+              글쓰기
+            </SmallButton>
             <SmallButton onClick={() => navigate('/Mypage')}>
               마이페이지
             </SmallButton>
-            <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
+            <SmallButton
+              onClick={() => {
+                onClickLogout();
+                openModal();
+              }}
+            >
+              LOGOUT
+            </SmallButton>
           </>
         )}
       </HeadBox>
