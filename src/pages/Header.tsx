@@ -1,12 +1,10 @@
 // import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
 import { useState } from 'react';
-import PostModal from '../components/PostPage/PostModal';
 
 function Header() {
   const navigate = useNavigate();
@@ -19,8 +17,8 @@ function Header() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
+        alert('로그아웃 되었습니다.');
         dispatch(notLogin());
-        setPostModalOpen(true);
         navigate('/');
       })
       .catch((error: any) => {
