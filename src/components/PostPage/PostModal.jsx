@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-interface Props {
-  setPostModalOpen: any;
-  setPostModalDelete: any;
-  children: any;
-}
-
-const PostModal = ({
-  setPostModalOpen,
-  setPostModalDelete,
-  children,
-}: Props) => {
+const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
   const [pageNumber, setPageNumber] = useState(0);
 
   const openPostModal = () => {

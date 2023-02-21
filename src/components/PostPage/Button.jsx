@@ -1,12 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
-  children: React.ReactNode;
-  onClick: any;
-}
-
-const Button = ({ children, onClick }: Props) => {
+const Button = ({ children, onClick }) => {
   return (
     <div>
       <StyledButton onClick={onClick}>{children}</StyledButton>
@@ -26,8 +21,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   margin-left: 1rem;
   position: relative;
-  top: 17rem;
-  left: 13rem;
+  left: 22rem;
   :hover {
     background-color: pink;
   }

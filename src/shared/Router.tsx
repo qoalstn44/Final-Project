@@ -10,6 +10,7 @@ import NewsPage from '../pages/NewsPage';
 import Header from '../pages/Header';
 import Footer from '../pages/Footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import DummyPage from '../pages/DummyPage';
 const queryClient = new QueryClient();
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
           <Route path="/postPage" element={<PostPage />} />
           <Route path="/communityPage" element={<CommunityPage />} />
           <Route path="/newsPage" element={<NewsPage />} />
+          <Route path="/dummyPage" element={<DummyPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

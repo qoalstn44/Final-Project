@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router';
+import CommunitySlide from './CommunitySlide';
+import NewspidSlide from './NewspidSlide';
+import ProductSlide from './ProductSlide';
 
 interface CardProps {
   title: string;
@@ -20,8 +23,6 @@ const settings = {
 };
 
 const CardSlide: React.FC = () => {
-  const navigate = useNavigate();
-
   const Card: React.FC<CardProps> = ({ title, image }) => {
     return (
       <CardContainer style={{ backgroundImage: `url(${image})` }}>
@@ -74,19 +75,12 @@ const CardSlide: React.FC = () => {
           <h2>안녕하세요.펫톡입니다.</h2>
         </SSBox>
       </BigBox>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <DDD></DDD>
-        <DDD></DDD>
-        <DDD></DDD>
-      </div>
-      <div
-        style={{ display: 'flex', flexDirection: 'row', marginTop: '100px' }}
-      >
-        <DDD></DDD>
-        <DDD></DDD>
-        <DDD></DDD>
-      </div>
-      <button onClick={() => navigate('/communityPage')}>ViewMore</button>
+      <CpSlide>
+        <CommunitySlide />
+        <ProductSlide />
+      </CpSlide>
+
+      <NewspidSlide />
     </div>
   );
 };
@@ -121,9 +115,10 @@ const SSBox = styled.div`
   margin-top: 5%;
 `;
 
-const DDD = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: red;
-  margin-left: 50px;
+const CpSlide = styled.div`
+  width: 100%;
+  height: 80rem;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
 `;
