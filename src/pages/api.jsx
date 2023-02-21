@@ -14,7 +14,7 @@ import {
     import { dbService } from '../common/firebase';
 
     // 댓글 작성
-    export const createComment = async (item: CommentType) => {
+    export const createComment = async (item) => {
     await addDoc(collection(dbService, 'comments'), {
     userId: item.userId,
     createAt: Date.now(),
@@ -26,7 +26,7 @@ import {
 
     // 댓글 가져오기
     export const readComment = async () => {
-    let getCommentData: CommentType[] = [];
+    let getCommentData= [];
     const q = query(
     collection(dbService, `comments`),
     orderBy('createAt', 'desc')
@@ -43,7 +43,7 @@ import {
     };
 
     // 댓글 삭제
-    export const deleteComment = async (item: CommentType) => {
+    export const deleteComment = async (item) => {
     deleteDoc(doc(dbService, `comments/${item.id}`));
     };
 

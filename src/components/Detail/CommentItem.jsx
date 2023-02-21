@@ -1,16 +1,14 @@
   import styled from 'styled-components';
 
-  function CommentItem({ item }: { item: CommentType }) {
+  function CommentItem({ item }) {
 
     return (
       <Wrap>
         <Container>
 
           <ContentBox>
-            <NameDiv>
-              &nbsp; {item?.name}
-            </NameDiv>
-            <BodyDiv>{item?.body}</BodyDiv>
+            <BodyDiv>
+            {item?.name}&nbsp; &nbsp; {item?.body}</BodyDiv>
           </ContentBox>
         </Container>
       </Wrap>

@@ -7,9 +7,6 @@
     const CommentList = ({
     itemData,
     userId,
-    }: {
-    itemData: CommentType[];
-    userId: string;
     }) => {
     const queryClient = useQueryClient();
     const [body, setBody] = useState('');
@@ -19,12 +16,12 @@
         useMutation(createComment);
 
     // 내용 감지
-    const onChangeBody = (event: ChangeEvent<HTMLInputElement>) => {
+    const onChangeBody = (event) => {
         setBody(event.target.value);
     };
 
     // 작성
-    const submitComment = async (event: FormEvent<HTMLFormElement>) => {
+    const submitComment = async (event) => {
         event.preventDefault();
         createMutate(
         { userId, body },
@@ -55,7 +52,7 @@
             />
             <CommentBtn>등록</CommentBtn>
         </Form>
-        {itemData?.map((item: CommentType) => (
+        {itemData?.map((item) => (
             <CommentItem key={item.id} item={item} />
         ))}
         </div>

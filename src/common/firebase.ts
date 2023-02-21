@@ -6,12 +6,12 @@ import { getDatabase } from 'firebase/database';
 import { GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyD524cf8eNVcs8MfCPBIWw_tP7kLt6odZs',
-  authDomain: 'final-project-f5698.firebaseapp.com',
-  projectId: 'final-project-f5698',
-  storageBucket: 'final-project-f5698.appspot.com',
-  messagingSenderId: '162512506291',
-  appId: '1:162512506291:web:ef671e9625942528e88fc6',
+  apiKey: "AIzaSyC994esSdwrNSAInjZJQcpQyj33o_XIAK8",
+  authDomain: "fir-spa-99485.firebaseapp.com",
+  projectId: "fir-spa-99485",
+  storageBucket: "fir-spa-99485.appspot.com",
+  messagingSenderId: "242547028544",
+  appId: "1:242547028544:web:f19f869c3cc748c443a5a5",
   measurementId: 'G-H0BY1YHHQE',
 };
 
