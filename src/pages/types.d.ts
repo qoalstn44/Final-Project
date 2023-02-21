@@ -8,4 +8,5 @@ declare interface CommentType {
     userId?: string;
 }
 
+declare module 'uuid'
 

@@ -16,6 +16,7 @@ import {
 } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { authService } from '../common/firebase';
+
 const PostPage = () => {
   const navigate = useNavigate();
   // 글쓰기 게시판

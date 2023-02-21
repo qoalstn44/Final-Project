@@ -1,4 +1,4 @@
-const Follow = () => {
+  const Follow = () => {
     return (
       <div>
         <div>Follow component</div>
@@ -6,4 +6,3 @@ const Follow = () => {
     );
   };
   export default Follow;
-  

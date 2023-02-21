@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: 'fir-spa-99485.appspot.com',
   messagingSenderId: '242547028544',
   appId: '1:242547028544:web:f19f869c3cc748c443a5a5',
-  // measurementId: 'G-H0BY1YHHQE',
+  measurementId: 'G-H0BY1YHHQE',
 };
 
 const app = initializeApp(firebaseConfig);
