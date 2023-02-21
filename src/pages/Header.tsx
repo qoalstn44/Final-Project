@@ -16,7 +16,6 @@ function Header() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        alert('로그아웃 되었습니다.');
         dispatch(notLogin());
         navigate('/');
       })
@@ -25,12 +24,11 @@ function Header() {
         console.log('error:', error);
       });
   };
+
   return (
     <div>
       <HeadBox>
-        <HeadButton onClick={() => navigate('/')}>
-          <img src="img/Petalk.png.png" />
-        </HeadButton>
+        <HeadButton onClick={() => navigate('/')}>로고</HeadButton>
         <HeadButton onClick={() => navigate('/CommunityPage')}>
           커뮤니티
         </HeadButton>
@@ -66,16 +64,12 @@ function Header() {
             <SmallButton onClick={() => navigate('/PostPage')}>
               글쓰기
             </SmallButton>
-            <SmallButton onClick={() => navigate('/PostPage')}>
-              글쓰기
-            </SmallButton>
             <SmallButton onClick={() => navigate('/Mypage')}>
               마이페이지
             </SmallButton>
             <SmallButton
               onClick={() => {
                 onClickLogout();
-                openModal();
               }}
             >
               LOGOUT
@@ -86,7 +80,6 @@ function Header() {
     </div>
   );
 }
-
 export default Header;
 
 const HeadBox = styled.div`
@@ -101,8 +94,8 @@ const HeadBox = styled.div`
 `;
 
 const HeadButton = styled.button`
-  width: 30rem;
-  height: 1.5rem;
+  width: 200px;
+  height: 100px;
   background-color: black;
 
   color: white;
@@ -111,14 +104,11 @@ const HeadButton = styled.button`
   margin: auto;
 `;
 const SmallButton = styled.button`
-  width: 20rem;
-  height: 1.5rem;
+  width: 150px;
+  height: 80px;
   background-color: black;
   margin: auto;
   border-color: black;
   color: white;
   font-size: 15px;
 `;
-function dispatch(arg0: { payload: undefined; type: 'login/notLogin' }) {
-  throw new Error('Function not implemented.');
-}
