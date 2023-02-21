@@ -1,21 +1,13 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/PostPage/Button';
 import PostModal from '../components/PostPage/PostModal';
-import { dbService } from '../common/firebase';
 import { useNavigate } from 'react-router';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { Editor } from '@toast-ui/react-editor';
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { authService } from '../common/firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { authService, dbService } from '../common/firebase';
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -76,9 +68,6 @@ const PostPage = () => {
           previewHighlight={false}
           hideModeSwitch={true}
           ref={editorRef}
-          // hooks={{
-          //   addImageBlobHook: onUploadImage,
-          // }}
         />
         <StyledButtonDiv>
           <Button
@@ -126,27 +115,6 @@ const PostPage = () => {
 };
 
 export default PostPage;
-
-const StyledOutputDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const StyledOutput = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin: 0 auto;
-  width: 39.5rem;
-  border: 1px solid #333;
-  padding: 10px 0 30px 0;
-  border-radius: 5px;
-  margin-bottom: 3rem;
-  margin-top: 8rem;
-`;
 
 const StyledFormDiv = styled.div`
   display: flex;

@@ -1,21 +1,15 @@
 import styled from 'styled-components';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { dbService } from '../common/firebase';
-import { onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
+import { dbService, authService } from '../common/firebase';
 import { useEffect, useState } from 'react';
-import { authService } from '../common/firebase';
-import { query, where } from 'firebase/firestore';
 
 const DummyPage = () => {
-  const citiesRef = collection(dbService, 'cities');
   const [auth, setAuth] = useState('');
   useEffect(() => {
     setTimeout(() => {
       setAuth(authService.currentUser?.uid);
     }, 1000);
   }, []);
-  // const auth = authService.currentUser?.uid;
-  console.log(auth);
 
   // 데이터 하나 가져오기
   const unsub = () => {

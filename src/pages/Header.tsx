@@ -1,12 +1,9 @@
-// import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
-import { useState } from 'react';
-import PostModal from '../components/PostPage/PostModal';
 
 function Header() {
   const navigate = useNavigate();
@@ -20,19 +17,12 @@ function Header() {
       .then(() => {
         // Sign-out successful.
         dispatch(notLogin());
-        setPostModalOpen(true);
         navigate('/');
       })
       .catch((error: any) => {
         // An error happened.
         console.log('error:', error);
       });
-  };
-
-  // 입력 모달
-  const [postModalOpen, setPostModalOpen] = useState(false);
-  const openModal = () => {
-    setPostModalOpen(true);
   };
 
   return (
@@ -72,7 +62,6 @@ function Header() {
             <SmallButton
               onClick={() => {
                 onClickLogout();
-                openModal();
               }}
             >
               LOGOUT
