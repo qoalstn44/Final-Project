@@ -1,10 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { collection, getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getDatabase } from 'firebase/database';
-import { GoogleAuthProvider } from 'firebase/auth';
-
 const firebaseConfig = {
   apiKey: 'AIzaSyC994esSdwrNSAInjZJQcpQyj33o_XIAK8',
   authDomain: 'fir-spa-99485.firebaseapp.com',

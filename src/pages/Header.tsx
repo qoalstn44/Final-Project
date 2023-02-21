@@ -1,10 +1,9 @@
-// import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
-import { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 function Header() {
   const navigate = useNavigate();
@@ -26,17 +25,12 @@ function Header() {
         console.log('error:', error);
       });
   };
-
-  // 입력 모달
-  const [postModalOpen, setPostModalOpen] = useState(false);
-  const openModal = () => {
-    setPostModalOpen(true);
-  };
-
   return (
     <div>
       <HeadBox>
-        <HeadButton onClick={() => navigate('/')}>로고</HeadButton>
+        <HeadButton onClick={() => navigate('/')}>
+          <img src="img/Petalk.png.png" />
+        </HeadButton>
         <HeadButton onClick={() => navigate('/CommunityPage')}>
           커뮤니티
         </HeadButton>
@@ -47,6 +41,14 @@ function Header() {
             marginLeft: '500px',
           }}
         >
+          <FaSearch
+            className="icon"
+            size="24"
+            color="white"
+            style={{
+              marginRight: '10px',
+            }}
+          />
           검색
         </SmallButton>
         {!user?.uid ? (
@@ -61,6 +63,9 @@ function Header() {
           </>
         ) : (
           <>
+            <SmallButton onClick={() => navigate('/PostPage')}>
+              글쓰기
+            </SmallButton>
             <SmallButton onClick={() => navigate('/PostPage')}>
               글쓰기
             </SmallButton>
@@ -114,3 +119,6 @@ const SmallButton = styled.button`
   color: white;
   font-size: 15px;
 `;
+function dispatch(arg0: { payload: undefined; type: 'login/notLogin' }) {
+  throw new Error('Function not implemented.');
+}
