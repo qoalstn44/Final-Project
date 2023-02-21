@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
+import { icons } from 'react-icons';
+import { FaSearch } from 'react-icons/fa';
 
 function Header() {
   const navigate = useNavigate();
@@ -27,7 +29,9 @@ function Header() {
   return (
     <div>
       <HeadBox>
-        <HeadButton onClick={() => navigate('/')}>로고</HeadButton>
+        <HeadButton onClick={() => navigate('/')}>
+          <img src="img/Petalk.png.png" />
+        </HeadButton>
         <HeadButton onClick={() => navigate('/CommunityPage')}>
           커뮤니티
         </HeadButton>
@@ -38,6 +42,14 @@ function Header() {
             marginLeft: '500px',
           }}
         >
+          <FaSearch
+            className="icon"
+            size="24"
+            color="white"
+            style={{
+              marginRight: '10px',
+            }}
+          />
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
