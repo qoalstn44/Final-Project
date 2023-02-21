@@ -1,18 +1,15 @@
 // import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
-<<<<<<< HEAD
-import { useAppSelector } from '../hooks/useRedux';
-=======
+import { getAuth, signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
->>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
+import { useState } from 'react';
 
 function Header() {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.login.user);
+  const dispatch = useAppDispatch();
 
   //로그아웃
   const auth = getAuth();
@@ -21,16 +18,19 @@ function Header() {
       .then(() => {
         // Sign-out successful.
         alert('로그아웃 되었습니다.');
-<<<<<<< HEAD
-=======
         dispatch(notLogin());
->>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
         navigate('/');
       })
       .catch((error: any) => {
         // An error happened.
         console.log('error:', error);
       });
+  };
+
+  // 입력 모달
+  const [postModalOpen, setPostModalOpen] = useState(false);
+  const openModal = () => {
+    setPostModalOpen(true);
   };
 
   return (
@@ -49,21 +49,32 @@ function Header() {
         >
           검색
         </SmallButton>
-        <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-<<<<<<< HEAD
-        {!user.uid ? (
-=======
         {!user?.uid ? (
->>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
-          <SmallButton onClick={() => navigate('/LoginPage')}>
-            LOG IN
-          </SmallButton>
+          <>
+            <SmallButton
+              onClick={() => {
+                navigate('/LoginPage');
+              }}
+            >
+              LOG IN
+            </SmallButton>
+          </>
         ) : (
           <>
+            <SmallButton onClick={() => navigate('/PostPage')}>
+              글쓰기
+            </SmallButton>
             <SmallButton onClick={() => navigate('/Mypage')}>
               마이페이지
             </SmallButton>
-            <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
+            <SmallButton
+              onClick={() => {
+                onClickLogout();
+                openModal();
+              }}
+            >
+              LOGOUT
+            </SmallButton>
           </>
         )}
       </HeadBox>
