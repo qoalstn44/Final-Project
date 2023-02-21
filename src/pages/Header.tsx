@@ -1,13 +1,18 @@
 // import React, { Component } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
+<<<<<<< HEAD
+import { useAppSelector } from '../hooks/useRedux';
+=======
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { notLogin } from '../redux/modules/loginSlice';
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
 
 function Header() {
   const navigate = useNavigate();
-  // const user = useSelector((state): any => state.login.user);
+  const user = useAppSelector((state) => state.login.user);
 
   //로그아웃
   const auth = getAuth();
@@ -16,6 +21,10 @@ function Header() {
       .then(() => {
         // Sign-out successful.
         alert('로그아웃 되었습니다.');
+<<<<<<< HEAD
+=======
+        dispatch(notLogin());
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
         navigate('/');
       })
       .catch((error: any) => {
@@ -41,13 +50,22 @@ function Header() {
           검색
         </SmallButton>
         <SmallButton onClick={() => navigate('/PostPage')}>글쓰기</SmallButton>
-        {/* {!user.uid ? (
+<<<<<<< HEAD
+        {!user.uid ? (
+=======
+        {!user?.uid ? (
+>>>>>>> parent of 40a4b4b (:sparkles:	Fix: 로그인, 로그아웃 시 헤더 토글링)
           <SmallButton onClick={() => navigate('/LoginPage')}>
             LOG IN
           </SmallButton>
         ) : (
-          <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
-        )} */}
+          <>
+            <SmallButton onClick={() => navigate('/Mypage')}>
+              마이페이지
+            </SmallButton>
+            <SmallButton onClick={onClickLogout}>LOGOUT</SmallButton>
+          </>
+        )}
       </HeadBox>
     </div>
   );
@@ -67,8 +85,8 @@ const HeadBox = styled.div`
 `;
 
 const HeadButton = styled.button`
-  width: 200px;
-  height: 100px;
+  width: 30rem;
+  height: 1.5rem;
   background-color: black;
 
   color: white;
@@ -77,8 +95,8 @@ const HeadButton = styled.button`
   margin: auto;
 `;
 const SmallButton = styled.button`
-  width: 150px;
-  height: 80px;
+  width: 20rem;
+  height: 1.5rem;
   background-color: black;
   margin: auto;
   border-color: black;
