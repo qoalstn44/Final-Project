@@ -1,10 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { collection,  getFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { collection, getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getDatabase } from 'firebase/database';
-import { GoogleAuthProvider } from 'firebase/auth';
-
 const firebaseConfig = {
   apiKey: 'AIzaSyD524cf8eNVcs8MfCPBIWw_tP7kLt6odZs',
   authDomain: 'final-project-f5698.firebaseapp.com',
@@ -25,5 +23,4 @@ const provider = new GoogleAuthProvider();
 export { database, app, authService, dbService, storageService, provider };
 
 // Product Collection
-export const productCollection = collection
-(dbService,'Product');
+export const productCollection = collection(dbService, 'Product');
