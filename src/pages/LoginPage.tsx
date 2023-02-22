@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
-import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '../hooks/useRedux';
 import { isLogin } from '../redux/modules/loginSlice';
 
@@ -24,7 +23,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword] = useState(false);
 
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
@@ -197,12 +196,6 @@ const FaUserAlts = styled(FaUserAlt)`
 const FaLocks = styled(FaLock)`
   width: 2rem;
   height: 1.5rem;
-`;
-
-const IconbButton = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
 `;
 
 const PasswordInpit = styled.div`

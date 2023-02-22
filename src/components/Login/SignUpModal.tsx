@@ -5,6 +5,7 @@ import 'firebase/compat/auth';
 import styled from 'styled-components';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FaEye } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 // auth를 사용하는 코드
 
@@ -23,10 +24,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const Sinup = async () => {
     const auth = getAuth();
     const result = await createUserWithEmailAndPassword(auth, email, password);
+    navigate('/loginpage');
     console.log(result);
   };
 
@@ -124,7 +127,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
             </div>
           </form>
           <CompleteButton type="submit" onClick={Sinup} disabled={loading}>
-            회원가입
+            완료
           </CompleteButton>
         </StyledModal>
       </StyledBock>
