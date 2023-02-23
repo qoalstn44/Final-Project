@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router';
 import styled from 'styled-components';
-import CommunityPage from '../../pages/CommunityPage';
 import { useNavigate } from 'react-router';
 import { dbService } from '../../common/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 function CommunitySlide() {
   const [popular, setPopular] = useState({ id: '' });
@@ -12,16 +11,23 @@ function CommunitySlide() {
 
   useEffect(() => {
     const getData = async () => {
-      const product = { id: 'fnSn5hJvOV4Ck9J0krIg' }; // replace "123" with the actual ID of the post you want to retrieve
-      const docRef = doc(dbService, 'product', product.id);
-      const docSnap = await getDoc(docRef);
+      //   const posts = { id: 'yfjJR9ITPg5XOC6vVz6f' }; // replace "123" with the actual ID of the post you want to retrieve
+      //   const docRef = doc(dbService, 'posts', posts.id);
+      //   const docSnap = await getDocs(docRef);
 
-      const newPopular = {
-        id: docSnap.id,
-        ...docSnap.data(),
-      };
+      //   const newPopular = {
+      //     id: docSnap.id,
+      //     ...docSnap.data(),
+      //   };
 
-      setPopular(newPopular);
+      //   setPopular(newPopular);
+      // };
+      // getData();
+      const querySnapshot = await getDocs(collection(dbService, 'posts'));
+      console.log(querySnapshot);
+      const dataCall = querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+      });
     };
     getData();
   }, []);
@@ -33,29 +39,17 @@ function CommunitySlide() {
           marginLeft: '50px',
         }}
       >
-        인기글
+        뉴스피드
       </h1>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        {popular.id ? (
-          <>
-            <DDD data={popular} />
-            <DDD data={popular} />
-            <DDD data={popular} />
-          </>
-        ) : (
-          <div>Loading...</div>
-        )}
+        <DDD></DDD>
+        <DDD></DDD>
+        <DDD></DDD>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '3rem' }}>
-        {popular.id ? (
-          <>
-            <DDD data={popular} />
-            <DDD data={popular} />
-            <DDD data={popular} />
-          </>
-        ) : (
-          <div>Loading...</div>
-        )}
+        <DDD></DDD>
+        <DDD></DDD>
+        <DDD></DDD>
       </div>
       <OnclickButton onClick={() => navigate('/NewsPage')}>
         더보기
@@ -66,21 +60,12 @@ function CommunitySlide() {
 
 export default CommunitySlide;
 
-const DDD = ({ data }: any) => {
-  return (
-    <div
-      style={{
-        width: '500px',
-        height: '500px',
-        backgroundColor: 'red',
-        marginLeft: '50px',
-      }}
-    >
-      <div>{data.title}</div>
-      <div>{data.author}</div>
-    </div>
-  );
-};
+const DDD = styled.div`
+  width: 500px;
+  height: 500px;
+  background-color: red;
+  margin-left: 50px;
+`;
 
 const OnclickButton = styled.button`
   width: 5rem;

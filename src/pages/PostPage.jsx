@@ -32,10 +32,11 @@ const PostPage = () => {
 
   // 데이터 베이스에 전송
   const handleForm = async () => {
-    await addDoc(collection(dbService, 'post'), {
+    await addDoc(collection(dbService, 'posts'), {
       title,
       contents: editorRef.current?.getInstance().getHTML(),
       timeStamp: serverTimestamp(),
+      uid: authService.currentUser.uid,
     });
     console.log(title);
   };
