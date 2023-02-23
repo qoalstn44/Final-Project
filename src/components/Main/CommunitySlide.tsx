@@ -12,7 +12,6 @@ import {
 } from 'firebase/firestore';
 
 function CommunitySlide() {
-  const [popular, setPopular] = useState({ id: '' });
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>([]);
 
@@ -37,17 +36,35 @@ function CommunitySlide() {
           marginLeft: '50px',
         }}
       >
-        뉴스피드
+        커뮤니티
       </h1>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <DDD>{userData[0]?.contents}</DDD>
-        <DDD></DDD>
-        <DDD></DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          <div>{userData[0]?.title}</div>
+        </DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          {userData[1]?.title}
+        </DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          {userData[2]?.title}
+        </DDD>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '3rem' }}>
-        <DDD></DDD>
-        <DDD></DDD>
-        <DDD></DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          {userData[3]?.title}
+        </DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          {userData[4]?.title}
+        </DDD>
+        <DDD>
+          <SmallBox></SmallBox>
+          {userData[5]?.title}
+        </DDD>
       </div>
       <OnclickButton onClick={() => navigate('/NewsPage')}>
         더보기
@@ -61,8 +78,11 @@ export default CommunitySlide;
 const DDD = styled.div`
   width: 500px;
   height: 500px;
-  background-color: red;
+  background-color: black;
   margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  color: white;
 `;
 
 const OnclickButton = styled.button`
@@ -75,4 +95,10 @@ const OnclickButton = styled.button`
   margin-left: 3rem;
   margin-top: 1rem;
   background-color: white;
+`;
+
+const SmallBox = styled.div`
+  width: 500px;
+  height: 300px;
+  background-color: green;
 `;
