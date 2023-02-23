@@ -8,18 +8,16 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import { Editor } from '@toast-ui/react-editor';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { authService, dbService } from '../common/firebase';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 const PostPage = () => {
   const navigate = useNavigate();
   // 글쓰기 게시판
+  const editorRef = useRef(null);
   const [title, setTitle] = useState('');
   const handleTitleInput = (event) => {
     setTitle(event.target.value);
-  };
-  const editorRef = useRef(null);
-
-  const handle = () => {
-    editorRef.current?.getInstance().getHTML();
   };
 
   // 데이터 베이스에 전송
@@ -47,6 +45,9 @@ const PostPage = () => {
     setPostModalDelete(true);
   };
 
+  // 이미지 업로드
+  const storage = getStorage();
+  const storageRef = ref(storage, uuidv4());
   return (
     <div>
       <StyledFormDiv>
@@ -68,6 +69,15 @@ const PostPage = () => {
           previewHighlight={false}
           hideModeSwitch={true}
           ref={editorRef}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              callback(
+                uploadBytes(storageRef, blob).then((snapshot) => {
+                  console.log('Uploaded a blob or file!');
+                }),
+              );
+            },
+          }}
         />
         <StyledButtonDiv>
           <Button

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { FaUserAlt, FaLock } from 'react-icons/fa';
+import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { provider } from '../common/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router';
@@ -24,24 +24,29 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [idFindModalIsOpen, setIdFindModalIsOpen] = useState(false);
+  const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
+    useState(false);
+  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
+  const openIdFindModal = () => setIdFindModalIsOpen(true);
+  const closeIdFindModal = () => setIdFindModalIsOpen(false);
+  const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
+  const closePasswordResetModal = () => setPasswordResetModalIsOpen(false);
+  const openSignUpModal = () => setSignUpModalIsOpen(true);
+  const closeSignUpModal = () => setSignUpModalIsOpen(false);
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
   const onClickLogin = () => {
     if (email === User.Email && password === User.Password) {
-      alert('로그인 성공');
+      navigate('/');
     } else {
-      alert('로그인 실패');
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     }
   };
 
@@ -57,6 +62,7 @@ function LoginPage() {
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+
     const regex = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/;
     if (regex.test(password)) {
       setPasswordValid(true);
@@ -90,11 +96,14 @@ function LoginPage() {
 
   return (
     <Page>
+      <LogImg src="img/Petalk.png.png" />
       <LoginBox>
         <Top>
           <Id>
             <InputTitle>
-              <FaUserAlt />
+              <>
+                <FaUserAlts />
+              </>
             </InputTitle>
             <IdInputWrap>
               <Input
@@ -103,54 +112,75 @@ function LoginPage() {
                 value={email}
                 onChange={handleChangeEmail}
               />
+              <ErrorMessageWrap>
+                {!emailValid && email.length > 0 && (
+                  <PasswordInpit>*</PasswordInpit>
+                )}
+              </ErrorMessageWrap>
             </IdInputWrap>
-            <ErrorMessageWrap>
-              {!emailValid && email.length > 0 && (
-                <p>이메일 형식이 올바르지 않습니다.</p>
-              )}
-            </ErrorMessageWrap>
           </Id>
           <Line />
           <Password>
-            <FaLock />
+            <>
+              <FaLocks />
+            </>
             <PwInputWrap>
               <Input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="비밀번호"
                 value={password}
                 onChange={handleChangePassword}
-              />
+              ></Input>
+
+              <ErrorMessageWrap>
+                {!passwordValid && password.length > 0 && (
+                  <PasswordInpit>
+                    *
+                    {/* <IconbButton onClick={handleShowPasswordClick}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </IconbButton> */}
+                  </PasswordInpit>
+                )}
+              </ErrorMessageWrap>
             </PwInputWrap>
-            <ErrorMessageWrap>
-              {!passwordValid && password.length > 0 && (
-                <div>비밀번호 형식이 올바르지 않습니다.</div>
-              )}
-            </ErrorMessageWrap>
           </Password>
         </Top>
+
         <Button>
           <LoginButton onClick={onClickLogin} disabled={notAllowed}>
             로그인
           </LoginButton>
         </Button>
+
         <StyledGoogleLoginDiv>
           <StyledGoogleLoginButton onClick={handleButtonClickGoogleButton}>
             <StyledGoogleLogin>
-              <StyledGoogle src="img/google.png" alt="구글" />
-              <h3>구글계정으로 시작하기</h3>
+              <StyledGoogle>
+                <StyledGoogleImg src="https://developers.google.com/identity/images/g-logo.png" />
+                구글 로그인
+              </StyledGoogle>
             </StyledGoogleLogin>
           </StyledGoogleLoginButton>
         </StyledGoogleLoginDiv>
         <Button>
-          <SignUpButton onClick={openModal}>아이디 찾기</SignUpButton>
-          <IDFindModal isOpen={modalIsOpen} onRequestClose={closeModal} />
-          <SignUpButton onClick={openModal}>비밀번호 찾기</SignUpButton>
-          <PasswordResetModal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
+          <SignUpButton onClick={openIdFindModal}>아이디 찾기</SignUpButton>
+
+          <IDFindModal
+            isOpen={idFindModalIsOpen}
+            onRequestClose={closeIdFindModal}
           />
-          <SignUpButton onClick={openModal}>회원가입</SignUpButton>
-          <SignUpModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+          <SignUpButton onClick={openPasswordResetModal}>
+            비밀번호 찾기
+          </SignUpButton>
+          <PasswordResetModal
+            isOpen={passwordResetModalIsOpen}
+            onRequestClose={closePasswordResetModal}
+          />
+          <SignUpButton onClick={openSignUpModal}>회원가입</SignUpButton>
+          <SignUpModal
+            isOpen={signUpModalIsOpen}
+            onRequestClose={closeSignUpModal}
+          />
         </Button>
       </LoginBox>
     </Page>
@@ -159,20 +189,40 @@ function LoginPage() {
 
 export default LoginPage;
 
+const FaUserAlts = styled(FaUserAlt)`
+  width: 2rem;
+  height: 1.5rem;
+`;
+
+const FaLocks = styled(FaLock)`
+  width: 2rem;
+  height: 1.5rem;
+`;
+
+const IconbButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const PasswordInpit = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 0.5rem;
+  font-size: 1.5rem;
+`;
+
 const Page = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: black;
   height: 100vh;
   width: 100vw;
-`;
-const TitleWrap = styled.div`
-  margin-top: 100px;
-  margin-bottom: 50px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #262626;
 `;
 
 const InputTitle = styled.div`
@@ -201,7 +251,8 @@ const PwInputWrap = styled.div`
 `;
 
 const Input = styled.input`
-  padding: 1rem 13rem;
+  width: 15rem;
+  height: 2rem;
   padding-left: 1rem;
   outline: none;
   border: none;
@@ -209,12 +260,15 @@ const Input = styled.input`
 `;
 
 const ErrorMessageWrap = styled.div`
-  font-size: 12px;
-  color: #ff0000;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: #ff0000;
+  font-size: 1rem;
+  font-weight: 600;
 `;
 
 const LoginBox = styled.div`
@@ -254,7 +308,7 @@ const Button = styled.div`
 `;
 
 const LoginButton = styled.button`
-  width: 28rem;
+  width: 32rem;
   height: 4rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -269,10 +323,10 @@ const LoginButton = styled.button`
 `;
 
 const SignUpButton = styled.button`
-  width: 8rem;
+  width: 6rem;
   height: 2rem;
-  background: #f39340;
-  border-radius: 20px;
+  border: none;
+  background: transparent;
   cursor: pointer;
   :disabled {
     background: #c6c6c3;
@@ -290,8 +344,9 @@ const StyledGoogleLoginButton = styled.button`
   border: 1px solid #c6c6c3;
   background-color: transparent;
   cursor: pointer;
-  padding: 1rem 2rem;
-  border-radius: 40px;
+  width: 15rem;
+  border-radius: 4rem;
+  margin-bottom: 2rem;
 `;
 
 const StyledGoogleLogin = styled.div`
@@ -299,8 +354,27 @@ const StyledGoogleLogin = styled.div`
   justify-content: center;
 `;
 
-const StyledGoogle = styled.img`
-  width: 3rem;
-  height: 3.4rem;
-  margin-right: 1rem;
+const StyledGoogle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #262626;
+  padding: 0.5rem 0;
+  width: 30rem;
+  height: 2rem;
+`;
+
+const StyledGoogleImg = styled.img`
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+`;
+
+const LogImg = styled.img`
+  width: 17rem;
+  height: 4rem;
+  margin-bottom: 3rem;
+  margin-top: 3rem;
 `;

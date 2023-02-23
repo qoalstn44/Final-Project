@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { notLogin } from '../redux/modules/loginSlice';
+import { FaSearch } from 'react-icons/fa';
 
 function Header() {
   const navigate = useNavigate();
@@ -39,6 +39,14 @@ function Header() {
             marginLeft: '500px',
           }}
         >
+          <FaSearch
+            className="icon"
+            size="24"
+            color="white"
+            style={{
+              marginRight: '10px',
+            }}
+          />
           검색
         </SmallButton>
         {!user?.uid ? (
@@ -72,7 +80,6 @@ function Header() {
     </div>
   );
 }
-
 export default Header;
 
 const HeadBox = styled.div`
@@ -87,8 +94,8 @@ const HeadBox = styled.div`
 `;
 
 const HeadButton = styled.button`
-  width: 30rem;
-  height: 1.5rem;
+  width: 35rem;
+  height: 2rem;
   background-color: black;
 
   color: white;
@@ -98,7 +105,7 @@ const HeadButton = styled.button`
 `;
 const SmallButton = styled.button`
   width: 20rem;
-  height: 1.5rem;
+  height: 1rem;
   background-color: black;
   margin: auto;
   border-color: black;

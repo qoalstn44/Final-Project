@@ -1,16 +1,14 @@
   import styled from 'styled-components';
 
-  function CommentItem({ item }: { item: CommentType }) {
+  function CommentItem({ item }) {
 
     return (
       <Wrap>
         <Container>
 
           <ContentBox>
-            <NameDiv>
-              &nbsp; {item?.name}
-            </NameDiv>
-            <BodyDiv>{item?.body}</BodyDiv>
+            <BodyDiv>
+            {item?.name}&nbsp; &nbsp; {item?.body}</BodyDiv>
           </ContentBox>
         </Container>
       </Wrap>
@@ -30,9 +28,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 1.25rem;
-
   border-radius: 0.625rem;
-
   background-color: #eee;
   margin-bottom: 1.25rem;
 `;
