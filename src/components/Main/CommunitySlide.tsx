@@ -30,7 +30,11 @@ function CommunitySlide() {
     getData();
   }, []);
   return (
-    <div>
+    <div
+      style={{
+        width: '200rem',
+      }}
+    >
       <h1
         style={{
           marginLeft: '50px',
@@ -83,6 +87,7 @@ const DDD = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
+  margin: auto;
 `;
 
 const OnclickButton = styled.button`

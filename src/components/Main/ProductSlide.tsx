@@ -25,7 +25,13 @@ function ProductSlide() {
 
   return (
     <div>
-      <h1>제품리뷰</h1>
+      <h1
+        style={{
+          marginLeft: '50px',
+        }}
+      >
+        제품리뷰
+      </h1>
       <ProductReview>
         <DDD
           style={{
@@ -63,14 +69,14 @@ export default ProductSlide;
 
 const ProductReview = styled.div`
   width: 30%;
-  height: 150rem;
+  height: 115rem;
   display: flex;
   flex-direction: column;
 `;
 
 const DDD = styled.div`
-  width: 500px;
-  height: 500px;
+  width: 30rem;
+  height: 20rem;
   background-color: black;
   margin-top: 50px;
   display: flex;
@@ -92,7 +98,7 @@ const OnclickButton = styled.button`
 `;
 
 const SmallBox = styled.div`
-  width: 500px;
-  height: 300px;
+  width: 30rem;
+  height: 300rem;
   background-color: green;
 `;
