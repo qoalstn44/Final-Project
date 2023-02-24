@@ -96,7 +96,7 @@ function LoginPage() {
 
   return (
     <Page>
-      <LogImg src="img/logo.png" />
+      <LogImg src="img/Petalk.png.png" />
       <LoginBox>
         <Top>
           <Id>
@@ -375,5 +375,6 @@ const StyledGoogleImg = styled.img`
 const LogImg = styled.img`
   width: 17rem;
   height: 4rem;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
+  margin-top: 3rem;
 `;

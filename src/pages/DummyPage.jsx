@@ -47,7 +47,6 @@ const DummyPage = () => {
         <h3>제목</h3>
         <p>내용</p>
         <button onClick={unsub2}>가져오기1</button>
-        <button onClick={unsub}>가져오기2</button>
       </div>
     </StyledDummyDiv>
   );
