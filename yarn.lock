@@ -1394,9 +1394,9 @@
     "@firebase/app-types" "0.9.0"
     "@firebase/util" "1.9.2"
 
-"@firebase/database@0.14.3":
+"@firebase/database@0.14.3", "@firebase/database@^0.14.3":
   version "0.14.3"
-  resolved "https://registry.npmjs.org/@firebase/database/-/database-0.14.3.tgz"
+  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.14.3.tgz#0ddd92e5eeef2dbebefd55ce78b39472a57dd5d3"
   integrity sha512-J76W6N7JiVkLaAtPyjaGRkrsIu9pi6iZikuGGtGjqvV19vkn7oiL4Hbo5uTYCMd4waTUWoL9iI08eX184W+5GQ==
   dependencies:
     "@firebase/auth-interop-types" "0.2.1"
@@ -3591,6 +3591,11 @@ ast-types@^0.13.2:
   dependencies:
     tslib "^2.0.1"
 
+async@0.1.x:
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.1.22.tgz#0fc1aaa088a0e3ef0ebe2d8831bab0dcf8845061"
+  integrity sha512-2tEzliJmf5fHNafNwQLJXUasGzQCVctvsNkXmnlELHwypU0p08/rHohYvkqKIjyXpx+0rkrYv6QbhJ+UF4QkBg==
+
 async@^1.3.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
@@ -3904,7 +3909,7 @@ blakejs@^1.1.0:
   resolved "https://registry.yarnpkg.com/blakejs/-/blakejs-1.2.1.tgz#5057e4206eadb4a97f7c0b6e197a505042fc3814"
   integrity sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==
 
-bluebird@^3.5.5:
+bluebird@^3.2.2, bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
@@ -4539,6 +4544,17 @@ compare-semver@^1.0.0:
   integrity sha512-AENcdfhxsMCzzl+QRdOwMQeA8tZBEEacAmA4pGPoyco27G9sIaM98WNYkcToC9O0wIx1vE+1ErmaM4t0/fXhMw==
   dependencies:
     semver "^5.0.1"
+
+compat@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/compat/-/compat-1.0.4.tgz#6c49910622b34612891f5ad8ed462a73b1f88653"
+  integrity sha512-/KP5H6BY72pcZga87ZwP5G3cJ13AK8KewRzj6F2GuXWeAf/FnCSZ8SaIoufpV7FeiGoXJcvXXjHuiCCGo5KoAA==
+  dependencies:
+    bluebird "^3.2.2"
+    lodash "^4.2.1"
+    read-dir-files "0.0.x"
+    rimraf "1.0.x"
+    shell-quote "^1.4.3"
 
 compress-commons@^4.1.0:
   version "4.1.1"
@@ -8887,7 +8903,7 @@ lodash.values@^2.4.1:
   dependencies:
     lodash.keys "~2.4.1"
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.7.0:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -11158,6 +11174,13 @@ read-cache@^1.0.0:
   dependencies:
     pify "^2.3.0"
 
+read-dir-files@0.0.x:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/read-dir-files/-/read-dir-files-0.0.2.tgz#6e1e2e144fb5d0e65c6468bafeb48904ffb8e304"
+  integrity sha512-9lW+c6bUpSkdLa0UoO0dhnhsHB0y5xMj5A1Kuebc2qaNO35NpcfYJ4ss5rcaGRBhRsNOzhZwmeG7mtlIpiaMyA==
+  dependencies:
+    async "0.1.x"
+
 readable-stream@1.1.x:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
@@ -11492,6 +11515,11 @@ reusify@^1.0.4:
   resolved "https://registry.npmjs.org/reusify/-/reusify-1.0.4.tgz"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
+rimraf@1.0.x:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-1.0.9.tgz#be4801ff76c2ba6f1c50c78e9700eb1d21f239f1"
+  integrity sha512-vMboELGrBSgcKZ1fVCCfLEvRdhIeOhDAK4XhjuKXFFs/TOkvWxjT9RRHw2kDhM139zfU3wUQbJkRanMXLl7zFA==
+
 rimraf@2:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
@@ -11804,7 +11832,7 @@ shebang-regex@^3.0.0:
   resolved "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-shell-quote@^1.7.3:
+shell-quote@^1.4.3, shell-quote@^1.7.3:
   version "1.8.0"
   resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.8.0.tgz"
   integrity sha512-QHsz8GgQIGKlRi24yFc6a6lN69Idnx634w49ay6+jA5yFh7a1UY+4Rp6HPx/L/1zcEDPEij8cIsiqR6bQsE5VQ==
