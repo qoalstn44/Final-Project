@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
 
-function Productapi() {
+function Communityapi() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>([]);
 
@@ -91,7 +91,7 @@ return (
   </ProductContainer>
 )
 }
-export default Productapi
+export default Communityapi;
 
 const ProductContainer = styled.div`
 justify-content: center;

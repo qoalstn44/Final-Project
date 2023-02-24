@@ -3,88 +3,103 @@
   import { addDoc,getDocs,collection,deleteDoc,doc,serverTimestamp,} from "firebase/firestore";
   import { dbService, authService } from '../common/firebase';
   import { useNavigate} from 'react-router-dom';
-
-
   const DetailPage = () => {
+    const navigate = useNavigate();
+    const [userData, setUserData] = useState([]);
     const [postComment, setPostComment] = useState("");
     const [commentLists,setCommentLists] =useState([]);
     const commentCollectionRef = collection(dbService, "comments")
+  
+    useEffect(() => {
+      const getData = async () => {
+        const querySnapshot = await getDocs(collection(dbService, 'posts'));
+        console.log(querySnapshot);
+        let PushData= [];
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+          PushData.push(doc.data());
+        });
+        console.log('확인', PushData);
+        setUserData(PushData);
+      };
+      getData();
+    }, []);
+  
 
-    let navigate = useNavigate();
-    //데이터에 문서를 추가
-    const createComment = async () => {
-        await addDoc(commentCollectionRef, 
-            {postComment,
-            createAt:serverTimestamp(),
-            author: {name: authService.currentUser.displayName,
-            id:authService.currentUser.uid},
-            timeStamp: serverTimestamp(),
-            });
-            navigate("/Detail/:id")
-          };
-    // //로그인이 되어있지 않으면 로그인 페이지로 이동
-    // useEffect(() => {
-    //     if (!isAuth){
-    //         navigate("/LoginPage") 
-    //     }
-    // },[]);  
-    
+
+  //데이터에 문서를 추가
+  const createComment = async () => {
+  await addDoc(commentCollectionRef, 
+  {postComment,
+  createAt:serverTimestamp(),
+  author: {name: authService.currentUser.displayName,
+  id:authService.currentUser.uid},
+  timeStamp: serverTimestamp(),
+  });
+  navigate("/Detail/:id")
+  };
+  // //로그인이 되어있지 않으면 로그인 페이지로 이동
+  // useEffect(() => {
+  //     if (!isAuth){
+  //         navigate("/LoginPage") 
+  //     }
+  // },[]);  
+
   // 댓글 가져오기
   useEffect(()=>{
-    const getComments =async()=>{
-      const data =await getDocs(commentCollectionRef);
-      setCommentLists(data.docs.map((doc) => ({...doc.data(), id: doc.id })));
-    };
-    getComments();
+  const getComments =async()=>{
+  const data =await getDocs(commentCollectionRef);
+  setCommentLists(data.docs.map((doc) => ({...doc.data(), id: doc.id })));
+  };
+  getComments();
   });
   // 댓글 삭제하기
   const deleteComment = async (id)=>{
   deleteDoc(doc(dbService, "comments", id))
   }
 
-      return (
-        <CommentContainer>
-        <StyledPost>
-          <StyledTitle>여기는 글 제목 입니다. </StyledTitle>
-          <StyledInfo>
-            <StyledId>ID</StyledId>
-            <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
-          </StyledInfo>
-          <StyledContent>
-            여기는 게시글 입니다 이러쿵 저러쿵 궁시렁 궁시렁{' '}
-          </StyledContent>
-          <StyledImgContainer>
-            <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
-          </StyledImgContainer>
-          <CommentTag>#댕댕이</CommentTag>
-          <TotalComments>
-        <Comment>댓글작성</Comment>
-        <Form>
-        <BodyInput
-            maxLength={200}
-            onChange={(event) => setPostComment(event.target.value)}
-            placeholder="내용 (최대 200자)"
+  return (
+  <CommentContainer>
+    <StyledPost>
+        <StyledTitle>{userData[0]?.title}</StyledTitle>
+    <StyledInfo>
+        <StyledId>{userData[0]?.author.name}</StyledId>
+        <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+    </StyledInfo>
+        <StyledContent>
+          {userData[0]?.contents}
+        </StyledContent>
+    <StyledImgContainer>
+        <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+    </StyledImgContainer>
+        <CommentTag>#댕댕이</CommentTag>
+      <Comment>댓글작성</Comment>
+
+<TotalComments>
+    <CommentListWrap>
+    {commentLists.map((comments) => {
+    return(
+    <div>
+    <BodyDiv>
+    {comments.author.name}&nbsp; &nbsp; {comments.postComment}</BodyDiv>
+    <DeleteBtn onClick={() => {deleteComment(comments.id)}}>
+      &#128465;
+    </DeleteBtn>
+    </div>
+    )})}
+    </CommentListWrap>
+    <BodyInput
+        maxLength={200}
+        onChange={(event) => setPostComment(event.target.value)}
+        placeholder="내용 (최대 200자)"
         required
-        />
+      />
     <CommentBtn onClick={createComment}> 등록</CommentBtn>
-    </Form>
-    </TotalComments>
-          <CommentListWrap>
-            {commentLists.map((comments) => {
-          return(
-          <div>
-            <BodyDiv>
-            {comments.author.name}&nbsp; &nbsp; {comments.postComment}</BodyDiv>
-            <DeleteBtn onClick={() => {deleteComment(comments.id)}}>
-              &#128465;
-            </DeleteBtn>
-          </div>
-            )})}
-          </CommentListWrap>
-        </StyledPost>
-    </CommentContainer>
-      );
-    }
+</TotalComments>
+  </StyledPost>
+  </CommentContainer>
+  );
+  }
 
   export default DetailPage;
 
@@ -177,21 +192,14 @@
   margin: 0.438rem;
   cursor: pointer;
   &:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
   display: flex;
   justify-content : flex-end  
   }
   `;
 
-  const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
-  `;
-
   const BodyInput = styled.input`
-  width: 87.5rem;
+  width: 50rem;
   height: 10rem;
   display: flex;
   justify-content: space-between;
@@ -223,6 +231,7 @@
   `;
 
   const TotalComments = styled.div`
+  
   `;
   const CommentContainer = styled.div`
   `;
