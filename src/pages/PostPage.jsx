@@ -48,9 +48,29 @@ const PostPage = () => {
   // 이미지 업로드
   const storage = getStorage();
   const storageRef = ref(storage, uuidv4());
+
+  // 카테고리
+  const categories = [
+    { value: '카테고리', label: '카테고리' },
+    { value: '강아지', label: '강아지' },
+    { value: '고양이', label: '고양이' },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
   return (
     <div>
       <StyledFormDiv>
+        <AContainer>
+          <ASelectCategory
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </ASelectCategory>
+        </AContainer>
         <StyledInput
           name="title"
           type="text"
@@ -111,13 +131,6 @@ const PostPage = () => {
               취소 하시겠습니까?
             </PostModal>
           )}
-          <Button
-            onClick={() => {
-              navigate('/dummyPage');
-            }}
-          >
-            네비게이터
-          </Button>
         </StyledButtonDiv>
       </StyledFormDiv>
     </div>
@@ -126,20 +139,35 @@ const PostPage = () => {
 
 export default PostPage;
 
+const AContainer = styled.div`
+  position: relative;
+  right: 23.1rem;
+  bottom: 1rem;
+`;
+
+const ASelectCategory = styled.select`
+  color: #c6c6c3;
+  border: 1px solid #c6c6c3;
+  padding: 0.5rem 0.4rem;
+  font-weight: bold;
+`;
+
 const StyledFormDiv = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rem;
+  margin-top: 8rem;
 `;
 
 const StyledInput = styled.input`
-  padding: 1rem 0;
-  padding-right: 39.8rem;
+  padding: 1rem 10rem;
+  padding-right: 3rem;
   padding-left: 1rem;
   margin-bottom: 2rem;
   font-size: 1rem;
+  width: 47.2rem;
+  border: 1px solid #c6c6c3;
 `;
 
 const StyledButtonDiv = styled.div`

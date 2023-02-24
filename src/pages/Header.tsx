@@ -28,54 +28,43 @@ function Header() {
   return (
     <div>
       <HeadBox>
-        <HeadButton onClick={() => navigate('/')}>로고</HeadButton>
+        <HeadButton onClick={() => navigate('/')}>
+          <StyledHeaderLogo src="img/Petalk.png" alt="로고" />
+        </HeadButton>
         <HeadButton onClick={() => navigate('/CommunityPage')}>
           커뮤니티
         </HeadButton>
         <HeadButton onClick={() => navigate('/ItemPage')}>제품리뷰</HeadButton>
         <HeadButton onClick={() => navigate('/NewsPage')}>뉴스</HeadButton>
-        <SmallButton
-          style={{
-            marginLeft: '500px',
-          }}
-        >
-          <FaSearch
-            className="icon"
-            size="24"
-            color="white"
-            style={{
-              marginRight: '10px',
-            }}
-          />
-          검색
-        </SmallButton>
-        {!user?.uid ? (
-          <>
-            <SmallButton
-              onClick={() => {
-                navigate('/LoginPage');
-              }}
-            >
-              LOG IN
-            </SmallButton>
-          </>
-        ) : (
-          <>
-            <SmallButton onClick={() => navigate('/PostPage')}>
-              글쓰기
-            </SmallButton>
-            <SmallButton onClick={() => navigate('/Mypage')}>
-              마이페이지
-            </SmallButton>
-            <SmallButton
-              onClick={() => {
-                onClickLogout();
-              }}
-            >
-              LOGOUT
-            </SmallButton>
-          </>
-        )}
+        <StyledSmallButtonDiv>
+          {!user?.uid ? (
+            <>
+              <StyledLogin
+                onClick={() => {
+                  navigate('/LoginPage');
+                }}
+              >
+                LOG IN
+              </StyledLogin>
+            </>
+          ) : (
+            <>
+              <SmallButton onClick={() => navigate('/PostPage')}>
+                글쓰기
+              </SmallButton>
+              <SmallButton onClick={() => navigate('/Mypage')}>
+                마이페이지
+              </SmallButton>
+              <StyledLogin
+                onClick={() => {
+                  onClickLogout();
+                }}
+              >
+                LOGOUT
+              </StyledLogin>
+            </>
+          )}
+        </StyledSmallButtonDiv>
       </HeadBox>
     </div>
   );
@@ -93,22 +82,44 @@ const HeadBox = styled.div`
   z-index: 1;
 `;
 
-const HeadButton = styled.button`
-  width: 35rem;
-  height: 2rem;
-  background-color: black;
+const StyledHeaderLogo = styled.img`
+  width: 9rem;
+  position: relative;
+  bottom: 0.15rem;
+  left: 1rem;
+`;
 
+const HeadButton = styled.button`
+  width: 6rem;
+  height: 2rem;
+  background-color: transparent;
   color: white;
-  border-color: black;
+  border-color: transparent;
   font-size: 20px;
   margin: auto;
+  cursor: pointer;
+`;
+
+const StyledSmallButtonDiv = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-left: 10rem;
 `;
 const SmallButton = styled.button`
-  width: 20rem;
-  height: 1rem;
-  background-color: black;
-  margin: auto;
-  border-color: black;
+  width: 6rem;
+  background-color: transparent;
+  border-color: transparent;
   color: white;
-  font-size: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+const StyledLogin = styled.button`
+  padding-right: 1rem;
+  width: 6rem;
+  background-color: transparent;
+  border-color: transparent;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 `;
