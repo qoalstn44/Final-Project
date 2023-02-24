@@ -125,7 +125,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #red;
+    background-color: red;
     padding: 0.625rem;
     border-radius: 10rem;
     margin-top: 10rem;
@@ -250,7 +250,7 @@
   border-radius: 4rem;
   border: none;
   font-size: 1.25rem;
-  color: #red;
+  color: red;
   position: absolute;
   right: 0;
   top: 0;
