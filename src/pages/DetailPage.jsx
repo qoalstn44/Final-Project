@@ -43,7 +43,7 @@ const DetailPage = () => {
       },
       timeStamp: serverTimestamp(),
     });
-    navigate('/Detail/:id');
+    navigate('/Detailpage/:id');
   };
   // //로그인이 되어있지 않으면 로그인 페이지로 이동
   // useEffect(() => {
@@ -202,20 +202,13 @@ const DeleteBtn = styled.button`
   color: white;
   border: none;
   &:hover {
-  transform: scale(1.2);
-  display: flex;
-  justify-content : flex-end  
+    transform: scale(1.2);
+    display: flex;
+    justify-content: flex-end;
     transform: scale(1.2);
     display: flex;
     justify-content: flex-end;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
 `;
 
 const BodyInput = styled.input`

@@ -50,7 +50,7 @@ const AContainer = styled.div`
 const BContainer = styled.div`
   display: flex;
   position: relative;
-  right: 48rem;
+  right: 45.5rem;
 `;
 
 const SearchInput = styled.div`
@@ -134,5 +134,5 @@ const ASelectCategory = styled.select`
   color: #e65925;
   border: 0.0625rem solid #545451;
   position: relative;
-  right: 2.5rem;
+  right: -0.5rem;
 `;
