@@ -5,11 +5,7 @@ function Footer() {
   return (
     <div>
       <FooterBox>
-        {' '}
-        <img
-          src="img/Petalk.png.png"
-          style={{ width: '15rem', height: '3rem' }}
-        />
+        <StyledFooterImg src="img/Petalk.png" />
       </FooterBox>
     </div>
   );
@@ -18,10 +14,16 @@ function Footer() {
 export default Footer;
 
 const FooterBox = styled.div`
-  width: 100%;
-  height: 10%;
+  position: fixed;
   background-color: black;
-  color: white;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 8%;
+  top: 92%;
+`;
+
+const StyledFooterImg = styled.img`
+  padding-left: 2rem;
+  width: 15rem;
+  position: relative;
+  top: 0.5rem;
 `;

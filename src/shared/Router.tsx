@@ -11,7 +11,7 @@ import Header from '../pages/Header';
 import Footer from '../pages/Footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-function Router() { 
+function Router() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

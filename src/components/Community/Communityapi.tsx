@@ -1,5 +1,5 @@
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
@@ -23,97 +23,97 @@ function Communityapi() {
     getData();
   }, []);
 
-return (
-  <ProductContainer>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[0]?.title}</CardTitle> 
-      <CardContent>{userData[0]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[1]?.title}</CardTitle> 
-      <CardContent>{userData[1]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[2]?.title}</CardTitle> 
-      <CardContent>{userData[2]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[3]?.title}</CardTitle> 
-      <CardContent>{userData[3]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[4]?.title}</CardTitle> 
-      <CardContent>{userData[4]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[5]?.title}</CardTitle> 
-      <CardContent>{userData[5]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[6]?.title}</CardTitle> 
-      <CardContent>{userData[6]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[7]?.title}</CardTitle> 
-      <CardContent>{userData[7]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-    <CardBox>
-      <CardImg></CardImg>
-      <CardName>
-      <CardTitle>{userData[8]?.title}</CardTitle> 
-      <CardContent>{userData[8]?.author.name}</CardContent>
-      </CardName>
-    </CardBox>
-  </ProductContainer>
-)
+  return (
+    <ProductContainer>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[0]?.title}</CardTitle>
+          <CardContent>{userData[0]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[1]?.title}</CardTitle>
+          <CardContent>{userData[1]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[2]?.title}</CardTitle>
+          <CardContent>{userData[2]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[3]?.title}</CardTitle>
+          <CardContent>{userData[3]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[4]?.title}</CardTitle>
+          <CardContent>{userData[4]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[5]?.title}</CardTitle>
+          <CardContent>{userData[5]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[6]?.title}</CardTitle>
+          <CardContent>{userData[6]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[7]?.title}</CardTitle>
+          <CardContent>{userData[7]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+      <CardBox>
+        <CardImg></CardImg>
+        <CardName>
+          <CardTitle>{userData[8]?.title}</CardTitle>
+          <CardContent>{userData[8]?.author.name}</CardContent>
+        </CardName>
+      </CardBox>
+    </ProductContainer>
+  );
 }
 export default Communityapi;
 
 const ProductContainer = styled.div`
-justify-content: center;
-align-items: center;
-gap: 1.25rem;
-margin-top: 3.125rem;
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-grid-gap: 1rem;
-margin-top:0px;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 3.125rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  margin-top: 0px;
 `;
 
 const CardBox = styled.div`
-width: 20rem;
-height: 20rem;
-border: 0.0625rem solid #e5e5e5;
-border-radius: 2rem;
-box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
-overflow: hidden;
-position: relative;
-margin-bottom: 2rem;
-text-align: center;
+  width: 20rem;
+  height: 20rem;
+  border: 0.0625rem solid #e5e5e5;
+  border-radius: 2rem;
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2rem;
+  text-align: center;
 `;
 
 const CardTitle = styled.h2`
@@ -126,13 +126,13 @@ const CardContent = styled.div`
 `;
 
 const CardImg = styled.div`
-background-color: #f39340;
-width: 100%;
-height: 14rem;
-object-fit: cover;
+  background-color: #f39340;
+  width: 100%;
+  height: 14rem;
+  object-fit: cover;
 `;
 
-const CardName =  styled.div`
-display: flex;
-justify-content: space-evenly;
+const CardName = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
