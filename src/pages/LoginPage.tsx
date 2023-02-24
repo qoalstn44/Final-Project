@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { getAuth } from 'firebase/auth';
 import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { provider } from '../common/firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
 import { useAppDispatch } from '../hooks/useRedux';
 import { isLogin } from '../redux/modules/loginSlice';
-
-const User = {
-  Email: 'qoalstn44@naver.com',
-  Password: '!ekfmstkfkd1',
-};
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -42,11 +35,31 @@ function LoginPage() {
   const closeSignUpModal = () => setSignUpModalIsOpen(false);
 
   const onClickLogin = () => {
-    if (email === User.Email && password === User.Password) {
+    if (emailValid && passwordValid) {
+      setNotAllowed(false);
       navigate('/');
     } else {
-      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+      setNotAllowed(true);
     }
+  };
+
+  const handleButtonClickGoogleButton = () => {
+    const auth = getAuth();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const user = result.user;
+        dispatch(isLogin(user));
+        navigate('/');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+      });
   };
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,25 +90,9 @@ function LoginPage() {
     }
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
-
-  // 구글 로그인
-  const auth = getAuth();
-  const handleButtonClickGoogleButton = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log('로그인 되었습니다.');
-        console.log(result);
-        dispatch(isLogin(result.user));
-        navigate('/');
-      })
-      .catch(() => {
-        console.log('로그인이 실패 하였습니다.');
-      });
-  };
-
   return (
     <Page>
-      <LogImg src="img/logo.png" />
+      <LogImg src="img/Petalk.png" />
       <LoginBox>
         <Top>
           <Id>
