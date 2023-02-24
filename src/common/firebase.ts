@@ -3,14 +3,15 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { collection, getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getDatabase } from 'firebase/database';
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyC994esSdwrNSAInjZJQcpQyj33o_XIAK8',
-  authDomain: 'fir-spa-99485.firebaseapp.com',
-  projectId: 'fir-spa-99485',
-  storageBucket: 'fir-spa-99485.appspot.com',
-  messagingSenderId: '242547028544',
-  appId: '1:242547028544:web:f19f869c3cc748c443a5a5',
-  measurementId: 'G-H0BY1YHHQE',
+  apiKey: 'AIzaSyDHHh_HUcTilJ6G9bWpfsoZC59BSiNDrI4',
+  authDomain: 'final-project-efd12.firebaseapp.com',
+  projectId: 'final-project-efd12',
+  storageBucket: 'final-project-efd12.appspot.com',
+  messagingSenderId: '836878321834',
+  appId: '1:836878321834:web:70e916cfcc78a662ae68d3',
+  measurementId: 'G-869N0Y1MDG',
 };
 
 const app = initializeApp(firebaseConfig);
