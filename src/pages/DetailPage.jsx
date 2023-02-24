@@ -202,6 +202,9 @@ const DeleteBtn = styled.button`
   color: white;
   border: none;
   &:hover {
+  transform: scale(1.2);
+  display: flex;
+  justify-content : flex-end  
     transform: scale(1.2);
     display: flex;
     justify-content: flex-end;

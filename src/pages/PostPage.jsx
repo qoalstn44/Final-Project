@@ -27,7 +27,8 @@ const PostPage = () => {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         timeStamp: serverTimestamp(),
-        uid: authService.currentUser.uid,
+        author: {name: authService.currentUser.displayName,
+          id:authService.currentUser.uid}
       });
     } catch (error) {
       console.log(error);

@@ -21,6 +21,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -65,6 +66,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
     }
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -96,6 +101,15 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
               e.preventDefault();
             }}
           >
+            <Label>닉네임</Label>
+            <div>
+              <Input
+                type="name"
+                value={name}
+                onChange={handleNameChange}
+                required
+              ></Input>
+            </div>
             <Label>이메일</Label>
             <div>
               <Input
@@ -170,11 +184,11 @@ const StyledBock = styled.div`
 
 const StyledModal = styled(Modal)`
   position: fixed;
-  top: 25rem;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 39rem;
-  height: 33rem;
+  width: 50%;
+  height: 50%;
   background-color: white;
   border-radius: 2rem;
   z-index: 1;

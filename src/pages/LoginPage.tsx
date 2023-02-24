@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { provider } from '../common/firebase';
-import { signInWithPopup, getAuth, GoogleAuthProvider } from 'firebase/auth';
+import {
+  signInWithPopup,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
@@ -35,12 +40,18 @@ function LoginPage() {
   const closeSignUpModal = () => setSignUpModalIsOpen(false);
 
   const onClickLogin = () => {
-    if (emailValid && passwordValid) {
-      setNotAllowed(false);
-      navigate('/');
-    } else {
-      setNotAllowed(true);
-    }
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        dispatch(isLogin(user));
+        navigate('/');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   const handleButtonClickGoogleButton = () => {
@@ -365,6 +376,5 @@ const StyledGoogleImg = styled.img`
 const LogImg = styled.img`
   width: 17rem;
   height: 4rem;
-  margin-bottom: 3rem;
-  margin-top: 3rem;
+  margin-bottom: 5rem;
 `;

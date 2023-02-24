@@ -84,11 +84,11 @@ const CompleteButton = styled.button`
 
 const StyledModal = styled(Modal)`
   position: fixed;
-  top: 25rem;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 39rem;
-  height: 33rem;
+  width: 50%;
+  height: 50%;
   background-color: white;
   border-radius: 2rem;
   z-index: 1;

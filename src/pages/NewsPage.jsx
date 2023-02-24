@@ -67,7 +67,7 @@ const NewsPage =()=> {
     <NewsAContainer>
       <NewsInput
         type="search"
-        placeholder="검색어를 입력 하세요..."
+        placeholder="검색어를 입력해주세요."
         name="query"
         onKeyDown={onEnter} // enter
         onChange={onTextUpdate} // change
@@ -100,7 +100,7 @@ width: 100%;
 display: flex;
 flex-direction: column;
 align-items: center;
-padding-top: 5rem;
+margin-top: 2rem;
 `;
 const NewsBContainer = styled.div`
   display: grid;
@@ -112,14 +112,26 @@ const NewsBContainer = styled.div`
 `;
 
 const NewsInput = styled.input`
-margin-top: 4rem;
-font-size: 3rem;
-border: 0;
-border-bottom: 1px solid #dddddd;
-width: 40rem;
-padding: 3px;
-display: block;
-transition: border 0.3s;
-`;
+    width: 50%;
+    height: 2rem;
+    margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.625rem;
+    border-radius: 10rem;
+    margin-top: 5rem;
+    border: 0.0625rem solid #545451;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  
+    input[type="text"] {
+      width: 90%;
+      height: 100%;
+      border: none;
+      outline: none;
+      font-size: 1.5rem;
+      padding: 0;
+    }
+  `;
 
 
