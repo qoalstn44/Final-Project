@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/app-types": "^0.9.0",
     "@firebase/database": "^0.14.3",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.2",
@@ -29,6 +30,7 @@
     "firebase-tools": "9.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-html-parser": "^2.0.2",
     "react-icons": "^4.7.1",
     "react-is": "^18.2.0",
