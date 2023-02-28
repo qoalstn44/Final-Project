@@ -10,6 +10,7 @@ import {
 } from 'firebase/firestore';
 import { dbService, authService } from '../common/firebase';
 import { useNavigate } from 'react-router-dom';
+
 const DetailPage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
@@ -36,7 +37,6 @@ const DetailPage = () => {
   const createComment = async () => {
     await addDoc(commentCollectionRef, {
       postComment,
-      createAt: serverTimestamp(),
       author: {
         name: authService.currentUser.displayName,
         id: authService.currentUser.uid,
@@ -61,9 +61,9 @@ const DetailPage = () => {
     getComments();
   });
   // 댓글 삭제하기
-  const deleteComment = async (id) => {
-    deleteDoc(doc(dbService, 'comments', id));
-  };
+  const deleteComment = async (item) => {
+    deleteDoc(doc(dbService, `comments/${item.id}`));
+    };
 
   return (
     <StyledPost>
