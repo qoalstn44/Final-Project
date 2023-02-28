@@ -8,8 +8,15 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import { Editor } from '@toast-ui/react-editor';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { authService, dbService } from '../common/firebase';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadString,
+} from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
+import { storageService } from '../common/firebase';
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -27,8 +34,11 @@ const PostPage = () => {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         timeStamp: serverTimestamp(),
-        author: {name: authService.currentUser.displayName,
-          id:authService.currentUser.uid}
+        author: {
+          name: authService.currentUser.displayName,
+          id: authService.currentUser.uid,
+        },
+        // imgUrl: upload,
       });
     } catch (error) {
       console.log(error);
@@ -49,14 +59,43 @@ const PostPage = () => {
   // 이미지 업로드
   const storage = getStorage();
   const storageRef = ref(storage, uuidv4());
+  const imageUrl = () => getDownloadURL(storageRef);
+  const upload = async (blob, callback) => {
+    callback(
+      uploadBytes(storageRef, blob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        imageUrl()
+          .then((res) => {
+            console.log('res', res);
+          })
+          .catch((error) => {
+            console.log('error', error);
+          });
+      }),
+    );
+  };
 
   // 카테고리
   const categories = [
     { value: '카테고리', label: '카테고리' },
+    { value: '커뮤니티', label: '커뮤니티' },
+    { value: '제품리뷰', label: '제품리뷰' },
+  ];
+  const catetype = [
+    { value: '동물', label: '동물' },
     { value: '강아지', label: '강아지' },
     { value: '고양이', label: '고양이' },
+    { value: '소동물', label: '소동물' },
+  ];
+  const cateitem = [
+    { value: '제품', label: '제품' },
+    { value: '사료', label: '사료' },
+    { value: '장난감', label: '장난감' },
+    { value: '집사용품', label: '집사용품' },
   ];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
+  const [selectedCatetype, setSelectedCatetype] = useState(catetype[0].value);
+  const [selectedCateitem, setSelectedCateitem] = useState(cateitem[0].value);
   return (
     <div>
       <StyledFormDiv>
@@ -66,6 +105,26 @@ const PostPage = () => {
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
             {categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </ASelectCategory>
+          <ASelectCategory
+            value={selectedCatetype}
+            onChange={(e) => setSelectedCatetype(e.target.value)}
+          >
+            {catetype.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </ASelectCategory>
+          <ASelectCategory
+            value={selectedCateitem}
+            onChange={(e) => setSelectedCateitem(e.target.value)}
+          >
+            {cateitem.map((category) => (
               <option key={category.value} value={category.value}>
                 {category.label}
               </option>
@@ -91,13 +150,7 @@ const PostPage = () => {
           hideModeSwitch={true}
           ref={editorRef}
           hooks={{
-            addImageBlobHook: async (blob, callback) => {
-              callback(
-                uploadBytes(storageRef, blob).then((snapshot) => {
-                  console.log('Uploaded a blob or file!');
-                }),
-              );
-            },
+            addImageBlobHook: upload,
           }}
         />
         <StyledButtonDiv>
@@ -142,7 +195,7 @@ export default PostPage;
 
 const AContainer = styled.div`
   position: relative;
-  right: 23.1rem;
+  right: 17.8rem;
   bottom: 1rem;
 `;
 
@@ -151,6 +204,7 @@ const ASelectCategory = styled.select`
   border: 1px solid #c6c6c3;
   padding: 0.5rem 0.4rem;
   font-weight: bold;
+  margin-left: 1.2rem;
 `;
 
 const StyledFormDiv = styled.div`
