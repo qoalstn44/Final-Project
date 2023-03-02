@@ -44,7 +44,10 @@ function CommunitySlide() {
       </h1>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <DDD>
-          <SmallBox></SmallBox>
+          <div></div>
+          <SmallBox>
+            <Stimage src="img/cat.jpeg"></Stimage>
+          </SmallBox>
           <div>{userData[0]?.title}</div>
         </DDD>
         <DDD>
@@ -58,7 +61,9 @@ function CommunitySlide() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '3rem' }}>
         <DDD>
-          <SmallBox></SmallBox>
+          <SmallBox>
+            <Stimage src="img/cat.jpeg"></Stimage>
+          </SmallBox>
           {userData[3]?.title}
         </DDD>
         <DDD>
@@ -80,14 +85,16 @@ function CommunitySlide() {
 export default CommunitySlide;
 
 const DDD = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: black;
+  width: 30rem;
+  height: 30rem;
+  background-color: white;
   margin-left: 50px;
   display: flex;
   flex-direction: column;
   color: white;
   margin: auto;
+  border-radius: 10%;
+  box-shadow: 3px 3px 3px 3px #d2d2d2;
 `;
 
 const OnclickButton = styled.button`
@@ -103,7 +110,17 @@ const OnclickButton = styled.button`
 `;
 
 const SmallBox = styled.div`
-  width: 500px;
-  height: 300px;
+  width: 30rem;
+  height: 20rem;
   background-color: green;
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
+  box-shadow: 1px 1px 1px grey;
+`;
+
+const Stimage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
 `;

@@ -1,4 +1,4 @@
-    import { ChangeEvent, FormEvent, useState } from 'react';
+    import { useState } from 'react';
     import { useMutation, useQueryClient } from 'react-query';
     import styled from 'styled-components';
     import { createComment } from '../../pages/api';
@@ -11,7 +11,7 @@
     const queryClient = useQueryClient();
     const [body, setBody] = useState('');
 
-    // 댓글 작성 mutation
+    // 댓글 작성 mutation 사용자가 입력한 댓글을 서버로 전송하여 데이터베이스에 저장
     const { isLoading: createLoading, mutate: createMutate } =
         useMutation(createComment);
 

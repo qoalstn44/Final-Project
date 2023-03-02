@@ -12,9 +12,9 @@ const CommunityPage = () => {
 
   return (
     <MainContainer>
-      <SearchInput>
-        <input type="text" placeholder="검색" />
-        <SearchIcon />
+      <SearchInput >
+      <input type="text" placeholder="검색" />
+        <SearchIcon/>
       </SearchInput>
       <AContainer>
         <BContainer>
@@ -74,6 +74,8 @@ const SearchInput = styled.div`
     font-size: 1.5rem;
     padding: 0;
   }
+
+
 `;
 
 const SearchIcon = styled.span`
@@ -118,7 +120,7 @@ const CardContainer = styled.div`
   align-items: center;
   gap: 1.25rem;
   margin-top: 3.125rem;
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 `;
