@@ -20,6 +20,8 @@ import { storageService } from '../common/firebase';
 
 const PostPage = () => {
   const navigate = useNavigate();
+  const [img, setImg] = useState('');
+  console.log(img);
   // 글쓰기 게시판
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
@@ -29,6 +31,7 @@ const PostPage = () => {
 
   // 데이터 베이스에 전송
   const handleForm = async () => {
+    console.log('img', img);
     try {
       await addDoc(collection(dbService, 'posts'), {
         title,
@@ -38,7 +41,7 @@ const PostPage = () => {
           name: authService.currentUser.displayName,
           id: authService.currentUser.uid,
         },
-        // imgUrl: upload,
+        imgUrl: img,
       });
     } catch (error) {
       console.log(error);
@@ -67,6 +70,7 @@ const PostPage = () => {
         imageUrl()
           .then((res) => {
             console.log('res', res);
+            setImg(res);
           })
           .catch((error) => {
             console.log('error', error);
