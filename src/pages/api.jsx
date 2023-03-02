@@ -32,8 +32,5 @@ import {
     };
 
     // 댓글 삭제
-    export const deleteComment = async (item) => {
-    deleteDoc(doc(dbService, `comments/${item.id}`));
-    };
 
 

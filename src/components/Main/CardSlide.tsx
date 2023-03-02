@@ -80,7 +80,7 @@ const CardSlide: React.FC = () => {
         <ProductSlide />
       </CpSlide>
 
-      <NewspidSlide />
+      {/* <NewspidSlide /> */}
     </div>
   );
 };

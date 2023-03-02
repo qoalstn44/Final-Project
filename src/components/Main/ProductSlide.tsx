@@ -38,29 +38,28 @@ function ProductSlide() {
             marginTop: '0px',
           }}
         >
-          <SmallBox></SmallBox>
-          <div>{userData[0]?.title}</div>
+          <SmallBox>
+            <Stimage src="img/dog.avif"></Stimage>
+          </SmallBox>
         </DDD>
         <DDD>
           <SmallBox></SmallBox>
-          <div>{userData[5]?.title}</div>
         </DDD>
         <DDD>
           <SmallBox></SmallBox>
-          <div>{userData[3]?.title}</div>
         </DDD>
-        <DDD>
+        <OnclickButton onClick={() => navigate('/Itempage')}>
+          더보기
+        </OnclickButton>
+        {/* <DDD>
           <SmallBox></SmallBox>
           <div>{userData[0]?.title}</div>
         </DDD>
         <DDD>
           <SmallBox></SmallBox>
           <div>{userData[1]?.title}</div>
-        </DDD>
+        </DDD> */}
       </ProductReview>
-      <OnclickButton onClick={() => navigate('/Itempage')}>
-        더보기
-      </OnclickButton>
     </div>
   );
 }
@@ -83,6 +82,8 @@ const DDD = styled.div`
   flex-direction: column;
   color: white;
   margin-left: 50px;
+  border-radius: 12%;
+  box-shadow: 3px 3px 3px 3px #d2d2d2;
 `;
 
 const OnclickButton = styled.button`
@@ -101,4 +102,11 @@ const SmallBox = styled.div`
   width: 30rem;
   height: 300rem;
   background-color: green;
+  border-radius: 11%;
+`;
+
+const Stimage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 10%;
 `;

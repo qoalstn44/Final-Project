@@ -1,6 +1,6 @@
-import { collection, getDocs, query, where, orderBy} from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { dbService} from '../../common/firebase';
+import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
 
 function Communityapi() {
@@ -13,16 +13,30 @@ function Communityapi() {
       let querySnapshot;
       const q = query(
         collection(dbService, 'posts'),
-        sortBy === 'latest' ? orderBy('createAt', 'desc') : orderBy('likes', 'desc')
+        sortBy === 'latest'
+          ? orderBy('createAt', 'desc')
+          : orderBy('likes', 'desc'),
       );
       console.log(q.toString()); // 쿼리 확인용 로그 추가
       if (searchTerm) {
-        querySnapshot = await getDocs(query(
-          collection(dbService, 'posts'),
-          where('title', '==', searchTerm),
-          sortBy === 'latest' ? orderBy('createAt', 'desc') : orderBy('likes', 'desc')
-        ));
-        console.log(query(collection(dbService, 'posts'), where('title', '==', searchTerm), sortBy === 'latest' ? orderBy('createAt', 'desc') : orderBy('likes', 'desc')).toString()); // 쿼리 확인용 로그 추가
+        querySnapshot = await getDocs(
+          query(
+            collection(dbService, 'posts'),
+            where('title', '==', searchTerm),
+            sortBy === 'latest'
+              ? orderBy('createAt', 'desc')
+              : orderBy('likes', 'desc'),
+          ),
+        );
+        console.log(
+          query(
+            collection(dbService, 'posts'),
+            where('title', '==', searchTerm),
+            sortBy === 'latest'
+              ? orderBy('createAt', 'desc')
+              : orderBy('likes', 'desc'),
+          ).toString(),
+        ); // 쿼리 확인용 로그 추가
       } else {
         querySnapshot = await getDocs(q);
       }
@@ -32,10 +46,9 @@ function Communityapi() {
       });
       setUserData(PushData);
     };
-    
+
     getData();
   }, [searchTerm, sortBy]);
-  
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,20 +63,28 @@ function Communityapi() {
     <div>
       <SearchInput onSubmit={handleSearch}>
         <Searchs type="text" name="search" placeholder="검색" />
-        <SearchButton type="submit"><img src="img/search.png" /></SearchButton>
+        <SearchButton type="submit">
+          <img src="img/search.png" />
+        </SearchButton>
       </SearchInput>
       <SortByContainer>
-        <SortByButton isActive={sortBy === 'latest'} onClick={() => handleSortBy('latest')}>
+        <SortByButton
+          isActive={sortBy === 'latest'}
+          onClick={() => handleSortBy('latest')}
+        >
           최신순
         </SortByButton>
-        <SortByButton isActive={sortBy === 'popular'} onClick={() => handleSortBy('popular')}>
+        <SortByButton
+          isActive={sortBy === 'popular'}
+          onClick={() => handleSortBy('popular')}
+        >
           인기순
         </SortByButton>
       </SortByContainer>
       <ProductContainer>
         {userData.map((data: any, index: number) => (
           <CardBox key={index}>
-            <img src={data.imageUrl}/>
+            <img src={data.imageUrl} />
             <CardName>
               <CardTitle>{data.title}</CardTitle>
               <CardContent>{data.author.name}</CardContent>
@@ -99,32 +120,32 @@ const Searchs = styled.input`
 `;
 
 const SearchButton = styled.button`
-font-size: 1rem;
-line-height: 1.5;
-border: none;
-background-color: transparent;
-cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const ProductContainer = styled.div`
-justify-content: center;
-align-items: center;
-margin-top: 2rem;
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-grid-gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
 `;
 
 const CardBox = styled.div`
-width: 15rem;
-height: 15rem;
-border: 0.0625rem solid #e5e5e5;
-border-radius: 2rem;
-box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
-overflow: hidden;
-position: relative;
-margin-bottom: 2rem;
-text-align: center;
+  width: 15rem;
+  height: 15rem;
+  border: 0.0625rem solid #e5e5e5;
+  border-radius: 2rem;
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2rem;
+  text-align: center;
 `;
 
 const CardTitle = styled.h2`

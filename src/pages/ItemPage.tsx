@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Productapi from '../components/Item/Productapi';
 
 const ItemPage = () => {
-
   return (
     <MainContainer>
       <CardContainer>

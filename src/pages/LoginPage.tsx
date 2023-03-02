@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
-import { provider } from '../common/firebase';
+import { FaUserAlt, FaLock } from 'react-icons/fa';
 import {
-  signInWithPopup,
   getAuth,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
 } from 'firebase/auth';
-import { useNavigate } from 'react-router';
+import { provider } from '../common/firebase';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
@@ -16,13 +17,18 @@ import { useAppDispatch } from '../hooks/useRedux';
 import { isLogin } from '../redux/modules/loginSlice';
 
 function LoginPage() {
+  const openIdFindModal = () => setIdFindModalIsOpen(true);
+  const closeIdFindModal = () => setIdFindModalIsOpen(false);
+  const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
+  const closePasswordResetModal = () => setPasswordResetModalIsOpen(false);
+  const openSignUpModal = () => setSignUpModalIsOpen(true);
+  const closeSignUpModal = () => setSignUpModalIsOpen(false);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [showPassword] = useState(false);
-
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
@@ -31,13 +37,28 @@ function LoginPage() {
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
+  const setCookie = (name: string, value: string, days: number) => {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+  };
+  // 쿠키 가져오기
+  const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      const popped = parts.pop();
+      if (popped) {
+        return popped.split(';').shift();
+      }
+    }
+    return undefined;
+  };
 
-  const openIdFindModal = () => setIdFindModalIsOpen(true);
-  const closeIdFindModal = () => setIdFindModalIsOpen(false);
-  const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
-  const closePasswordResetModal = () => setPasswordResetModalIsOpen(false);
-  const openSignUpModal = () => setSignUpModalIsOpen(true);
-  const closeSignUpModal = () => setSignUpModalIsOpen(false);
+  // 로그인 여부 확인
+  function isLoggedIn() {
+    return getCookie('token') !== undefined;
+  }
 
   const onClickLogin = () => {
     const auth = getAuth();
@@ -45,7 +66,11 @@ function LoginPage() {
       .then((userCredential) => {
         const user = userCredential.user;
         dispatch(isLogin(user));
-        navigate('/');
+        user.getIdToken().then((token) => {
+          setCookie('token', token, 7); // Set the cookie to expire in 7 days
+          isLoggedIn();
+          navigate('/');
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -53,6 +78,18 @@ function LoginPage() {
         console.log(errorCode, errorMessage);
       });
   };
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // 유저가 로그인한 상태이므로 홈페이지로 이동합니다.
+        dispatch(isLogin(user));
+        navigate('/');
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const handleButtonClickGoogleButton = () => {
     const auth = getAuth();
@@ -93,7 +130,7 @@ function LoginPage() {
       setPasswordValid(false);
     }
   };
-
+  // 이메일, 비밀번호 유효성 검사
   useEffect(() => {
     if (emailValid && passwordValid) {
       setNotAllowed(false);
@@ -101,6 +138,7 @@ function LoginPage() {
     }
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
+
   return (
     <Page>
       <LogImg src="img/Petalk.png" />
@@ -141,12 +179,7 @@ function LoginPage() {
 
               <ErrorMessageWrap>
                 {!passwordValid && password.length > 0 && (
-                  <PasswordInpit>
-                    *
-                    {/* <IconbButton onClick={handleShowPasswordClick}>
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </IconbButton> */}
-                  </PasswordInpit>
+                  <PasswordInpit>*</PasswordInpit>
                 )}
               </ErrorMessageWrap>
             </PwInputWrap>
@@ -374,6 +407,8 @@ const StyledGoogleImg = styled.img`
 `;
 
 const LogImg = styled.img`
+  position: relative;
+  top: 2rem;
   width: 17rem;
   height: 4rem;
   margin-bottom: 5rem;
