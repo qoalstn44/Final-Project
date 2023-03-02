@@ -1,9 +1,8 @@
-import React from 'react';
-
+import Mypage from '../components/MyPage/Mypage';
 function MyPage() {
   return (
     <div>
-      <h1>MyPage</h1>
+      <Mypage />
     </div>
   );
 }
