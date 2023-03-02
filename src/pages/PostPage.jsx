@@ -31,7 +31,6 @@ const PostPage = () => {
 
   // 데이터 베이스에 전송
   const handleForm = async () => {
-    console.log('img', img);
     try {
       await addDoc(collection(dbService, 'posts'), {
         title,
@@ -42,6 +41,9 @@ const PostPage = () => {
           id: authService.currentUser.uid,
         },
         imgUrl: img,
+        createAt: new Date(),
+        views: 0,
+        likes: 0,
       });
     } catch (error) {
       console.log(error);
