@@ -46,6 +46,7 @@ function CommunitySlide() {
         <DDD>
           <SmallBox></SmallBox>
           <div>{userData[0]?.title}</div>
+          <div>{userData[0]?.contents}</div>
         </DDD>
         <DDD>
           <SmallBox></SmallBox>
