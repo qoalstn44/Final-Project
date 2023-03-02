@@ -43,7 +43,7 @@ const DetailPage = () => {
       },
       timeStamp: serverTimestamp(),
     });
-    navigate('/Detail/:id');
+    navigate('/DetailPage/:id');
   };
   // //로그인이 되어있지 않으면 로그인 페이지로 이동
   // useEffect(() => {

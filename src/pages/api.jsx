@@ -13,17 +13,6 @@ import {
     } from 'firebase/firestore'
     import { dbService } from '../common/firebase';
 
-    // 댓글 작성
-    export const createComment = async (item) => {
-    await addDoc(collection(dbService, 'comments'), {
-    userId: item.userId,
-    createAt: Date.now(),
-    name: item.name,
-    body: item.body,
-    timeStamp: serverTimestamp()
-    });
-    };
-
     // 댓글 가져오기
     export const readComment = async () => {
     let getCommentData= [];
