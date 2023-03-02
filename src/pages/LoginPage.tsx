@@ -374,6 +374,8 @@ const StyledGoogleImg = styled.img`
 `;
 
 const LogImg = styled.img`
+  position: relative;
+  top: 2rem;
   width: 17rem;
   height: 4rem;
   margin-bottom: 5rem;

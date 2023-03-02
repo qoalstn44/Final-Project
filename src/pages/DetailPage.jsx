@@ -63,7 +63,7 @@ const DetailPage = () => {
   // 댓글 삭제하기
   const deleteComment = async (item) => {
     deleteDoc(doc(dbService, `comments/${item.id}`));
-    };
+  };
 
   return (
     <StyledPost>
@@ -202,20 +202,13 @@ const DeleteBtn = styled.button`
   color: white;
   border: none;
   &:hover {
-  transform: scale(1.2);
-  display: flex;
-  justify-content : flex-end  
+    transform: scale(1.2);
+    display: flex;
+    justify-content: flex-end;
     transform: scale(1.2);
     display: flex;
     justify-content: flex-end;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
 `;
 
 const BodyInput = styled.input`
