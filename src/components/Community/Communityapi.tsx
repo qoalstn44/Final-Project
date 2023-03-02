@@ -5,8 +5,8 @@ import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
 
 function Communityapi() {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState<any>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -25,7 +25,11 @@ function Communityapi() {
 
   return (
     <ProductContainer>
-      <CardBox>
+      <CardBox
+        onClick={() => {
+          navigate('/detailpage/:id');
+        }}
+      >
         <CardImg></CardImg>
         <CardName>
           <CardTitle>{userData[0]?.title}</CardTitle>
@@ -114,6 +118,7 @@ const CardBox = styled.div`
   position: relative;
   margin-bottom: 2rem;
   text-align: center;
+  cursor: pointer;
 `;
 
 const CardTitle = styled.h2`

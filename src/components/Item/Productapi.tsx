@@ -25,7 +25,11 @@ function Productapi() {
 
 return (
   <ProductContainer>
-    <CardBox>
+    <CardBox
+        onClick={() => {
+          navigate('/detailpage/:id');
+        }}
+      >
       <CardImg></CardImg>
       <CardName>
       <CardTitle>{userData[0]?.title}</CardTitle> 
@@ -114,6 +118,7 @@ overflow: hidden;
 position: relative;
 margin-bottom: 2rem;
 text-align: center;
+cursor: pointer;
 `;
 
 const CardTitle = styled.h2`

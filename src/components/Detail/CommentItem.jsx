@@ -5,7 +5,6 @@
     return (
       <Wrap>
         <Container>
-
           <ContentBox>
             <BodyDiv>
             {item?.name}&nbsp; &nbsp; {item?.body}</BodyDiv>

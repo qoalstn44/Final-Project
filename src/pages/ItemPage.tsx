@@ -138,7 +138,7 @@ const CardContainer = styled.div`
   align-items: center;
   gap: 1.25rem;
   margin-top: 3.125rem;
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 `;
