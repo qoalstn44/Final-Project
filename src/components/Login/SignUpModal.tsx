@@ -3,8 +3,11 @@ import Modal from 'react-modal';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import styled from 'styled-components';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { FaEye } from 'react-icons/fa';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import { useNavigate } from 'react-router';
 
 // auth를 사용하는 코드
@@ -27,26 +30,41 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const Sinup = async () => {
-    const auth = getAuth();
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    navigate('/loginpage');
-    console.log(result);
-  };
-
   const handleSignUp = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(handleSignUp);
+
+    if (!password || !confirmPassword) {
+      setError('비밀번호 또는 비밀번호 확인을 입력해주세요.');
+      return;
+    }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 이메일 유효성 검사
+    const emailRegex =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    if (!emailRegex.test(email)) {
+      setError('이메일 형식이 유효하지 않습니다.');
+      return;
+    }
+
+    // 비밀번호 유효성 검사
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        '비밀번호는 영문, 숫자, 특수문자를 포함한 8~16자리로 입력해주세요.',
+      );
       return;
     }
 
     try {
       setLoading(true);
 
-      // 이메일 중복 확인navigate
+      // 이메일 중복 확인
       const signInMethods = await firebase
         .auth()
         .fetchSignInMethodsForEmail(email);
@@ -56,10 +74,19 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
         return;
       }
 
-      // 이메일 등록
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // 회원가입 진행
+      const auth = getAuth();
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, { displayName: name });
+      }
       setLoading(false);
-      onRequestClose();
+      navigate('/loginpage');
+      console.log(result);
     } catch (error: unknown) {
       setError(error as string);
       setLoading(false);
@@ -87,11 +114,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   return (
     <>
       <StyledBock>
-        <StyledModal
-          isOpen={isOpen}
-          // onRequestClose={onRequestClose}
-          ariaHideApp={false}
-        >
+        <StyledModal isOpen={isOpen} ariaHideApp={false}>
           <CloseButton onClick={onRequestClose}>x</CloseButton>
           <h2>회원가입</h2>
 
@@ -104,7 +127,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
             <Label>닉네임</Label>
             <div>
               <Input
-                type="name"
+                type="text"
                 value={name}
                 onChange={handleNameChange}
                 required
@@ -140,7 +163,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
               ></Input>
             </div>
           </form>
-          <CompleteButton type="submit" onClick={Sinup} disabled={loading}>
+          <CompleteButton
+            type="submit"
+            onClick={handleSignUp}
+            disabled={loading}
+          >
             완료
           </CompleteButton>
         </StyledModal>

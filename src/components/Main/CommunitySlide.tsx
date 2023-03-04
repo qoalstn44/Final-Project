@@ -18,13 +18,13 @@ function CommunitySlide() {
   useEffect(() => {
     const getData = async () => {
       const querySnapshot = await getDocs(collection(dbService, 'posts'));
-      console.log(querySnapshot);
+      // console.log(querySnapshot);
       let PushData: any = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         PushData.push(doc.data());
       });
-      console.log('확인', PushData);
+      // console.log('확인', PushData);
       setUserData(PushData);
     };
     getData();

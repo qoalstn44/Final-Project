@@ -16,7 +16,7 @@ import IDFindModal from '../components/Login/IDFindModal';
 import { useAppDispatch } from '../hooks/useRedux';
 import { isLogin } from '../redux/modules/loginSlice';
 
-function LoginPage() {
+export function LoginPage() {
   const openIdFindModal = () => setIdFindModalIsOpen(true);
   const closeIdFindModal = () => setIdFindModalIsOpen(false);
   const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
@@ -37,35 +37,51 @@ function LoginPage() {
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
-  //로컬스토리지
+
+  const [, setError] = useState<string | null>(null);
+
+  const uid = getAuth().currentUser?.uid;
+
+  // 로컬스토리지
   const setLocalStorage = (name: string, value: string) => {
     localStorage.setItem(name, value);
   };
   const getLocalStorage = (name: string) => {
-    return localStorage.getItem(name);
+    if (!localStorage.getItem(name)) {
+      return null;
+    } else {
+      return localStorage.getItem(name);
+    }
   };
 
   // 로그인 여부 확인
   function isLoggedIn() {
-    return getLocalStorage('token') !== null;
+    const item = getLocalStorage('email');
+    console.log(item);
+    return item;
   }
 
+  // 로그인
   const onClickLogin = () => {
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
     const auth = getAuth();
+    setLocalStorage('email', email);
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         dispatch(isLogin(user));
-        user.getIdToken().then((token) => {
-          setLocalStorage('token', token); // Save the token in localStorage
-          isLoggedIn();
+        user.getIdToken().then(() => {
           navigate('/');
         });
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        window.alert(errorMessage);
+        setError(errorMessage);
       });
   };
 
@@ -81,12 +97,11 @@ function LoginPage() {
     return unsubscribe;
   }, []);
 
+  // 구글 로그인
   const handleButtonClickGoogleButton = () => {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
         const user = result.user;
         dispatch(isLogin(user));
         navigate('/');
@@ -100,27 +115,29 @@ function LoginPage() {
       });
   };
 
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    const regex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (regex.test(email)) {
-      setEmailValid(true);
-    } else {
-      setEmailValid(false);
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'email') {
+      setEmail(value);
+      const regex =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      if (regex.test(value)) {
+        setEmailValid(true);
+      } else {
+        setEmailValid(false);
+      }
+    } else if (name === 'password') {
+      setPassword(value);
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+      if (regex.test(value)) {
+        setPasswordValid(true);
+      } else {
+        setPasswordValid(false);
+      }
     }
   };
 
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-
-    const regex = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/;
-    if (regex.test(password)) {
-      setPasswordValid(true);
-    } else {
-      setPasswordValid(false);
-    }
-  };
-  // 이메일, 비밀번호 유효성 검사
+  // 로그인 버튼 활성화
   useEffect(() => {
     if (emailValid && passwordValid) {
       setNotAllowed(false);
@@ -128,12 +145,12 @@ function LoginPage() {
     }
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
-  useEffect(() => {
-    if (isLoggedIn()) {
-      navigate('/');
+  // 엔터키로 로그인
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onClickLogin();
     }
-  }, []);
-
+  };
   return (
     <Page>
       <LogImg src="img/Petalk.png" />
@@ -147,10 +164,12 @@ function LoginPage() {
             </InputTitle>
             <IdInputWrap>
               <Input
-                type="text"
+                type="email"
+                name="email"
                 placeholder="아이디"
                 value={email}
-                onChange={handleChangeEmail}
+                onChange={handleChangeInput}
+                onKeyDown={handleKeyDown}
               />
               <ErrorMessageWrap>
                 {!emailValid && email.length > 0 && (
@@ -167,9 +186,11 @@ function LoginPage() {
             <PwInputWrap>
               <Input
                 type={showPassword ? 'text' : 'password'}
+                name="password"
                 placeholder="비밀번호"
                 value={password}
-                onChange={handleChangePassword}
+                onChange={handleChangeInput}
+                onKeyDown={handleKeyDown}
               ></Input>
 
               <ErrorMessageWrap>
@@ -235,9 +256,6 @@ const FaLocks = styled(FaLock)`
 `;
 
 const PasswordInpit = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   position: relative;
   top: 0.5rem;
@@ -246,9 +264,9 @@ const PasswordInpit = styled.div`
 
 const Page = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   background-color: black;
   height: 100vh;
   width: 100vw;

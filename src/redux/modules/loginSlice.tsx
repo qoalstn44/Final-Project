@@ -1,6 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+// Define the state types
+interface User {
+  displayName: string;
+  email: string;
+  photoURL: string;
+  uid: string;
+}
+
+interface LoginState {
+  isLogin: boolean;
+  user: User;
+}
+
+// Define the initial state
+const initialState: LoginState = {
   isLogin: false,
   user: {
     displayName: '',
@@ -10,28 +24,38 @@ const initialState = {
   },
 };
 
+// Define the login slice
 const login = createSlice({
   name: 'login',
   initialState,
   reducers: {
     isLogin: (state, action) => {
-      state.isLogin = true;
-      state.user.displayName = action.payload.displayName;
-      state.user.email = action.payload.email;
-      state.user.photoURL = action.payload.photoURL;
-      state.user.uid = action.payload.uid;
+      return {
+        ...state,
+        isLogin: true,
+        user: {
+          displayName: action.payload.displayName,
+          email: action.payload.email,
+          photoURL: action.payload.photoURL,
+          uid: action.payload.uid,
+        },
+      };
     },
     notLogin: (state) => {
-      state.isLogin = false;
-      state.user = {
-        displayName: '',
-        email: '',
-        photoURL: '',
-        uid: '',
+      return {
+        ...state,
+        isLogin: false,
+        user: {
+          displayName: '',
+          email: '',
+          photoURL: '',
+          uid: '',
+        },
       };
     },
   },
 });
 
+// Export the actions and reducer
 export const { isLogin, notLogin } = login.actions;
 export default login.reducer;

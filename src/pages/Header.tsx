@@ -37,7 +37,7 @@ function Header() {
         <HeadButton onClick={() => navigate('/ItemPage')}>제품리뷰</HeadButton>
         <HeadButton onClick={() => navigate('/NewsPage')}>뉴스</HeadButton>
         <StyledSmallButtonDiv>
-          {!user?.uid ? (
+          {!user?.email ? (
             <>
               <StyledLogin
                 onClick={() => {
