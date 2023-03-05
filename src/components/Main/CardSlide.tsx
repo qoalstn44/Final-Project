@@ -69,6 +69,7 @@ const CardSlide: React.FC = () => {
           </Slider>
         </SmallBox>
         <SSBox>
+          <Stimage src="img/Petalk.png"></Stimage>
           <h2>안녕하세요.펫톡입니다.</h2>
           <h2>안녕하세요.펫톡입니다.</h2>
           <h2>안녕하세요.펫톡입니다.</h2>
@@ -95,7 +96,7 @@ const CardContainer = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  margin-top: 5%;
+  margin-top: 3%;
 `;
 
 const BigBox = styled.div`
@@ -111,8 +112,9 @@ const SmallBox = styled.div`
 
 const SSBox = styled.div`
   width: 100%;
-  height: 77rem;
-  margin-top: 5%;
+  height: 76rem;
+  margin-top: 3%;
+  background-color: #fff3d4;
 `;
 
 const CpSlide = styled.div`
@@ -121,4 +123,12 @@ const CpSlide = styled.div`
   display: flex;
   flex-direction: row;
   margin: auto;
+`;
+
+const Stimage = styled.img`
+  width: 50%;
+  height: 5%;
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
+  margin-top: 3rem;
 `;

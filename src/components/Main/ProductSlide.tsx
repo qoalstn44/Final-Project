@@ -10,7 +10,7 @@ function ProductSlide() {
 
   useEffect(() => {
     const getData = async () => {
-      const querySnapshot = await getDocs(collection(dbService, 'posts'));
+      const querySnapshot = await getDocs(collection(dbService, 'items'));
       console.log(querySnapshot);
       let PushData: any = [];
       querySnapshot.forEach((doc) => {
@@ -38,15 +38,13 @@ function ProductSlide() {
             marginTop: '0px',
           }}
         >
-          <SmallBox>
-            <Stimage src="img/dog.avif"></Stimage>
-          </SmallBox>
+          <Stimage src={userData[0]?.imgUrl} />
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <Stimage src={userData[1]?.imgUrl} />
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <Stimage src={userData[2]?.imgUrl} />
         </DDD>
         <OnclickButton onClick={() => navigate('/Itempage')}>
           더보기
@@ -96,13 +94,6 @@ const OnclickButton = styled.button`
   margin-left: 3rem;
   margin-top: 1rem;
   background-color: white;
-`;
-
-const SmallBox = styled.div`
-  width: 30rem;
-  height: 300rem;
-  background-color: green;
-  border-radius: 11%;
 `;
 
 const Stimage = styled.img`
