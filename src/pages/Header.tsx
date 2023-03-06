@@ -73,7 +73,7 @@ export default Header;
 
 const HeadBox = styled.div`
   width: 100%;
-  height: 10%;
+  height: 6%;
   background-color: black;
   display: flex;
   flex-direction: row;

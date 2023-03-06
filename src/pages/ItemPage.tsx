@@ -12,12 +12,12 @@ const ItemPage = () => {
 };
 export default ItemPage;
 const MainContainer = styled.div`
-  margin-left: 15rem;
-  margin-right: 15rem;
+  /* margin-left: 15rem;
+  margin-right: 15rem; */
 `;
 
 const CardContainer = styled.div`
-  justify-content: center;
+  /* justify-content: center;
   align-items: center;
-  margin-top: 3.125rem;
+  margin-top: 3.125rem; */
 `;
