@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
+  const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(0);
 
   const openPostModal = () => {
@@ -15,15 +17,28 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
     setPostModalDelete(false);
   };
 
+  // 카테고리
+  const categories = [
+    { value: '카테고리', name: '카테고리', id: 0 },
+    { value: '커뮤니티', name: '커뮤니티', id: 1 },
+    { value: '제품리뷰', name: '제품리뷰', id: 2 },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
+  const categorySelect = (event) => {
+    return setSelectedCategory(event.target.value);
+  };
+  const categoryNavigate = () => {
+    if (categories[1].value === selectedCategory) {
+      return navigate('/communitypage');
+    } else if (categories[2].value === selectedCategory) {
+      return navigate('/itempage');
+    }
+  };
+
   return (
     <StyledPostModalBackground>
       {pageNumber === 0 && (
         <StyledPostModalDiv>
-          <StyledX
-            onClick={setPostModalOpen ? openPostModal : deletePostModal}
-            src="img/x.png"
-            alt="X"
-          />
           <StyledPostP>{children}</StyledPostP>
           <StyledPostModalButton
             onClick={setPostModalOpen ? openPostModal : deletePostModalChange}

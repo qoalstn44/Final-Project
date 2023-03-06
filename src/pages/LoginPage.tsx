@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { isLogin } from '../redux/modules/loginSlice';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
@@ -8,15 +10,19 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  User,
 } from 'firebase/auth';
 import { provider } from '../common/firebase';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
-import { useAppDispatch } from '../hooks/useRedux';
-import { isLogin } from '../redux/modules/loginSlice';
 
-function LoginPage() {
+interface LoginFormState {
+  email: string;
+  password: string;
+}
+
+export function LoginPage(): JSX.Element {
   const openIdFindModal = () => setIdFindModalIsOpen(true);
   const closeIdFindModal = () => setIdFindModalIsOpen(false);
   const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
@@ -24,8 +30,14 @@ function LoginPage() {
   const openSignUpModal = () => setSignUpModalIsOpen(true);
   const closeSignUpModal = () => setSignUpModalIsOpen(false);
 
+  const [formData, setFormData] = useState<LoginFormState>({
+    email: '',
+    password: '',
+  });
+
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [loginInfo, setLoginInfo] = useState<User | null>(null);
+  const dispatch = useDispatch(); // useAppDispatch 대신 useDispatch 사용
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword] = useState(false);
@@ -37,56 +49,105 @@ function LoginPage() {
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
-  //로컬스토리지
-  const setLocalStorage = (name: string, value: string) => {
-    localStorage.setItem(name, value);
-  };
-  const getLocalStorage = (name: string) => {
-    return localStorage.getItem(name);
-  };
+  const [, setError] = useState<string | null>(null);
 
-  // 로그인 여부 확인
-  function isLoggedIn() {
-    return getLocalStorage('token') !== null;
-  }
+  //
 
-  const onClickLogin = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch(isLogin(user));
-        user.getIdToken().then((token) => {
-          setLocalStorage('token', token); // Save the token in localStorage
-          isLoggedIn();
-          navigate('/');
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+  const localStorage = (key: string, value: string) => {
+    if (typeof window !== 'undefined') {
+    }
   };
 
+  // 로컬스토리지
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
         // 유저가 로그인한 상태이므로 홈페이지로 이동합니다.
         dispatch(isLogin(user));
+        if (user.email) {
+          localStorage('email', user.email);
+        }
+        setLoginInfo(user); // 로그인 정보 저장
         navigate('/');
+      } else {
+        setLoginInfo(null); // 로그아웃 상태인 경우 로그인 정보 초기화
       }
     });
-    return unsubscribe;
-  }, []);
+    return () => unsubscribe();
+  }, [dispatch]);
 
+  //
+
+  // 이메일, 비밀번호 입력
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (name === 'email') {
+      setEmail(value);
+      const regex =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      if (regex.test(value)) {
+        setEmailValid(true);
+      } else {
+        setEmailValid(false);
+      }
+    } else if (name === 'password') {
+      setPassword(value);
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+      if (regex.test(value)) {
+        setPasswordValid(true);
+      } else {
+        setPasswordValid(false);
+      }
+    }
+  };
+  // 로그인
+  const onClickLogin = () => {
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+    console.log('1번');
+    const auth = getAuth();
+    console.log('2번');
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log('콘솔', userCredential);
+        const user = userCredential.user;
+        dispatch(isLogin(user));
+        navigate('/');
+        // 로그인 성공 시 로컬 스토리지에 이메일 정보 저장
+        localStorage('email', email);
+      })
+      .catch((error) => {
+        console.log('에러', error);
+        const errorMessage = error.message;
+        window.alert(errorMessage);
+        setError(errorMessage);
+      });
+  };
+
+  // 로그인 버튼 활성화
+  useEffect(() => {
+    if (emailValid && passwordValid) {
+      setNotAllowed(false);
+      return;
+    }
+    setNotAllowed(true);
+  }, [emailValid, passwordValid]);
+  // 엔터키로 로그인
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onClickLogin();
+    }
+  };
+
+  // 구글 로그인
   const handleButtonClickGoogleButton = () => {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
         const user = result.user;
         dispatch(isLogin(user));
         navigate('/');
@@ -99,41 +160,6 @@ function LoginPage() {
         console.log(errorCode, errorMessage, email, credential);
       });
   };
-
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    const regex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (regex.test(email)) {
-      setEmailValid(true);
-    } else {
-      setEmailValid(false);
-    }
-  };
-
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-
-    const regex = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/;
-    if (regex.test(password)) {
-      setPasswordValid(true);
-    } else {
-      setPasswordValid(false);
-    }
-  };
-  // 이메일, 비밀번호 유효성 검사
-  useEffect(() => {
-    if (emailValid && passwordValid) {
-      setNotAllowed(false);
-      return;
-    }
-    setNotAllowed(true);
-  }, [emailValid, passwordValid]);
-  useEffect(() => {
-    if (isLoggedIn()) {
-      navigate('/');
-    }
-  }, []);
-
   return (
     <Page>
       <LogImg src="img/Petalk.png" />
@@ -147,10 +173,12 @@ function LoginPage() {
             </InputTitle>
             <IdInputWrap>
               <Input
-                type="text"
+                type="email"
+                name="email"
                 placeholder="아이디"
                 value={email}
-                onChange={handleChangeEmail}
+                onChange={handleChangeInput}
+                onKeyDown={handleKeyDown}
               />
               <ErrorMessageWrap>
                 {!emailValid && email.length > 0 && (
@@ -167,9 +195,11 @@ function LoginPage() {
             <PwInputWrap>
               <Input
                 type={showPassword ? 'text' : 'password'}
+                name="password"
                 placeholder="비밀번호"
                 value={password}
-                onChange={handleChangePassword}
+                onChange={handleChangeInput}
+                onKeyDown={handleKeyDown}
               ></Input>
 
               <ErrorMessageWrap>
@@ -235,9 +265,6 @@ const FaLocks = styled(FaLock)`
 `;
 
 const PasswordInpit = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   position: relative;
   top: 0.5rem;
@@ -246,9 +273,9 @@ const PasswordInpit = styled.div`
 
 const Page = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   background-color: black;
   height: 100vh;
   width: 100vw;
