@@ -6,7 +6,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  serverTimestamp,
 } from 'firebase/firestore';
 import { dbService, authService } from '../common/firebase';
 import { useNavigate } from 'react-router-dom';
@@ -41,7 +40,7 @@ const DetailPage = () => {
         name: authService.currentUser.displayName,
         id: authService.currentUser.uid,
       },
-      timeStamp: serverTimestamp(),
+      timestamp: new Date(),
     });
     navigate('/DetailPage/:id');
   };
@@ -59,10 +58,10 @@ const DetailPage = () => {
       setCommentLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getComments();
-  });
+  }, []);
   // 댓글 삭제하기
   const deleteComment = async (item) => {
-    deleteDoc(doc(dbService, `comments/${item.id}`));
+    deleteDoc(doc(dbService, `comments/${item}`));
   };
 
   return (
@@ -72,17 +71,20 @@ const DetailPage = () => {
         <StyledId>{userData[0]?.author.name}</StyledId>
         <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
       </StyledInfo>
-      <StyledContent>{userData[0]?.contents}</StyledContent>
-      <StyledImgContainer>
-        <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
-      </StyledImgContainer>
-      <CommentTag>#댕댕이</CommentTag>
+      <Contents>
+        <StyledContent>{userData[0]?.contents}</StyledContent>
+        <StyledImgContainer>
+          <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+        </StyledImgContainer>
+      </Contents>
       <CommentListWrap>
+        <TotalComments>댓글 {commentLists.length}</TotalComments>
         {commentLists.map((comments) => {
           return (
-            <div>
+            <div key={comments.id}>
               <BodyDiv>
-                {comments.author.name}&nbsp; &nbsp; {comments.postComment}
+                {comments.author.name} {comments.postComment} (
+                {new Date(comments.timestamp.seconds * 1000).toLocaleString()})
               </BodyDiv>
               <DeleteBtn
                 onClick={() => {
@@ -116,30 +118,31 @@ const StyledPost = styled.div`
   align-items: center;
   width: 80%;
   margin: 10rem auto;
-  border: 0.0625rem solid lightgray;
   padding: 1rem;
 `;
 
-const StyledTitle = styled.h2`
-  font-size: 3rem;
+const StyledTitle = styled.h1`
+  font-size: 2rem;
   margin-bottom: 1rem;
 `;
 
 const StyledInfo = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+  font-size: 1rem;
 `;
 
 const StyledId = styled.p`
-  font-size: 2rem;
-  margin-right: 1rem;
+  font-size: 1rem;
 `;
 
 const StyledImg = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 0.5rem;
+`;
+const Contents = styled.div`
+  width: 40rem;
+  border-top: #c6c6c3 0.1rem solid;
+  border-bottom: #c6c6c3 0.1rem solid;
 `;
 
 const StyledContent = styled.p`
@@ -166,36 +169,25 @@ const CommentListWrap = styled.div`
   align-items: center;
 `;
 
-const CommentTag = styled.span`
-  position: relative;
-  right: 18rem;
-  bottom: 1rem;
-  margin-top: 3rem;
-  width: 5rem;
-  font-size: 0.8rem;
-  background-color: #f39340;
-  padding: 0.3125rem;
-  border-radius: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const TotalComments = styled.p`
+  font-size: 1rem;
+  margin-top: 1rem;
 `;
 
 const BodyDiv = styled.div`
   width: 40rem;
-  height: 10rem;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1.25rem;
-  border-radius: 0.625rem;
-  background-color: #eee;
+  border-top: #c6c6c3 0.05rem solid;
+  border-bottom: #c6c6c3 0.05rem solid;
+  background-color: transparent;
   margin-bottom: 1.25rem;
 `;
 
 const DeleteBtn = styled.button`
-  position: relative;
-  left: 38.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 0.313rem;
   background-color: #e65925;
@@ -205,16 +197,13 @@ const DeleteBtn = styled.button`
     transform: scale(1.2);
     display: flex;
     justify-content: flex-end;
-    transform: scale(1.2);
-    display: flex;
-    justify-content: flex-end;
   }
 `;
 
 const BodyInput = styled.input`
   border: none;
   width: 40rem;
-  height: 10rem;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,8 +214,7 @@ const BodyInput = styled.input`
 `;
 
 const CommentBtn = styled.button`
-  position: relative;
-  left: 19rem;
+  font-size: 0.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 0.313rem;
   background-color: #e65925;
@@ -234,15 +222,21 @@ const CommentBtn = styled.button`
   border: none;
   &:hover {
     transform: scale(1.2);
-    display: flex;
-    justify-content: flex-end;
   }
 `;
 
 const Comment = styled.div`
-  position: relative;
-  right: 18rem;
-  font-size: 2rem;
-  font-color: #1b1b18;
+  margin-top: 1rem;
   margin-bottom: 1rem;
+  font-size: 1rem;
+  font-color: #1b1b18;
 `;
+
+// form
+// form 안에 있는 input, button 얘네가 form 묶임
+// button > submit (제출)
+// 새로고침 > 데이터 값이 서버에 보내지고, 화면에 있는 건 새로고침.
+// 화면에 보이는건 결국 없음.
+
+// prevent.default() 를 쓰면
+// 버튼을 눌러도 안 사라져요.
