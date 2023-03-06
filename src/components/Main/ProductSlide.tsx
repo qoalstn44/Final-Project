@@ -30,33 +30,21 @@ function ProductSlide() {
           marginLeft: '50px',
         }}
       >
-        제품리뷰
+        제품 추천
       </h1>
       <ProductReview>
-        <DDD
-          style={{
-            marginTop: '0px',
-          }}
-        >
-          <Stimage src={userData[0]?.imgUrl} />
-        </DDD>
-        <DDD>
-          <Stimage src={userData[1]?.imgUrl} />
-        </DDD>
-        <DDD>
-          <Stimage src={userData[2]?.imgUrl} />
-        </DDD>
+        {userData.slice(0, 6).map((data: any, index: any) => (
+          <DDD
+            key={index}
+            onClick={() => navigate(`/DetailPage/${data.author.id}`)}
+          >
+            <Stimage src={data?.imgUrl} />
+            <StTitle>{data.title}</StTitle>
+          </DDD>
+        ))}
         <OnclickButton onClick={() => navigate('/Itempage')}>
           더보기
         </OnclickButton>
-        {/* <DDD>
-          <SmallBox></SmallBox>
-          <div>{userData[0]?.title}</div>
-        </DDD>
-        <DDD>
-          <SmallBox></SmallBox>
-          <div>{userData[1]?.title}</div>
-        </DDD> */}
       </ProductReview>
     </div>
   );
@@ -72,32 +60,43 @@ const ProductReview = styled.div`
 `;
 
 const DDD = styled.div`
-  width: 30rem;
-  height: 20rem;
-  background-color: black;
-  margin-top: 50px;
+  width: 20rem;
+  height: 16rem;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  color: white;
-  margin-left: 50px;
+  color: black;
+  margin-left: 20px;
   border-radius: 12%;
   box-shadow: 3px 3px 3px 3px #d2d2d2;
+  margin-top: 1rem;
 `;
 
 const OnclickButton = styled.button`
   width: 5rem;
   height: 1rem;
   border: 1px solid white;
-  font-size: 1.5rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
-  margin-left: 3rem;
+  margin-left: 2rem;
   margin-top: 1rem;
   background-color: white;
 `;
 
 const Stimage = styled.img`
   width: 100%;
-  height: 100%;
-  border-radius: 10%;
+  height: 12rem;
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
+`;
+
+const StTitle = styled.div`
+  font-size: 1.2rem;
+  position: relative;
+  bottom: 0.2rem;
+  color: black;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+  font-weight: bolder;
 `;

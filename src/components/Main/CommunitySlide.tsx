@@ -30,80 +30,72 @@ function CommunitySlide() {
     getData();
   }, []);
   return (
-    <div
-      style={{
-        width: '200rem',
-      }}
-    >
-      <h1
-        style={{
-          marginLeft: '50px',
-        }}
-      >
-        커뮤니티
-      </h1>
+    <BigDiv>
+      <IconImage src="img/BigIconRight.png"></IconImage>
+      <BoxTitle>커뮤니티 게시글</BoxTitle>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <DDD onClick={() => navigate('/CommunityPage')}>
-          <div></div>
-          <SmallBox>
-            <Stimage
-              src={userData[0]?.imgUrl}
-              alt="이미지를 불러오는 과정에서 오류가 발생했습니다."
-            />
-          </SmallBox>
-          <div>{userData[0]?.title}</div>
-        </DDD>
-        <DDD>
-          <SmallBox>
-            <Stimage src={userData[1]?.imgUrl} />
-          </SmallBox>
-          {userData[1]?.title}
-        </DDD>
-        <DDD>
-          <SmallBox>
-            <Stimage src={userData[2]?.imgUrl} />
-          </SmallBox>
-          {userData[2]?.title}
-        </DDD>
+        {userData.slice(0, 3).map((data: any, index: any) => (
+          <DDD
+            key={index}
+            onClick={() => navigate(`/DetailPage/${data.author.id}`)}
+          >
+            <SmallBox>
+              <Stimage
+                src={data.imgUrl}
+                alt="이미지를 불러오는 과정에서 오류가 발생했습니다."
+              />
+            </SmallBox>
+            <StTitle>{data.title}</StTitle>
+            <CardContent>{data.author.name}</CardContent>
+          </DDD>
+        ))}
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '3rem' }}>
-        <DDD>
-          <SmallBox>
-            <Stimage src={userData[3]?.imgUrl} />
-          </SmallBox>
-          {userData[3]?.title}
-        </DDD>
-        <DDD>
-          <SmallBox>
-            <Stimage src={userData[4]?.imgUrl} />
-          </SmallBox>
-          {userData[4]?.title}
-        </DDD>
-        <DDD>
-          <SmallBox>
-            <Stimage src={userData[3]?.imgUrl} />
-          </SmallBox>
-          {userData[5]?.title}
-        </DDD>
+        {userData.slice(3, 6).map((data: any, index: any) => (
+          <DDD
+            key={index}
+            onClick={() => navigate(`/DetailPage/${data.author.id}`)}
+          >
+            <SmallBox>
+              <Stimage src={data.imgUrl} />
+            </SmallBox>
+            <StTitle>{data.title}</StTitle>
+            <CardContent>{data.author.name}</CardContent>
+          </DDD>
+        ))}
       </div>
       <OnclickButton onClick={() => navigate('/NewsPage')}>
         더보기
       </OnclickButton>
-    </div>
+      <IconImage2 src="img/BigIconRight.png"></IconImage2>
+      <IconImage3 src="img/BigIconLeft.png"></IconImage3>
+    </BigDiv>
   );
 }
 
 export default CommunitySlide;
 
+const BigDiv = styled.div`
+  width: 90rem;
+  margin-left: 5rem;
+  position: relative;
+`;
+
+const BoxTitle = styled.h1`
+  color: gray;
+  margin-left: 6rem;
+`;
+
 const DDD = styled.div`
-  width: 30rem;
-  height: 30rem;
+  width: 20rem;
+  height: 20rem;
   background-color: white;
-  margin-left: 50px;
+  margin-top: 1rem;
+  margin-left: 5rem;
   display: flex;
   flex-direction: column;
   color: black;
-  margin: auto;
+
   border-radius: 10%;
   box-shadow: 3px 3px 3px 3px #d2d2d2;
 `;
@@ -112,7 +104,7 @@ const OnclickButton = styled.button`
   width: 5rem;
   height: 1rem;
   border: 1px solid white;
-  font-size: 1.5rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
   margin-left: 3rem;
@@ -121,8 +113,8 @@ const OnclickButton = styled.button`
 `;
 
 const SmallBox = styled.div`
-  width: 30rem;
-  height: 20rem;
+  width: 20rem;
+  height: 15rem;
   background-color: green;
   border-top-left-radius: 10%;
   border-top-right-radius: 10%;
@@ -134,4 +126,47 @@ const Stimage = styled.img`
   height: 100%;
   border-top-left-radius: 10%;
   border-top-right-radius: 10%;
+`;
+
+const StTitle = styled.div`
+  font-size: 1.2rem;
+  position: relative;
+  bottom: 0.2rem;
+  color: black;
+  margin-top: 1rem;
+  margin-left: 4rem;
+  font-weight: bolder;
+`;
+
+const IconImage = styled.img`
+  width: 20rem;
+  height: 20rem;
+  z-index: -999;
+  margin-left: 70rem;
+  position: absolute;
+  top: 0;
+`;
+
+const IconImage2 = styled.img`
+  width: 20rem;
+  height: 20rem;
+  z-index: -999;
+  margin-left: 5rem;
+  position: absolute;
+  top: 70rem;
+`;
+const IconImage3 = styled.img`
+  width: 20rem;
+  height: 20rem;
+  z-index: -999;
+  margin-left: 80rem;
+  position: absolute;
+  top: 40rem;
+`;
+
+const CardContent = styled.p`
+  position: relative;
+  font-size: 0.8rem;
+  margin-left: 15rem;
+  bottom: 2rem;
 `;
