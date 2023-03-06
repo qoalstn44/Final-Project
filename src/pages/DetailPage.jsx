@@ -1,38 +1,65 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
+  collection,
   addDoc,
   getDocs,
-  collection,
   deleteDoc,
   doc,
+  query,
+  orderBy,
+  where,
+  serverTimestamp,
 } from 'firebase/firestore';
-import { dbService, authService } from '../common/firebase';
-import { useNavigate } from 'react-router-dom';
+import { authService, dbService } from '../common/firebase';
 
 const DetailPage = () => {
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [postComment, setPostComment] = useState('');
   const [commentLists, setCommentLists] = useState([]);
   const commentCollectionRef = collection(dbService, 'comments');
 
+  // HTML 이상한 태그들 제거
+  const stripHtmlTags = (html) => {
+    let doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
+  //데이터 가져오기
   useEffect(() => {
     const getData = async () => {
-      const querySnapshot = await getDocs(collection(dbService, 'posts'));
-      console.log(querySnapshot);
-      let PushData = [];
+      const querySnapshot = await getDocs(
+        query(collection(dbService, 'communities')),
+      );
+      let PushData;
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        PushData.push(doc.data());
+        PushData = doc.data();
       });
-      console.log('확인', PushData);
-      setUserData(PushData);
+      setUserData({
+        ...PushData,
+        contents: stripHtmlTags(PushData.contents),
+      });
     };
     getData();
   }, []);
 
-  //데이터에 문서를 추가
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const querySnapshot = await getDocs(
+  //       query(collection(dbService, 'items')),
+  //     );
+  //     let PushData;
+  //     querySnapshot.forEach((doc) => {
+  //       PushData = doc.data();
+  //     });
+  //     setUserData({
+  //       ...PushData,
+  //       contents: stripHtmlTags(PushData.contents),
+  //     });
+  //   };
+  //   getData();
+  // }, []);
+
+  // 데이터에 문서를 추가
   const createComment = async () => {
     await addDoc(commentCollectionRef, {
       postComment,
@@ -40,41 +67,53 @@ const DetailPage = () => {
         name: authService.currentUser.displayName,
         id: authService.currentUser.uid,
       },
-      timestamp: new Date(),
+      timestamp: serverTimestamp(),
     });
-    navigate('/DetailPage/:id');
+    setCommentLists((prevCommentLists) => [
+      ...prevCommentLists,
+      {
+        postComment,
+        author: {
+          name: authService.currentUser.displayName,
+          id: authService.currentUser.uid,
+        },
+        timestamp: serverTimestamp(),
+      },
+    ]);
+    setPostComment('');
   };
-  // //로그인이 되어있지 않으면 로그인 페이지로 이동
-  // useEffect(() => {
-  //     if (!isAuth){
-  //         navigate("/LoginPage")
-  //     }
-  // },[]);
 
   // 댓글 가져오기
   useEffect(() => {
     const getComments = async () => {
-      const data = await getDocs(commentCollectionRef);
+      const q = query(commentCollectionRef);
+      const data = await getDocs(q);
       setCommentLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getComments();
   }, []);
   // 댓글 삭제하기
   const deleteComment = async (item) => {
-    deleteDoc(doc(dbService, `comments/${item}`));
+    await deleteDoc(doc(dbService, `comments/${item}`));
+    setCommentLists((prevCommentLists) =>
+      prevCommentLists.filter((comment) => comment.id !== item),
+    );
   };
 
   return (
     <StyledPost>
-      <StyledTitle>{userData[0]?.title}</StyledTitle>
+      <StyledTitle>{userData.title}</StyledTitle>
       <StyledInfo>
-        <StyledId>{userData[0]?.author.name}</StyledId>
-        <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+        <StyledId>
+          <StyledImg src={userData.author && userData.author.profileImage} />
+          {userData.author && userData.author.name}(
+          {new Date(userData.createdAt).toLocaleDateString()})
+        </StyledId>
       </StyledInfo>
       <Contents>
-        <StyledContent>{userData[0]?.contents}</StyledContent>
+        <StyledContent>{userData.contents}</StyledContent>
         <StyledImgContainer>
-          <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+          <StyledImgContent src={userData.imgUrl} />
         </StyledImgContainer>
       </Contents>
       <CommentListWrap>
@@ -83,8 +122,12 @@ const DetailPage = () => {
           return (
             <div key={comments.id}>
               <BodyDiv>
-                {comments.author.name} {comments.postComment} (
-                {new Date(comments.timestamp.seconds * 1000).toLocaleString()})
+                <img src={userData.author && userData.author.profileImage} />
+                {comments.author.name} (
+                {new Date(
+                  comments.timestamp.seconds * 1000,
+                ).toLocaleDateString()}
+                )<p>{comments.postComment}</p>
               </BodyDiv>
               <DeleteBtn
                 onClick={() => {
@@ -103,6 +146,7 @@ const DetailPage = () => {
         onChange={(event) => setPostComment(event.target.value)}
         placeholder="내용 (최대 200자)"
         required
+        value={postComment}
       />
       <CommentBtn onClick={createComment}>등록</CommentBtn>
     </StyledPost>
@@ -177,14 +221,16 @@ const TotalComments = styled.p`
 const BodyDiv = styled.div`
   width: 40rem;
   height: 5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 0 1.25rem;
   border-top: #c6c6c3 0.05rem solid;
   border-bottom: #c6c6c3 0.05rem solid;
   background-color: transparent;
   margin-bottom: 1.25rem;
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+  }
 `;
 
 const DeleteBtn = styled.button`
@@ -231,12 +277,3 @@ const Comment = styled.div`
   font-size: 1rem;
   font-color: #1b1b18;
 `;
-
-// form
-// form 안에 있는 input, button 얘네가 form 묶임
-// button > submit (제출)
-// 새로고침 > 데이터 값이 서버에 보내지고, 화면에 있는 건 새로고침.
-// 화면에 보이는건 결국 없음.
-
-// prevent.default() 를 쓰면
-// 버튼을 눌러도 안 사라져요.

@@ -4,7 +4,7 @@ import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-function Communityapi() {
+const Communityapi = () => {
   const [userData, setUserData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'latest' | 'popular'>('latest'); // 기본값은 latest
@@ -91,7 +91,7 @@ function Communityapi() {
               navigate(`/DetailPage/:${data.author.id}`);
             }}
           >
-            <img src={data.imgUrl} />
+            <img src={data.imgUrl} />{' '}
             {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
             <CardName>
               <CardTitle>{data.title}</CardTitle>
@@ -102,9 +102,8 @@ function Communityapi() {
       </ProductContainer>
     </Container>
   );
-}
+};
 export default Communityapi;
-
 const Container = styled.div`
   display: flex;
   justify-content: center;

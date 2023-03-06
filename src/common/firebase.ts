@@ -10,6 +10,7 @@ export type FirebaseAppType = ReturnType<any> & {
   storage: () => ReturnType<typeof getStorage>;
   database: () => ReturnType<typeof getDatabase>;
 };
+
 const firebaseConfig = {
   apiKey: 'AIzaSyD524cf8eNVcs8MfCPBIWw_tP7kLt6odZs',
   authDomain: 'final-project-f5698.firebaseapp.com',
@@ -19,6 +20,7 @@ const firebaseConfig = {
   appId: '1:162512506291:web:ef671e9625942528e88fc6',
   measurementId: 'G-H0BY1YHHQE',
 };
+
 const app = firebase.initializeApp(firebaseConfig);
 const authService = getAuth(app);
 const dbService = getFirestore(app);
