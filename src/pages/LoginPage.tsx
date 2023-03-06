@@ -37,27 +37,17 @@ function LoginPage() {
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
-  const setCookie = (name: string, value: string, days: number) => {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+  //로컬스토리지
+  const setLocalStorage = (name: string, value: string) => {
+    localStorage.setItem(name, value);
   };
-  // 쿠키 가져오기
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      const popped = parts.pop();
-      if (popped) {
-        return popped.split(';').shift();
-      }
-    }
-    return undefined;
+  const getLocalStorage = (name: string) => {
+    return localStorage.getItem(name);
   };
 
   // 로그인 여부 확인
   function isLoggedIn() {
-    return getCookie('token') !== undefined;
+    return getLocalStorage('token') !== null;
   }
 
   const onClickLogin = () => {
@@ -67,7 +57,7 @@ function LoginPage() {
         const user = userCredential.user;
         dispatch(isLogin(user));
         user.getIdToken().then((token) => {
-          setCookie('token', token, 7); // Set the cookie to expire in 7 days
+          setLocalStorage('token', token); // Save the token in localStorage
           isLoggedIn();
           navigate('/');
         });
@@ -138,6 +128,11 @@ function LoginPage() {
     }
     setNotAllowed(true);
   }, [emailValid, passwordValid]);
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, []);
 
   return (
     <Page>
