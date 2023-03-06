@@ -129,4 +129,4 @@ const NewsInput = styled.input`
   outline: none;
   font-size: 1.5rem;
   background-color: transparent;
-]`;
+`;
