@@ -15,7 +15,6 @@ import {
 import { provider } from '../common/firebase';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
-import IDFindModal from '../components/Login/IDFindModal';
 
 interface LoginFormState {
   email: string;
@@ -23,8 +22,6 @@ interface LoginFormState {
 }
 
 export function LoginPage(): JSX.Element {
-  const openIdFindModal = () => setIdFindModalIsOpen(true);
-  const closeIdFindModal = () => setIdFindModalIsOpen(false);
   const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
   const closePasswordResetModal = () => setPasswordResetModalIsOpen(false);
   const openSignUpModal = () => setSignUpModalIsOpen(true);
@@ -36,7 +33,7 @@ export function LoginPage(): JSX.Element {
   });
 
   const navigate = useNavigate();
-  const [loginInfo, setLoginInfo] = useState<User | null>(null);
+  const [, setLoginInfo] = useState<User | null>(null);
   const dispatch = useDispatch(); // useAppDispatch 대신 useDispatch 사용
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,7 +42,6 @@ export function LoginPage(): JSX.Element {
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllowed, setNotAllowed] = useState(false);
 
-  const [idFindModalIsOpen, setIdFindModalIsOpen] = useState(false);
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
@@ -108,12 +104,11 @@ export function LoginPage(): JSX.Element {
       setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
-    console.log('1번');
+
     const auth = getAuth();
-    console.log('2번');
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log('콘솔', userCredential);
         const user = userCredential.user;
         dispatch(isLogin(user));
         navigate('/');
@@ -121,7 +116,6 @@ export function LoginPage(): JSX.Element {
         localStorage('email', email);
       })
       .catch((error) => {
-        console.log('에러', error);
         const errorMessage = error.message;
         window.alert(errorMessage);
         setError(errorMessage);
@@ -228,12 +222,6 @@ export function LoginPage(): JSX.Element {
           </StyledGoogleLoginButton>
         </StyledGoogleLoginDiv>
         <Button>
-          <SignUpButton onClick={openIdFindModal}>아이디 찾기</SignUpButton>
-
-          <IDFindModal
-            isOpen={idFindModalIsOpen}
-            onRequestClose={closeIdFindModal}
-          />
           <SignUpButton onClick={openPasswordResetModal}>
             비밀번호 찾기
           </SignUpButton>

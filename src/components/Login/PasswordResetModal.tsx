@@ -14,7 +14,6 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
   onRequestClose,
 }) => {
   const [email, setEmail] = useState('');
-  const [id, setId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -23,6 +22,15 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
     e.preventDefault();
     setLoading(true);
     try {
+      // check if email is registered in Firebase Auth
+      const user = await firebase.auth().fetchSignInMethodsForEmail(email);
+      if (user.length === 0) {
+        setError('등록되어 있지 않은 이메일입니다.');
+        setLoading(false);
+        return;
+      }
+
+      // send password reset email
       await firebase.auth().sendPasswordResetEmail(email);
       setLoading(false);
       setSuccess(true);
@@ -31,12 +39,9 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
       setLoading(false);
     }
   };
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-  };
-
-  const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setId(e.target.value);
   };
 
   return (
@@ -48,7 +53,7 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
       <h2>비밀번호 찾기</h2>
       {error && <div>{error}</div>}
       {success ? (
-        <div>Please check your email to reset your password.</div>
+        <div>비밀번호 재설정 링크를 해당 이메일로 보냈습니다!</div>
       ) : (
         <form onSubmit={handlePasswordReset}>
           <Label>이메일</Label>
@@ -60,16 +65,13 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
               required
             />
           </div>
-          <Label>아이디</Label>
-          <div>
-            <Input type="text" value={id} onChange={handleIdChange} required />
-          </div>
+
+          <CompleteButton type="submit" disabled={loading}>
+            {loading ? 'Loading...' : '재설정 링크 발송'}
+          </CompleteButton>
         </form>
       )}
 
-      <CompleteButton type="submit" disabled={loading}>
-        {loading ? 'Loading...' : '완료'}
-      </CompleteButton>
       <CloseButton
         onClick={() => {
           onRequestClose();
