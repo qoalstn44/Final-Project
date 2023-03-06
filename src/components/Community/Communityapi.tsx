@@ -84,21 +84,26 @@ const Communityapi = () => {
         </SortByButton>
       </SortByContainer>
       <ProductContainer>
-        {userData.map((data: any, index: number) => (
-          <CardBox
-            key={index}
-            onClick={() => {
-              navigate(`/DetailPage/:${data.author.id}`);
-            }}
-          >
-            <img src={data.imgUrl} />{' '}
-            {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
-            <CardName>
-              <CardTitle>{data.title}</CardTitle>
-              <CardContent>{data.author.name}</CardContent>
-            </CardName>
-          </CardBox>
-        ))}
+        {userData.map((data: any, index: number) => {
+          return (
+            <CardBox
+              key={index}
+              onClick={() => {
+                console.log('userData', data);
+                navigate(`/DetailPage/${data.author.id}`, {
+                  state: { data },
+                });
+              }}
+            >
+              <img src={data.imgUrl} />{' '}
+              {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
+              <CardName>
+                <CardTitle>{data.title}</CardTitle>
+                <CardContent>{data.author.name}</CardContent>
+              </CardName>
+            </CardBox>
+          );
+        })}
       </ProductContainer>
     </Container>
   );

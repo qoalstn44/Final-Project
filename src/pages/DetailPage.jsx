@@ -1,154 +1,117 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  collection,
   addDoc,
-  getDocs,
+  collection,
   deleteDoc,
   doc,
-  query,
-  orderBy,
-  where,
+  onSnapshot,
   serverTimestamp,
 } from 'firebase/firestore';
 import { authService, dbService } from '../common/firebase';
+import { useLocation } from 'react-router';
 
 const DetailPage = () => {
-  const [userData, setUserData] = useState({});
   const [postComment, setPostComment] = useState('');
   const [commentLists, setCommentLists] = useState([]);
   const commentCollectionRef = collection(dbService, 'comments');
+  const location = useLocation();
+  const post = location.state.data;
 
   // HTML 이상한 태그들 제거
   const stripHtmlTags = (html) => {
     let doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
   };
-  //데이터 가져오기
-  useEffect(() => {
-    const getData = async () => {
-      const querySnapshot = await getDocs(
-        query(collection(dbService, 'communities')),
-      );
-      let PushData;
-      querySnapshot.forEach((doc) => {
-        PushData = doc.data();
-      });
-      setUserData({
-        ...PushData,
-        contents: stripHtmlTags(PushData.contents),
-      });
-    };
-    getData();
-  }, []);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const querySnapshot = await getDocs(
-  //       query(collection(dbService, 'items')),
-  //     );
-  //     let PushData;
-  //     querySnapshot.forEach((doc) => {
-  //       PushData = doc.data();
-  //     });
-  //     setUserData({
-  //       ...PushData,
-  //       contents: stripHtmlTags(PushData.contents),
-  //     });
-  //   };
-  //   getData();
-  // }, []);
+  // 데이터를 문서에 추가
+  const createCommentObject = () => ({
+    postComment,
+    author: {
+      name: authService.currentUser?.displayName,
+      id: authService.currentUser?.uid,
+    },
+    timestamp: serverTimestamp(),
+  });
 
-  // 데이터에 문서를 추가
+  // 댓글작성
   const createComment = async () => {
-    await addDoc(commentCollectionRef, {
-      postComment,
-      author: {
-        name: authService.currentUser.displayName,
-        id: authService.currentUser.uid,
-      },
-      timestamp: serverTimestamp(),
-    });
-    setCommentLists((prevCommentLists) => [
-      ...prevCommentLists,
-      {
-        postComment,
-        author: {
-          name: authService.currentUser.displayName,
-          id: authService.currentUser.uid,
-        },
-        timestamp: serverTimestamp(),
-      },
-    ]);
+    await addDoc(commentCollectionRef, createCommentObject());
     setPostComment('');
   };
 
-  // 댓글 가져오기
-  useEffect(() => {
-    const getComments = async () => {
-      const q = query(commentCollectionRef);
-      const data = await getDocs(q);
-      setCommentLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getComments();
-  }, []);
-  // 댓글 삭제하기
-  const deleteComment = async (item) => {
-    await deleteDoc(doc(dbService, `comments/${item}`));
+  // 댓글 불러오기
+  const fetchComments = () => {
+    console.log('댓글 로딩중...');
+    const unsubscribe = onSnapshot(commentCollectionRef, (snapshot) => {
+      setCommentLists(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+      );
+    });
+    return unsubscribe;
+  };
+
+  // 댓글 삭제
+  const deleteComment = async (id) => {
+    await deleteDoc(doc(dbService, `comments/${id}`));
     setCommentLists((prevCommentLists) =>
-      prevCommentLists.filter((comment) => comment.id !== item),
+      prevCommentLists.filter((comment) => comment.id !== id),
     );
   };
 
+  useEffect(() => {
+    const unsubscribe = fetchComments();
+    return () => unsubscribe();
+  }, []);
   return (
     <StyledPost>
-      <StyledTitle>{userData.title}</StyledTitle>
+      <StyledTitle>{post.title}</StyledTitle>
       <StyledInfo>
         <StyledId>
-          <StyledImg src={userData.author && userData.author.profileImage} />
-          {userData.author && userData.author.name}(
-          {new Date(userData.createdAt).toLocaleDateString()})
+          <StyledImg src={post.author && post.author.profileImage} />
+          {post.author && post.author.name}
         </StyledId>
       </StyledInfo>
       <Contents>
-        <StyledContent>{userData.contents}</StyledContent>
+        <StyledContent>{stripHtmlTags(post.contents)}</StyledContent>
         <StyledImgContainer>
-          <StyledImgContent src={userData.imgUrl} />
+          <StyledImgContent src={stripHtmlTags(post.imgUrl)} />
         </StyledImgContainer>
       </Contents>
-      <CommentListWrap>
-        <TotalComments>댓글 {commentLists.length}</TotalComments>
-        {commentLists.map((comments) => {
-          return (
-            <div key={comments.id}>
-              <BodyDiv>
-                <img src={userData.author && userData.author.profileImage} />
-                {comments.author.name} (
-                {new Date(
-                  comments.timestamp.seconds * 1000,
-                ).toLocaleDateString()}
-                )<p>{comments.postComment}</p>
-              </BodyDiv>
-              <DeleteBtn
-                onClick={() => {
-                  deleteComment(comments.id);
-                }}
-              >
-                &#128465;
-              </DeleteBtn>
-            </div>
-          );
-        })}
-      </CommentListWrap>
-      <Comment>댓글작성</Comment>
-      <BodyInput
-        maxLength={200}
-        onChange={(event) => setPostComment(event.target.value)}
-        placeholder="내용 (최대 200자)"
-        required
-        value={postComment}
-      />
-      <CommentBtn onClick={createComment}>등록</CommentBtn>
+      <div>
+        <CommentListWrap>
+          <TotalComments>댓글{commentLists.length}</TotalComments>
+          {commentLists.map((comments) => {
+            return (
+              <div key={comments.id}>
+                <BodyDiv>
+                  <img src={post.author && post.author.profileImage} />
+                  {comments.author.name} (
+                  {comments.timestamp &&
+                    new Date(comments.timestamp.toDate()).toLocaleDateString()}
+                  )<p>{comments.postComment}</p>
+                </BodyDiv>
+                <DeleteBtn
+                  onClick={() => {
+                    deleteComment(comments.id);
+                  }}
+                >
+                  &#128465;
+                </DeleteBtn>
+              </div>
+            );
+          })}
+        </CommentListWrap>
+        <Comment>댓글작성</Comment>
+        <BodyInput
+          maxLength={200}
+          onChange={(event) => setPostComment(event.target.value)}
+          placeholder="입력 (최대 200글자)"
+          required
+          value={postComment}
+        />
+        <CommentBtn onClick={createComment}>등록</CommentBtn>
+      </div>
     </StyledPost>
   );
 };
