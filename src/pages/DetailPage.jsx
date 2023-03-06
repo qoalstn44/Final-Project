@@ -17,6 +17,7 @@ const DetailPage = () => {
   const commentCollectionRef = collection(dbService, 'comments');
   const location = useLocation();
   const post = location.state.data;
+  const [liked, setLiked] = useState(false);
 
   // HTML 이상한 태그들 제거
   const stripHtmlTags = (html) => {
@@ -63,6 +64,10 @@ const DetailPage = () => {
     const unsubscribe = fetchComments();
     return () => unsubscribe();
   }, []);
+
+  const toggleLiked = () => {
+    setLiked(!liked);
+  };
   return (
     <StyledPost>
       <StyledTitle>{post.title}</StyledTitle>
@@ -71,7 +76,15 @@ const DetailPage = () => {
           <StyledImg src={post.author && post.author.profileImage} />
           {post.author && post.author.name}
         </StyledId>
+        <LikeButton onClick={toggleLiked}>
+          {liked ? (
+            <LikeButtonimg src="img/red.png" alt="빨간하트" />
+          ) : (
+            <LikeButtonimg src="img/black.png" alt="검정하트" />
+          )}
+        </LikeButton>
       </StyledInfo>
+
       <Contents>
         <StyledContent>{stripHtmlTags(post.contents)}</StyledContent>
         <StyledImgContainer>
@@ -80,7 +93,9 @@ const DetailPage = () => {
       </Contents>
       <div>
         <CommentListWrap>
-          <TotalComments>댓글{commentLists.length}</TotalComments>
+          <TotalComments>
+            댓글<span style={{ color: 'green' }}>{commentLists.length}</span>
+          </TotalComments>
           {commentLists.map((comments) => {
             return (
               <div key={comments.id}>
@@ -134,17 +149,21 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledInfo = styled.div`
-  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledId = styled.p`
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
 `;
 
 const StyledImg = styled.img`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
 `;
 const Contents = styled.div`
   width: 40rem;
@@ -179,6 +198,7 @@ const CommentListWrap = styled.div`
 const TotalComments = styled.p`
   font-size: 1rem;
   margin-top: 1rem;
+  margin-right: 40rem;
 `;
 
 const BodyDiv = styled.div`
@@ -239,4 +259,16 @@ const Comment = styled.div`
   margin-bottom: 1rem;
   font-size: 1rem;
   font-color: #1b1b18;
+`;
+
+const LikeButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 1rem;
+`;
+
+const LikeButtonimg = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
 `;
