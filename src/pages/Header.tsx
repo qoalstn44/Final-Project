@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { notLogin } from '../redux/modules/loginSlice';
-import { FaSearch } from 'react-icons/fa';
+import { isLogin, notLogin } from '../redux/modules/loginSlice';
 
 function Header() {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ function Header() {
         <HeadButton onClick={() => navigate('/ItemPage')}>제품리뷰</HeadButton>
         <HeadButton onClick={() => navigate('/NewsPage')}>뉴스</HeadButton>
         <StyledSmallButtonDiv>
-          {!user?.uid ? (
+          {!user?.email ? (
             <>
               <StyledLogin
                 onClick={() => {
