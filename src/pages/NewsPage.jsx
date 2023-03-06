@@ -8,7 +8,7 @@ import Pagination from '../components/Detail/Pagination';
 const NewsPage = () => {
   const [news, setNews] = useState([]);
   const [text, setText] = useState('');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('반려동물');
 
   //현재 페이지 상태
   const [pageNumber, setPageNumber] = useState(1);
@@ -129,4 +129,4 @@ const NewsInput = styled.input`
   outline: none;
   font-size: 1.5rem;
   background-color: transparent;
-]`;
+`;

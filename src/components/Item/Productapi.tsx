@@ -88,7 +88,11 @@ const Productapi = () => {
           <CardBox
             key={index}
             onClick={() => {
-              navigate(`/DetailPage/:${data.author.id}`);
+              navigate(`/DetailPage/${data.author.id}`, {
+                state: {
+                  data,
+                },
+              });
             }}
           >
             <img src={data.imgUrl} />{' '}
