@@ -2,17 +2,19 @@ import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { dbService } from '../../common/firebase';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-function Communityapi() {
+const Communityapi = () => {
   const [userData, setUserData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'latest' | 'popular'>('latest'); // 기본값은 latest
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       let querySnapshot;
       const q = query(
-        collection(dbService, 'posts'),
+        collection(dbService, 'communities'),
         sortBy === 'latest'
           ? orderBy('createAt', 'desc')
           : orderBy('likes', 'desc'),
@@ -21,7 +23,7 @@ function Communityapi() {
       if (searchTerm) {
         querySnapshot = await getDocs(
           query(
-            collection(dbService, 'posts'),
+            collection(dbService, 'communities'),
             where('title', '==', searchTerm),
             sortBy === 'latest'
               ? orderBy('createAt', 'desc')
@@ -30,7 +32,7 @@ function Communityapi() {
         );
         console.log(
           query(
-            collection(dbService, 'posts'),
+            collection(dbService, 'communities'),
             where('title', '==', searchTerm),
             sortBy === 'latest'
               ? orderBy('createAt', 'desc')
@@ -60,13 +62,13 @@ function Communityapi() {
   };
 
   return (
-    <div>
-      <SearchInput onSubmit={handleSearch}>
+    <Container>
+      <SearchForm onSubmit={handleSearch}>
         <Searchs type="text" name="search" placeholder="검색" />
         <SearchButton type="submit">
-          <img src="img/search.png" />
+          <SearchButtonImg src="img/search.png" />
         </SearchButton>
-      </SearchInput>
+      </SearchForm>
       <SortByContainer>
         <SortByButton
           isActive={sortBy === 'latest'}
@@ -83,8 +85,14 @@ function Communityapi() {
       </SortByContainer>
       <ProductContainer>
         {userData.map((data: any, index: number) => (
-          <CardBox key={index}>
-            <img src={data.imageUrl} />
+          <CardBox
+            key={index}
+            onClick={() => {
+              navigate(`/DetailPage/:${data.author.id}`);
+            }}
+          >
+            <img src={data.imgUrl} />{' '}
+            {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
             <CardName>
               <CardTitle>{data.title}</CardTitle>
               <CardContent>{data.author.name}</CardContent>
@@ -92,19 +100,26 @@ function Communityapi() {
           </CardBox>
         ))}
       </ProductContainer>
-    </div>
+    </Container>
   );
-}
+};
 export default Communityapi;
-
-const SearchInput = styled.form`
-  width: 50rem;
-  height: 1.5rem;
-  margin: 2rem auto;
-  padding: 0.625rem;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+const SearchForm = styled.form`
+  display: flex;
+  justify-content: center;
+  width: 30rem;
+  height: 1rem;
+  margin-top: 7rem;
+  margin-bottom: 3rem;
+  padding: 0.8rem 0.4rem;
   border-radius: 10rem;
-  margin-top: 6rem;
-  border: 0.0625rem solid #545451;
+  border: 1px solid #c6c6c3;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 `;
 
@@ -113,30 +128,35 @@ const Searchs = styled.input`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  color: #545451;
   padding-left: 1rem;
   background-color: transparent;
-  margin: auto;
 `;
 
 const SearchButton = styled.button`
-  font-size: 1rem;
-  line-height: 1.5;
   border: none;
   background-color: transparent;
   cursor: pointer;
 `;
 
+const SearchButtonImg = styled.img`
+  width: 1.2rem;
+  position: relative;
+  bottom: 0.1rem;
+  padding-right: 0.4rem;
+`;
+
 const ProductContainer = styled.div`
+  display: grid;
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-  display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 `;
 
-const CardBox = styled.div`
+const CardBox = styled.div<{ onClick: any }>`
   width: 15rem;
   height: 15rem;
   border: 0.0625rem solid #e5e5e5;
@@ -144,17 +164,27 @@ const CardBox = styled.div`
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
+  cursor: pointer;
+  img {
+    border-radius: 1.8rem 1.8rem 0 0;
+    width: 15rem;
+    height: 11rem;
+    object-fit: cover;
+  }
 `;
 
 const CardTitle = styled.h2`
   font-size: 1.2rem;
+  position: relative;
+  bottom: 0.2rem;
 `;
 
-const CardContent = styled.div`
+const CardContent = styled.p`
   position: relative;
-  top: 1.1rem;
+  font-size: 0.8rem;
+  top: 0.3rem;
 `;
 
 const CardName = styled.div`
@@ -163,16 +193,20 @@ const CardName = styled.div`
 `;
 
 const SortByContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
+  position: relative;
+  right: 19.5rem;
+  top: 1rem;
+`;
+
+const imgHeart = styled.img`
+  width: 1rem;
 `;
 
 const SortByButton = styled.button<{ isActive: boolean }>`
-  border: none;
+  border: ${(props) => (props.isActive ? 'none' : '1px solid #8D8D8A')};
   font-size: 0.5rem;
   padding: 0.5rem 1rem;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   background-color: ${(props) => (props.isActive ? '#e65925' : 'transparent')};
   color: ${(props) => (props.isActive ? 'white' : 'black')};
   border-radius: 10rem;
@@ -181,5 +215,6 @@ const SortByButton = styled.button<{ isActive: boolean }>`
   &:hover {
     background-color: #e65925;
     color: white;
+    border: none;
   }
 `;

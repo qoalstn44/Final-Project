@@ -27,7 +27,7 @@ function Router() {
           <Route path="/communityPage" element={<CommunityPage />} />
           <Route path="/newsPage" element={<NewsPage />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </QueryClientProvider>
   );
