@@ -277,12 +277,3 @@ const Comment = styled.div`
   font-size: 1rem;
   font-color: #1b1b18;
 `;
-
-// form
-// form 안에 있는 input, button 얘네가 form 묶임
-// button > submit (제출)
-// 새로고침 > 데이터 값이 서버에 보내지고, 화면에 있는 건 새로고침.
-// 화면에 보이는건 결국 없음.
-
-// prevent.default() 를 쓰면
-// 버튼을 눌러도 안 사라져요.
