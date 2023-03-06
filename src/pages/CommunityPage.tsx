@@ -3,21 +3,20 @@ import Communityapi from '../components/Community/Communityapi';
 
 const CommunityPage = () => {
   return (
-    <MainContainer>
-      <CardContainer>
-        <Communityapi />
-      </CardContainer>
-    </MainContainer>
+    <Conatiner>
+      <MainContainer>
+        <CardContainer>
+          <Communityapi />
+        </CardContainer>
+      </MainContainer>
+    </Conatiner>
   );
 };
 export default CommunityPage;
-const MainContainer = styled.div`
-  margin-left: 15rem;
-  margin-right: 15rem;
+const Conatiner = styled.div`
+  background-color: #fffffc;
 `;
 
-const CardContainer = styled.div`
-  justify-content: center;
-  align-items: center;
-  margin-top: 3.125rem;
-`;
+const MainContainer = styled.div``;
+
+const CardContainer = styled.div``;

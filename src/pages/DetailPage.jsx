@@ -1,39 +1,65 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
+  collection,
   addDoc,
   getDocs,
-  collection,
   deleteDoc,
   doc,
+  query,
+  orderBy,
+  where,
   serverTimestamp,
 } from 'firebase/firestore';
-import { dbService, authService } from '../common/firebase';
-import { useNavigate } from 'react-router-dom';
+import { authService, dbService } from '../common/firebase';
 
 const DetailPage = () => {
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [postComment, setPostComment] = useState('');
   const [commentLists, setCommentLists] = useState([]);
   const commentCollectionRef = collection(dbService, 'comments');
 
+  // HTML 이상한 태그들 제거
+  const stripHtmlTags = (html) => {
+    let doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
+  //데이터 가져오기
   useEffect(() => {
     const getData = async () => {
-      const querySnapshot = await getDocs(collection(dbService, 'posts'));
-      console.log(querySnapshot);
-      let PushData = [];
+      const querySnapshot = await getDocs(
+        query(collection(dbService, 'communities')),
+      );
+      let PushData;
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        PushData.push(doc.data());
+        PushData = doc.data();
       });
-      console.log('확인', PushData);
-      setUserData(PushData);
+      setUserData({
+        ...PushData,
+        contents: stripHtmlTags(PushData.contents),
+      });
     };
     getData();
   }, []);
 
-  //데이터에 문서를 추가
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const querySnapshot = await getDocs(
+  //       query(collection(dbService, 'items')),
+  //     );
+  //     let PushData;
+  //     querySnapshot.forEach((doc) => {
+  //       PushData = doc.data();
+  //     });
+  //     setUserData({
+  //       ...PushData,
+  //       contents: stripHtmlTags(PushData.contents),
+  //     });
+  //   };
+  //   getData();
+  // }, []);
+
+  // 데이터에 문서를 추가
   const createComment = async () => {
     await addDoc(commentCollectionRef, {
       postComment,
@@ -41,48 +67,67 @@ const DetailPage = () => {
         name: authService.currentUser.displayName,
         id: authService.currentUser.uid,
       },
-      timeStamp: serverTimestamp(),
+      timestamp: serverTimestamp(),
     });
-    navigate('/DetailPage/:id');
+    setCommentLists((prevCommentLists) => [
+      ...prevCommentLists,
+      {
+        postComment,
+        author: {
+          name: authService.currentUser.displayName,
+          id: authService.currentUser.uid,
+        },
+        timestamp: serverTimestamp(),
+      },
+    ]);
+    setPostComment('');
   };
-  // //로그인이 되어있지 않으면 로그인 페이지로 이동
-  // useEffect(() => {
-  //     if (!isAuth){
-  //         navigate("/LoginPage")
-  //     }
-  // },[]);
 
   // 댓글 가져오기
   useEffect(() => {
     const getComments = async () => {
-      const data = await getDocs(commentCollectionRef);
+      const q = query(commentCollectionRef);
+      const data = await getDocs(q);
       setCommentLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getComments();
-  });
+  }, []);
   // 댓글 삭제하기
   const deleteComment = async (item) => {
-    deleteDoc(doc(dbService, `comments/${item.id}`));
+    await deleteDoc(doc(dbService, `comments/${item}`));
+    setCommentLists((prevCommentLists) =>
+      prevCommentLists.filter((comment) => comment.id !== item),
+    );
   };
 
   return (
     <StyledPost>
-      <StyledTitle>{userData[0]?.title}</StyledTitle>
+      <StyledTitle>{userData.title}</StyledTitle>
       <StyledInfo>
-        <StyledId>{userData[0]?.author.name}</StyledId>
-        <StyledImg src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
+        <StyledId>
+          <StyledImg src={userData.author && userData.author.profileImage} />
+          {userData.author && userData.author.name}(
+          {new Date(userData.createdAt).toLocaleDateString()})
+        </StyledId>
       </StyledInfo>
-      <StyledContent>{userData[0]?.contents}</StyledContent>
-      <StyledImgContainer>
-        <StyledImgContent src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg" />
-      </StyledImgContainer>
-      <CommentTag>#댕댕이</CommentTag>
+      <Contents>
+        <StyledContent>{userData.contents}</StyledContent>
+        <StyledImgContainer>
+          <StyledImgContent src={userData.imgUrl} />
+        </StyledImgContainer>
+      </Contents>
       <CommentListWrap>
+        <TotalComments>댓글 {commentLists.length}</TotalComments>
         {commentLists.map((comments) => {
           return (
-            <div>
+            <div key={comments.id}>
               <BodyDiv>
-                {comments.author.name}&nbsp; &nbsp; {comments.postComment}
+                <img src={userData.author && userData.author.profileImage} />
+                {comments.author.name} (
+                {new Date(
+                  comments.timestamp.seconds * 1000,
+                ).toLocaleDateString()}
+                )<p>{comments.postComment}</p>
               </BodyDiv>
               <DeleteBtn
                 onClick={() => {
@@ -101,6 +146,7 @@ const DetailPage = () => {
         onChange={(event) => setPostComment(event.target.value)}
         placeholder="내용 (최대 200자)"
         required
+        value={postComment}
       />
       <CommentBtn onClick={createComment}>등록</CommentBtn>
     </StyledPost>
@@ -116,30 +162,31 @@ const StyledPost = styled.div`
   align-items: center;
   width: 80%;
   margin: 10rem auto;
-  border: 0.0625rem solid lightgray;
   padding: 1rem;
 `;
 
-const StyledTitle = styled.h2`
-  font-size: 3rem;
+const StyledTitle = styled.h1`
+  font-size: 2rem;
   margin-bottom: 1rem;
 `;
 
 const StyledInfo = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+  font-size: 1rem;
 `;
 
 const StyledId = styled.p`
-  font-size: 2rem;
-  margin-right: 1rem;
+  font-size: 1rem;
 `;
 
 const StyledImg = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 0.5rem;
+`;
+const Contents = styled.div`
+  width: 40rem;
+  border-top: #c6c6c3 0.1rem solid;
+  border-bottom: #c6c6c3 0.1rem solid;
 `;
 
 const StyledContent = styled.p`
@@ -166,36 +213,27 @@ const CommentListWrap = styled.div`
   align-items: center;
 `;
 
-const CommentTag = styled.span`
-  position: relative;
-  right: 18rem;
-  bottom: 1rem;
-  margin-top: 3rem;
-  width: 5rem;
-  font-size: 0.8rem;
-  background-color: #f39340;
-  padding: 0.3125rem;
-  border-radius: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const TotalComments = styled.p`
+  font-size: 1rem;
+  margin-top: 1rem;
 `;
 
 const BodyDiv = styled.div`
   width: 40rem;
-  height: 10rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 5rem;
   padding: 0 1.25rem;
-  border-radius: 0.625rem;
-  background-color: #eee;
+  border-top: #c6c6c3 0.05rem solid;
+  border-bottom: #c6c6c3 0.05rem solid;
+  background-color: transparent;
   margin-bottom: 1.25rem;
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+  }
 `;
 
 const DeleteBtn = styled.button`
-  position: relative;
-  left: 38.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 0.313rem;
   background-color: #e65925;
@@ -205,16 +243,13 @@ const DeleteBtn = styled.button`
     transform: scale(1.2);
     display: flex;
     justify-content: flex-end;
-    transform: scale(1.2);
-    display: flex;
-    justify-content: flex-end;
   }
 `;
 
 const BodyInput = styled.input`
   border: none;
   width: 40rem;
-  height: 10rem;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,8 +260,7 @@ const BodyInput = styled.input`
 `;
 
 const CommentBtn = styled.button`
-  position: relative;
-  left: 19rem;
+  font-size: 0.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 0.313rem;
   background-color: #e65925;
@@ -234,15 +268,12 @@ const CommentBtn = styled.button`
   border: none;
   &:hover {
     transform: scale(1.2);
-    display: flex;
-    justify-content: flex-end;
   }
 `;
 
 const Comment = styled.div`
-  position: relative;
-  right: 18rem;
-  font-size: 2rem;
-  font-color: #1b1b18;
+  margin-top: 1rem;
   margin-bottom: 1rem;
+  font-size: 1rem;
+  font-color: #1b1b18;
 `;

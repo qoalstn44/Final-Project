@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/PostPage/Button';
 import PostModal from '../components/PostPage/PostModal';
@@ -6,22 +6,14 @@ import { useNavigate } from 'react-router';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { Editor } from '@toast-ui/react-editor';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { authService, dbService } from '../common/firebase';
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadString,
-} from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { storageService } from '../common/firebase';
 
 const PostPage = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState('');
-  console.log(img);
   // 글쓰기 게시판
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
@@ -30,12 +22,29 @@ const PostPage = () => {
   };
 
   // 데이터 베이스에 전송
-  const handleForm = async () => {
+  const handleFormCommunity = async () => {
     try {
-      await addDoc(collection(dbService, 'posts'), {
+      await addDoc(collection(dbService, 'communities'), {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
-        timeStamp: serverTimestamp(),
+        author: {
+          name: authService.currentUser.displayName,
+          id: authService.currentUser.uid,
+        },
+        imgUrl: img,
+        createAt: new Date(),
+        views: 0,
+        likes: 0,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleFormItem = async () => {
+    try {
+      await addDoc(collection(dbService, 'items'), {
+        title,
+        contents: editorRef.current?.getInstance().getHTML(),
         author: {
           name: authService.currentUser.displayName,
           id: authService.currentUser.uid,
@@ -52,7 +61,9 @@ const PostPage = () => {
 
   // 입력 모달
   const [postModalOpen, setPostModalOpen] = useState(false);
-  const openModal = () => {
+  const [selectModalOpen, setSelectModalOpen] = useState('');
+  const openModal = (message = '작성이 완료되었습니다.') => {
+    setSelectModalOpen(message);
     setPostModalOpen(true);
   };
   // 취소 모달
@@ -61,78 +72,67 @@ const PostPage = () => {
     setPostModalDelete(true);
   };
 
+  // 모달창 닫혔을 경우 메시지 초기화
+  useEffect(() => {
+    if (postModalOpen) return;
+
+    setSelectModalOpen('');
+  }, [postModalOpen]);
+
+  // 테스트용
+  useEffect(() => {
+    console.log('모달창 변수 수정');
+    console.log('postModalOpen: ', postModalOpen);
+    console.log('selectModalOpen: ', selectModalOpen);
+  }, [postModalOpen, selectModalOpen]);
+
   // 이미지 업로드
   const storage = getStorage();
   const storageRef = ref(storage, uuidv4());
-  const imageUrl = () => getDownloadURL(storageRef);
   const upload = async (blob, callback) => {
-    callback(
-      uploadBytes(storageRef, blob).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        imageUrl()
-          .then((res) => {
-            console.log('res', res);
-            setImg(res);
-          })
-          .catch((error) => {
-            console.log('error', error);
-          });
-      }),
-    );
+    const uploadBytesRes = await uploadBytes(storageRef, blob);
+    const url = await getDownloadURL(uploadBytesRes.ref);
+
+    setImg(url);
+
+    callback(url);
   };
 
   // 카테고리
   const categories = [
-    { value: '카테고리', label: '카테고리' },
-    { value: '커뮤니티', label: '커뮤니티' },
-    { value: '제품리뷰', label: '제품리뷰' },
-  ];
-  const catetype = [
-    { value: '동물', label: '동물' },
-    { value: '강아지', label: '강아지' },
-    { value: '고양이', label: '고양이' },
-    { value: '소동물', label: '소동물' },
-  ];
-  const cateitem = [
-    { value: '제품', label: '제품' },
-    { value: '사료', label: '사료' },
-    { value: '장난감', label: '장난감' },
-    { value: '집사용품', label: '집사용품' },
+    { value: '카테고리', name: '카테고리', id: 0 },
+    { value: '커뮤니티', name: '커뮤니티', id: 1 },
+    { value: '제품리뷰', name: '제품리뷰', id: 2 },
   ];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
-  const [selectedCatetype, setSelectedCatetype] = useState(catetype[0].value);
-  const [selectedCateitem, setSelectedCateitem] = useState(cateitem[0].value);
+  const [categorySelected, setCategorySelected] = useState(false);
+  const categorySelect = (event) => {
+    setSelectedCategory(event.target.value);
+    setCategorySelected(true);
+  };
+  const categoryChange = () => {
+    if (categories[1].value === selectedCategory) {
+      return handleFormCommunity();
+    } else if (categories[2].value === selectedCategory) {
+      return handleFormItem();
+    }
+  };
+  const categoryNavigate = () => {
+    if (categories[1].value === selectedCategory) {
+      return navigate('/communitypage');
+    } else if (categories[2].value === selectedCategory) {
+      return navigate('/itempage');
+    }
+  };
+
   return (
     <div>
       <StyledFormDiv>
         <AContainer>
-          <ASelectCategory
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
+          <ASelectCategory value={selectedCategory} onChange={categorySelect}>
             {categories.map((category) => (
-              <option key={category.value} value={category.value}>
-                {category.label}
-              </option>
-            ))}
-          </ASelectCategory>
-          <ASelectCategory
-            value={selectedCatetype}
-            onChange={(e) => setSelectedCatetype(e.target.value)}
-          >
-            {catetype.map((category) => (
-              <option key={category.value} value={category.value}>
-                {category.label}
-              </option>
-            ))}
-          </ASelectCategory>
-          <ASelectCategory
-            value={selectedCateitem}
-            onChange={(e) => setSelectedCateitem(e.target.value)}
-          >
-            {cateitem.map((category) => (
-              <option key={category.value} value={category.value}>
-                {category.label}
+              <option key={categories.id} value={category.value}>
+                {category.name}
               </option>
             ))}
           </ASelectCategory>
@@ -162,8 +162,15 @@ const PostPage = () => {
         <StyledButtonDiv>
           <Button
             onClick={() => {
-              handleForm();
-              openModal();
+              if (categorySelected) {
+                // 카테고리 선택됨
+                categoryChange();
+                openModal();
+                // categoryNavigate();
+              } else {
+                // 카테고리 선택 안됨
+                openModal('카테고리를 정해주세요.');
+              }
             }}
           >
             입력
@@ -173,7 +180,7 @@ const PostPage = () => {
               setPostModalOpen={setPostModalOpen}
               setPostModalDelete={undefined}
             >
-              작성되었습니다.
+              {selectModalOpen}
             </PostModal>
           )}
           <Button
@@ -199,9 +206,17 @@ const PostPage = () => {
 
 export default PostPage;
 
+const StyledFormDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8rem;
+`;
+
 const AContainer = styled.div`
   position: relative;
-  right: 17.8rem;
+  right: 23.1rem;
   bottom: 1rem;
 `;
 
@@ -210,15 +225,6 @@ const ASelectCategory = styled.select`
   border: 1px solid #c6c6c3;
   padding: 0.5rem 0.4rem;
   font-weight: bold;
-  margin-left: 1.2rem;
-`;
-
-const StyledFormDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 8rem;
 `;
 
 const StyledInput = styled.input`

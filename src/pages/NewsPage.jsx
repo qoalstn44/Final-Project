@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { newsSearch } from "../components/News/Newsapi";
-import NewsItem from "../components/News/NewsItem";
+import React, { useEffect, useState } from 'react';
+import { newsSearch } from '../components/News/Newsapi';
+import NewsItem from '../components/News/NewsItem';
 import styled from 'styled-components';
 
 //기초데이터 state , 검색어 state, 쿼리 state 를 생성
-const NewsPage =()=> {
+const NewsPage = () => {
   const [news, setNews] = useState([]);
-  const [text, setText] = useState("");
-  const [query, setQuery] = useState("");
-  
-  // HTML 이상한 태그들 제거 
-  const stripHtmlTags=(html) => {
+  const [text, setText] = useState('');
+  const [query, setQuery] = useState('');
+
+  // HTML 이상한 태그들 제거
+  const stripHtmlTags = (html) => {
     let doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
-  }
+    return doc.body.textContent || '';
+  };
 
   //query state 가 업데이트 하면 api 를 호출
   useEffect(() => {
@@ -23,35 +23,34 @@ const NewsPage =()=> {
   }, [query]);
 
   // 엔터를 눌렀을 때 호출 되는 함수
-  const onEnter = e => {
+  const onEnter = (e) => {
     if (e.keyCode === 13) {
       setQuery(text);
     }
   };
 
   // text 검색어가 바뀔 때 호출되는 함수.
-  const onTextUpdate = e => {
+  const onTextUpdate = (e) => {
     setText(e.target.value);
   };
-  
 
   //newsSearchHandler 에서, api 를 호출 한후, 호출 한 데이터와, 현재 news state 를 병합
   const newsSearchHandler = async (query, reset) => {
     const params = {
       query, // 검색을 원하는 질의어
-      sort: "accuracy", // 결과 문서 정렬 방식, accuracy(정확도순) 또는 recency(최신순), 기본 값 accuracy
+      sort: 'accuracy', // 결과 문서 정렬 방식, accuracy(정확도순) 또는 recency(최신순), 기본 값 accuracy
       page: 1, // 결과 페이지 번호, 1~50 사이의 값, 기본 값 1
-      size: 10 // 한 페이지에 보여질 문서 수, 1~50 사이의 값, 기본 값 10
+      size: 10, // 한 페이지에 보여질 문서 수, 1~50 사이의 값, 기본 값 10
     };
-  
+
     try {
       const { data } = await newsSearch(params);
-      const documents = data.documents.map(doc => ({
+      const documents = data.documents.map((doc) => ({
         ...doc,
         contents: stripHtmlTags(doc.contents),
-        title: stripHtmlTags(doc.title) // 태그 제거 처리 추가
+        title: stripHtmlTags(doc.title), // 태그 제거 처리 추가
       }));
-  
+
       if (reset) {
         setNews(documents);
       } else {
@@ -61,46 +60,52 @@ const NewsPage =()=> {
       console.log(error);
     }
   };
-  
+
   return (
     <NewsContainer>
-    <NewsAContainer>
-      <NewsInput
-        type="search"
-        placeholder="검색어를 입력해주세요."
-        name="query"
-        onKeyDown={onEnter} // enter
-        onChange={onTextUpdate} // change
-        value={text}/>
+      <NewsAContainer>
+        <NewsInput
+          type="search"
+          placeholder="검색어를 입력해주세요."
+          name="query"
+          onKeyDown={onEnter} // enter
+          onChange={onTextUpdate} // change
+          value={text}
+        />
       </NewsAContainer>
       <NewsBContainer>
         {news.map((item, index) => (
           <NewsItem
-          key={index}
-          title={item.title}
-          url={item.url}
-          contents={item.contents}
-          datetime={item.datetime}
-        />
+            key={index}
+            title={item.title}
+            url={item.url}
+            contents={item.contents}
+            datetime={item.datetime}
+          />
         ))}
       </NewsBContainer>
-      </NewsContainer>
+    </NewsContainer>
   );
 };
 
 export default NewsPage;
 const NewsContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const NewsAContainer= styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
-margin-top: 2rem;
+const NewsAContainer = styled.div`
+  width: 50rem;
+  height: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 10rem;
+  margin-top: 6rem;
+  border: 0.0625rem solid #545451;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
 `;
 const NewsBContainer = styled.div`
   display: grid;
@@ -112,26 +117,10 @@ const NewsBContainer = styled.div`
 `;
 
 const NewsInput = styled.input`
-    width: 50%;
-    height: 2rem;
-    margin: 3rem auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.625rem;
-    border-radius: 10rem;
-    margin-top: 5rem;
-    border: 0.0625rem solid #545451;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  
-    input[type="text"] {
-      width: 90%;
-      height: 100%;
-      border: none;
-      outline: none;
-      font-size: 1.5rem;
-      padding: 0;
-    }
-  `;
-
-
+  width: 90%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+]`;

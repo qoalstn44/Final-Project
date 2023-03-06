@@ -10,15 +10,17 @@ export type FirebaseAppType = ReturnType<any> & {
   storage: () => ReturnType<typeof getStorage>;
   database: () => ReturnType<typeof getDatabase>;
 };
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyBEebcIKABBw1s2vhO27gkHbPh2C-UMoj8',
-  authDomain: 'final-test-259bd.firebaseapp.com',
-  projectId: 'final-test-259bd',
-  storageBucket: 'final-test-259bd.appspot.com',
-  messagingSenderId: '95428064758',
-  appId: '1:95428064758:web:71aff8da137e1db30e03d7',
-  measurementId: 'G-NY89RJEPQ6',
+  apiKey: 'AIzaSyD524cf8eNVcs8MfCPBIWw_tP7kLt6odZs',
+  authDomain: 'final-project-f5698.firebaseapp.com',
+  projectId: 'final-project-f5698',
+  storageBucket: 'final-project-f5698.appspot.com',
+  messagingSenderId: '162512506291',
+  appId: '1:162512506291:web:ef671e9625942528e88fc6',
+  measurementId: 'G-H0BY1YHHQE',
 };
+
 const app = firebase.initializeApp(firebaseConfig);
 const authService = getAuth(app);
 const dbService = getFirestore(app);
