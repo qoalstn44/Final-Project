@@ -17,8 +17,8 @@ function CommunitySlide() {
 
   useEffect(() => {
     const getData = async () => {
-      const querySnapshot = await getDocs(collection(dbService, 'posts'));
-      // console.log(querySnapshot);
+      const querySnapshot = await getDocs(collection(dbService, 'communities'));
+      console.log(querySnapshot);
       let PushData: any = [];
       querySnapshot.forEach((doc) => {
         // console.log(doc.data());
@@ -43,35 +43,46 @@ function CommunitySlide() {
         커뮤니티
       </h1>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <DDD>
+        <DDD onClick={() => navigate('/CommunityPage')}>
           <div></div>
           <SmallBox>
-            <Stimage src="img/cat.jpeg"></Stimage>
+            <Stimage
+              src={userData[0]?.imgUrl}
+              alt="이미지를 불러오는 과정에서 오류가 발생했습니다."
+            />
           </SmallBox>
           <div>{userData[0]?.title}</div>
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <SmallBox>
+            <Stimage src={userData[1]?.imgUrl} />
+          </SmallBox>
           {userData[1]?.title}
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <SmallBox>
+            <Stimage src={userData[2]?.imgUrl} />
+          </SmallBox>
           {userData[2]?.title}
         </DDD>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '3rem' }}>
         <DDD>
           <SmallBox>
-            <Stimage src="img/cat.jpeg"></Stimage>
+            <Stimage src={userData[3]?.imgUrl} />
           </SmallBox>
           {userData[3]?.title}
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <SmallBox>
+            <Stimage src={userData[4]?.imgUrl} />
+          </SmallBox>
           {userData[4]?.title}
         </DDD>
         <DDD>
-          <SmallBox></SmallBox>
+          <SmallBox>
+            <Stimage src={userData[3]?.imgUrl} />
+          </SmallBox>
           {userData[5]?.title}
         </DDD>
       </div>
@@ -91,7 +102,7 @@ const DDD = styled.div`
   margin-left: 50px;
   display: flex;
   flex-direction: column;
-  color: white;
+  color: black;
   margin: auto;
   border-radius: 10%;
   box-shadow: 3px 3px 3px 3px #d2d2d2;
