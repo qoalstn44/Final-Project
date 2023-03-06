@@ -49,7 +49,15 @@ const MyPage: React.FC = () => {
   return (
     <UserCardContainer>
       <UserCard>
-        <div>My Page</div>
+        <img
+          src={`./images/${
+            data.gender === 'male' || data.gender === 'female'
+              ? data.gender
+              : 'default'
+          }.png`}
+          alt={data.gender === 'male' ? 'Male icon' : 'Female icon'}
+        />
+
         <div>{`${user?.displayName}`}</div>
         <p>{`Your email is: ${user?.email}`}</p>
         <p>{`Your data is: ${JSON.stringify(data)}`}</p>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { isLogin } from '../redux/modules/loginSlice';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
@@ -8,15 +10,19 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  User,
 } from 'firebase/auth';
 import { provider } from '../common/firebase';
 import SignUpModal from '../components/Login/SignUpModal';
 import PasswordResetModal from '../components/Login/PasswordResetModal';
 import IDFindModal from '../components/Login/IDFindModal';
-import { useAppDispatch } from '../hooks/useRedux';
-import { isLogin } from '../redux/modules/loginSlice';
 
-export function LoginPage() {
+interface LoginFormState {
+  email: string;
+  password: string;
+}
+
+export function LoginPage(): JSX.Element {
   const openIdFindModal = () => setIdFindModalIsOpen(true);
   const closeIdFindModal = () => setIdFindModalIsOpen(false);
   const openPasswordResetModal = () => setPasswordResetModalIsOpen(true);
@@ -24,8 +30,14 @@ export function LoginPage() {
   const openSignUpModal = () => setSignUpModalIsOpen(true);
   const closeSignUpModal = () => setSignUpModalIsOpen(false);
 
+  const [formData, setFormData] = useState<LoginFormState>({
+    email: '',
+    password: '',
+  });
+
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [loginInfo, setLoginInfo] = useState<User | null>(null);
+  const dispatch = useDispatch(); // useAppDispatch 대신 useDispatch 사용
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword] = useState(false);
@@ -37,86 +49,40 @@ export function LoginPage() {
   const [passwordResetModalIsOpen, setPasswordResetModalIsOpen] =
     useState(false);
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
-
   const [, setError] = useState<string | null>(null);
 
-  const uid = getAuth().currentUser?.uid;
+  //
+
+  const localStorage = (key: string, value: string) => {
+    if (typeof window !== 'undefined') {
+    }
+  };
 
   // 로컬스토리지
-  const setLocalStorage = (name: string, value: string) => {
-    localStorage.setItem(name, value);
-  };
-  const getLocalStorage = (name: string) => {
-    if (!localStorage.getItem(name)) {
-      return null;
-    } else {
-      return localStorage.getItem(name);
-    }
-  };
-
-  // 로그인 여부 확인
-  function isLoggedIn() {
-    const item = getLocalStorage('email');
-    console.log(item);
-    return item;
-  }
-
-  // 로그인
-  const onClickLogin = () => {
-    if (!email || !password) {
-      setError('이메일과 비밀번호를 입력해주세요.');
-      return;
-    }
-    const auth = getAuth();
-    setLocalStorage('email', email);
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch(isLogin(user));
-        user.getIdToken().then(() => {
-          navigate('/');
-        });
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        window.alert(errorMessage);
-        setError(errorMessage);
-      });
-  };
-
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
         // 유저가 로그인한 상태이므로 홈페이지로 이동합니다.
         dispatch(isLogin(user));
+        if (user.email) {
+          localStorage('email', user.email);
+        }
+        setLoginInfo(user); // 로그인 정보 저장
         navigate('/');
+      } else {
+        setLoginInfo(null); // 로그아웃 상태인 경우 로그인 정보 초기화
       }
     });
-    return unsubscribe;
-  }, []);
+    return () => unsubscribe();
+  }, [dispatch]);
 
-  // 구글 로그인
-  const handleButtonClickGoogleButton = () => {
-    const auth = getAuth();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        dispatch(isLogin(user));
-        navigate('/');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorCode, errorMessage, email, credential);
-      });
-  };
+  //
 
+  // 이메일, 비밀번호 입력
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
     if (name === 'email') {
       setEmail(value);
       const regex =
@@ -136,6 +102,31 @@ export function LoginPage() {
       }
     }
   };
+  // 로그인
+  const onClickLogin = () => {
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+    console.log('1번');
+    const auth = getAuth();
+    console.log('2번');
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log('콘솔', userCredential);
+        const user = userCredential.user;
+        dispatch(isLogin(user));
+        navigate('/');
+        // 로그인 성공 시 로컬 스토리지에 이메일 정보 저장
+        localStorage('email', email);
+      })
+      .catch((error) => {
+        console.log('에러', error);
+        const errorMessage = error.message;
+        window.alert(errorMessage);
+        setError(errorMessage);
+      });
+  };
 
   // 로그인 버튼 활성화
   useEffect(() => {
@@ -150,6 +141,24 @@ export function LoginPage() {
     if (e.key === 'Enter') {
       onClickLogin();
     }
+  };
+
+  // 구글 로그인
+  const handleButtonClickGoogleButton = () => {
+    const auth = getAuth();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        dispatch(isLogin(user));
+        navigate('/');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+      });
   };
   return (
     <Page>
