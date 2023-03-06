@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { newsSearch } from '../components/News/Newsapi';
 import NewsItem from '../components/News/NewsItem';
 import styled from 'styled-components';
+import Pagination from '../components/Detail/Pagination';
 
 //기초데이터 state , 검색어 state, 쿼리 state 를 생성
 const NewsPage = () => {
   const [news, setNews] = useState([]);
   const [text, setText] = useState('');
   const [query, setQuery] = useState('');
+
+  //현재 페이지 상태
+  const [pageNumber, setPageNumber] = useState(1);
+  const [page, setPage] = useState(0);
 
   // HTML 이상한 태그들 제거
   const stripHtmlTags = (html) => {
@@ -84,6 +89,7 @@ const NewsPage = () => {
           />
         ))}
       </NewsBContainer>
+      <Pagination total={page} page={pageNumber} setPage={setPageNumber} />
     </NewsContainer>
   );
 };
