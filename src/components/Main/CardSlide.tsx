@@ -33,28 +33,23 @@ const CardSlide: React.FC = () => {
   const [cards] = useState<CardProps[]>([
     {
       title: '',
-      image:
-        'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
+      image: 'img/main1.jpg',
     },
     {
       title: '',
-      image:
-        'https://cdn.pixabay.com/photo/2018/05/13/16/57/dog-3397110__480.jpg',
+      image: 'img/main2.avif',
     },
     {
       title: '',
-      image:
-        'https://images.pexels.com/photos/177809/pexels-photo-177809.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      image: 'img/main3.avif',
     },
     {
       title: '',
-      image:
-        'https://cdn.pixabay.com/photo/2019/08/07/14/10/golden-retriever-4390884__340.jpg',
+      image: 'img/main7.avif',
     },
     {
       title: '',
-      image:
-        'https://codetorial.net/tensorflow/_images/classifying_the_cats_and_dogs_00.png',
+      image: 'img/main8.avif',
     },
   ]);
 
@@ -69,11 +64,11 @@ const CardSlide: React.FC = () => {
           </Slider>
         </SmallBox>
         <SSBox>
-          <Stimage src="img/Petalk.png"></Stimage>
-          <h2>안녕하세요.펫톡입니다.</h2>
-          <h2>안녕하세요.펫톡입니다.</h2>
-          <h2>안녕하세요.펫톡입니다.</h2>
-          <h2>안녕하세요.펫톡입니다.</h2>
+          <LeftImage src="img/IconLeft.png"></LeftImage>
+          <Stimage src="img/LOGO_OR.png"></Stimage>
+
+          <StText>안녕하세요.펫톡입니다.</StText>
+          <RightImage src="img/IconRight.png"></RightImage>
         </SSBox>
       </BigBox>
       <CpSlide>
@@ -89,32 +84,39 @@ const CardSlide: React.FC = () => {
 export default CardSlide;
 
 const CardContainer = styled.div`
-  width: 100%;
-  height: 77rem;
+  width: 100rem;
+  height: 50rem;
   background-color: #ccc;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 24px;
   margin-top: 3%;
+  background-size: cover;
+  background-position: center;
 `;
 
 const BigBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  height: 60rem;
 `;
 
 const SmallBox = styled.div`
   width: 70%;
   height: 60rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SSBox = styled.div`
-  width: 100%;
-  height: 76rem;
-  margin-top: 3%;
+  width: 100rem;
+  height: 50rem;
+  margin-top: 2.1%;
   background-color: #fff3d4;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CpSlide = styled.div`
@@ -125,10 +127,26 @@ const CpSlide = styled.div`
   margin: auto;
 `;
 
+const StText = styled.h4`
+  color: black;
+  margin-left: 10rem;
+`;
+
 const Stimage = styled.img`
-  width: 50%;
-  height: 5%;
-  border-top-left-radius: 10%;
-  border-top-right-radius: 10%;
-  margin-top: 3rem;
+  width: 15rem;
+  height: 4rem;
+  margin-left: 11rem;
+`;
+
+const LeftImage = styled.img`
+  width: 3rem;
+  height: 3rem;
+  margin-top: 10rem;
+  margin-left: 5rem;
+`;
+
+const RightImage = styled.img`
+  width: 3rem;
+  height: 3rem;
+  margin-left: 27rem;
 `;
