@@ -86,7 +86,7 @@ const MyPage: React.FC = () => {
   return (
     <UserCardContainer>
       <UserCard>
-        <img src="https://picsum.photos/200/300" alt="Dummy image" />
+        <img src="https://picsum.photos/1" alt="Dummy image" />
 
         <div>{`닉네임: ${user?.displayName}`}</div>
         <p>{`이메일: ${user?.email}`}</p>
