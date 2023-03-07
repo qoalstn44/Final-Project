@@ -14,10 +14,9 @@ function Footer() {
 export default Footer;
 
 const FooterBox = styled.div`
-  position: fixed;
   background-color: black;
   width: 100%;
-  height: 8%;
+  height: 4rem;
   top: 92%;
 `;
 
