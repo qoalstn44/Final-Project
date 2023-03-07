@@ -45,16 +45,17 @@ function NewspidSlide() {
 
   const navigate = useNavigate();
   return (
-    <div>
+    <Stdiv>
       <h1
         style={{
-          marginLeft: '50px',
+          marginLeft: '7rem',
+          marginBottom: '0rem',
         }}
       >
         뉴스
       </h1>
       <NewsBContainer>
-        {news.map((item: any, index) => (
+        {news.slice(0, 3).map((item: any, index) => (
           <NewsItem
             key={index}
             title={item.title}
@@ -64,29 +65,12 @@ function NewspidSlide() {
           />
         ))}
       </NewsBContainer>
-    </div>
+    </Stdiv>
   );
 }
 
 export default NewspidSlide;
 
-const DDD = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: red;
-  margin-left: 50px;
-`;
-const OnclickButton = styled.button`
-  width: 5rem;
-  height: 1rem;
-  border: 1px solid white;
-  font-size: 1.5rem;
-  display: flex;
-  flex-direction: row;
-  margin-left: 3rem;
-  margin-top: 1rem;
-  background-color: white;
-`;
 function stripHtmlTags(contents: any) {
   throw new Error('Function not implemented.');
 }
@@ -96,10 +80,16 @@ function setNews(documents: any) {
 }
 
 const NewsBContainer = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 4rem;
-  width: 80rem;
-  margin: auto;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(1, 1fr);
+  width: 65rem;
+  gap: 1rem;
+`;
+
+const Stdiv = styled.div`
+  width: 90rem;
+  margin-left: 6rem;
 `;
