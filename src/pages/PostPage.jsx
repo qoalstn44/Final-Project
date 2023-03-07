@@ -168,7 +168,7 @@ const PostPage = () => {
           )}
           <Button
             onClick={() => {
-              categoryNavigate();
+              navigate('/');
             }}
           >
             취소

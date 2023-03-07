@@ -5,9 +5,8 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { authService } from '../../common/firebase';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router';
-import { FaCommentDots, FaFileSignature, FaUserAlt } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
+import MyPageCommunities from './MyPageCommunities';
+import MyPageItems from './MyPageItems';
 
 type UserData = {
   name: string;
@@ -17,6 +16,7 @@ type UserData = {
 
 const MyPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [categoryToggle, setCategoryToggle] = useState(false);
   const auth = authService;
   const [user] = useAuthState(auth);
   const [data, setData] = useState<UserData>({
@@ -39,7 +39,10 @@ const MyPage: React.FC = () => {
       fetchData();
     }
   }, [user]);
-
+  const toggle = () => {
+    setCategoryToggle(!categoryToggle);
+    console.log(categoryToggle);
+  };
   return (
     <UserCardContainer>
       <MyPageUI>
@@ -57,8 +60,10 @@ const MyPage: React.FC = () => {
             </>
           </Modal>
         </UserCard>
-        <MyWrote>내가 쓴 게시글</MyWrote>
-        <MyComment>내가 작성한 댓글</MyComment>
+        <MyWrote>
+          <StyledToggleButton onClick={toggle}>카테고리</StyledToggleButton>
+          {categoryToggle ? <MyPageCommunities /> : <MyPageItems />}
+        </MyWrote>
       </MyPageUI>
     </UserCardContainer>
   );
@@ -156,22 +161,16 @@ const UserCard = styled.div`
 `;
 
 const MyWrote = styled.div`
+  display: flex;
+  justify-content: center;
   width: 25rem;
   height: 35rem;
-  margin: 0 70px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #3f3030;
-  font-size: 24px;
   padding: 40px;
-  gap: 20px;
-  font-weight: 600;
   line-height: 1.5;
+  position: relative;
 `;
 
 const MyComment = styled.div`
@@ -198,6 +197,7 @@ const MyPageUI = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
+  gap: 5rem;
 `;
 
 const UserCardContainer = styled.div`
@@ -286,7 +286,7 @@ const ModalOverlay = styled.div<{ open: boolean }>`
 const ModalContent = styled.div`
   position: absolute;
   top: 50%;
-  left: 65%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fffffc;
   padding: 20px;
@@ -352,4 +352,24 @@ const StyledModalDiv = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`;
+
+const StyledToggleButton = styled.button`
+  width: 6rem;
+  height: 2rem;
+  position: absolute;
+  right: 22.5rem;
+  bottom: 37rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  /* padding: 0.5rem 2rem; */
+  border-radius: 3px;
+  color: #8d8d8a;
+  border: 1px solid #c6c6c3;
+  cursor: pointer;
+  :hover {
+    background-color: #e65925;
+    color: #fffffc;
+  }
 `;
