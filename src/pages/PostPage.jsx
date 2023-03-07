@@ -67,16 +67,10 @@ const PostPage = () => {
     setSelectModalOpen(message);
     setPostModalOpen(true);
   };
-  // 취소 모달
-  const [postModalCancel, setPostModalCancel] = useState(false);
-  const deleteModal = () => {
-    setPostModalCancel(true);
-  };
 
   // 모달창 닫혔을 경우 메시지 초기화
   useEffect(() => {
     if (postModalOpen) return;
-
     setSelectModalOpen('');
   }, [postModalOpen]);
 
@@ -107,6 +101,13 @@ const PostPage = () => {
       return handleFormCommunity();
     } else if (categories[2].value === selectedCategory) {
       return handleFormItem();
+    }
+  };
+  const categoryNavigate = () => {
+    if (categories[1].value === selectedCategory) {
+      navigate('/communitypage');
+    } else if (categories[2].value === selectedCategory) {
+      navigate('/itempage');
     }
   };
 
@@ -151,7 +152,7 @@ const PostPage = () => {
                 // 카테고리 선택됨
                 categoryChange();
                 openModal();
-                // categoryNavigate();
+                categoryNavigate();
               } else {
                 // 카테고리 선택 안됨
                 openModal('카테고리를 정해주세요.');
@@ -161,29 +162,17 @@ const PostPage = () => {
             입력
           </Button>
           {postModalOpen && (
-            <PostModal
-              setPostModalOpen={setPostModalOpen}
-              setPostModalCancel={undefined}
-              categorySelect={categorySelect}
-            >
+            <PostModal setPostModalOpen={setPostModalOpen}>
               {selectModalOpen}
             </PostModal>
           )}
           <Button
             onClick={() => {
-              deleteModal();
+              categoryNavigate();
             }}
           >
             취소
           </Button>
-          {postModalCancel && (
-            <PostModal
-              setPostModalCancel={setPostModalCancel}
-              setPostModalOpen={undefined}
-            >
-              취소 하시겠습니까?
-            </PostModal>
-          )}
         </StyledButtonDiv>
       </StyledFormDiv>
     </div>
