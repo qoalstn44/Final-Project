@@ -184,6 +184,10 @@ const CardTitle = styled.h2`
   font-size: 1.2rem;
   position: relative;
   bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14ch;
 `;
 
 const CardContent = styled.p`
