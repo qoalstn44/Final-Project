@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const Communityapi = () => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'latest' | 'popular'>('latest'); // 기본값은 latest
-  const navigate = useNavigate();
+  const defaultImage = 'img/Icon_OR.png';
 
   useEffect(() => {
     const getData = async () => {
@@ -95,7 +96,7 @@ const Communityapi = () => {
                 });
               }}
             >
-              <img src={data.imgUrl} />{' '}
+              <CardImg src={data.imgUrl ? data.imgUrl : defaultImage} />
               {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
               <CardName>
                 <CardTitle>{data.title}</CardTitle>
@@ -190,6 +191,10 @@ const CardContent = styled.p`
   position: relative;
   font-size: 0.8rem;
   top: 0.3rem;
+`;
+
+const CardImg = styled.img`
+  width: 100rem;
 `;
 
 const CardName = styled.div`
