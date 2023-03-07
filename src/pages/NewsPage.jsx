@@ -71,12 +71,15 @@ const NewsPage = () => {
       <NewsAContainer>
         <NewsInput
           type="search"
-          placeholder="검색어를 입력해주세요."
+          placeholder="검색"
           name="query"
           onKeyDown={onEnter} // enter
           onChange={onTextUpdate} // change
           value={text}
         />
+        <SearchButton type="submit">
+          <SearchButtonImg src="img/search.png" />
+        </SearchButton>
       </NewsAContainer>
       <NewsBContainer>
         {news.map((item, index) => (
@@ -103,23 +106,25 @@ const NewsContainer = styled.div`
 `;
 
 const NewsAContainer = styled.div`
-  width: 50rem;
-  height: 1.5rem;
-  padding: 0.5rem;
-  border-radius: 10rem;
-  margin-top: 6rem;
-  border: 0.0625rem solid #545451;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
+  width: 30rem;
+  height: 1.2rem;
+  margin-top: 7rem;
+  margin-bottom: 3rem;
+  padding: 0.8rem 0.4rem;
+  border-radius: 10rem;
+  border: 1px solid #c6c6c3;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 `;
 const NewsBContainer = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 4rem;
-  width: 80rem;
-  margin: auto;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(1, 1fr);
+  width: 40rem;
+  gap: 1rem;
 `;
 
 const NewsInput = styled.input`
@@ -127,6 +132,25 @@ const NewsInput = styled.input`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  color: #545451;
+  padding-left: 0.7rem;
+  position: relative;
+  top: 0.08rem;
   background-color: transparent;
+`;
+
+const SearchButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const SearchButtonImg = styled.img`
+  width: 1.2rem;
+  position: relative;
+  bottom: 0.1rem;
+  padding-right: 0.4rem;
+  position: relative;
+  left: 0.3rem;
 `;
