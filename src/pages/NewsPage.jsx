@@ -103,6 +103,7 @@ const NewsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #fffffc;
 `;
 
 const NewsAContainer = styled.div`
