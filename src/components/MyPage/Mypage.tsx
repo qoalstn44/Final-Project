@@ -92,8 +92,12 @@ const MyPage: React.FC = () => {
         <p>{`이메일: ${user?.email}`}</p>
         <EditButton onClick={() => setModalOpen(true)}>수정하기</EditButton>
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-          <h2>Modal Title</h2>
-          <p>Modal content goes here</p>
+          <StyledModalImg src="img/x.png" alt="이미지" />
+          <div>
+            <h2>닉네임</h2>
+            {/* <StyledModalChangeImg src="img/combine.png" alt="" /> */}
+          </div>
+          <StyledModalP>sparta@gmail.com</StyledModalP>
         </Modal>
       </UserCard>
     </UserCardContainer>
@@ -104,8 +108,10 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
   return (
     <ModalOverlay open={open}>
       <ModalContent>
-        <button onClick={onClose}>Close</button>
-        {children}
+        <StyledModalDiv>
+          {children}
+          <StyledButton onClick={onClose}>변경사항 저장</StyledButton>
+        </StyledModalDiv>
       </ModalContent>
     </ModalOverlay>
   );
@@ -277,10 +283,15 @@ const ModalOverlay = styled.div<{ open: boolean }>`
 const ModalContent = styled.div`
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 65%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: #fffffc;
   padding: 20px;
+  box-shadow: 0 0 30px 0 rgba(27, 27, 24, 0.7);
+  border-radius: 25px;
+  width: 10rem;
+  height: 30rem;
+  padding: 1rem 8rem;
 `;
 
 const ModifyModal = styled(Modal)`
@@ -317,4 +328,42 @@ const ModifyModal = styled(Modal)`
       background-color: #005fa3;
     }
   }
+`;
+
+const StyledButton = styled.button`
+  padding: 1rem 2.4rem;
+  background-color: #fffffc;
+  border-radius: 10rem;
+  color: #8d8d8a;
+  margin-top: 2rem;
+  border: 1px solid #c6c6c3;
+  cursor: pointer;
+  position: relative;
+  :hover {
+    background-color: #f39340;
+    color: #fffffc;
+  }
+`;
+
+const StyledModalImg = styled.img`
+  width: 1rem;
+  margin-top: 1rem;
+`;
+
+const StyledModalChangeImg = styled.img`
+  width: 0.1rem;
+`;
+
+const StyledModalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const StyledModalP = styled.p`
+  font-size: 1rem;
+  color: #8d8d8a;
+  position: relative;
+  bottom: 1rem;
 `;

@@ -119,7 +119,7 @@ const SearchForm = styled.form`
   display: flex;
   justify-content: center;
   width: 30rem;
-  height: 1rem;
+  height: 1.2rem;
   margin-top: 7rem;
   margin-bottom: 3rem;
   padding: 0.8rem 0.4rem;
@@ -208,7 +208,8 @@ const imgHeart = styled.img`
 `;
 
 const SortByButton = styled.button<{ isActive: boolean }>`
-  border: ${(props) => (props.isActive ? 'none' : '1px solid #8D8D8A')};
+  border: ${(props) =>
+    props.isActive ? '1px solid #e65925' : '1px solid #8D8D8A'};
   font-size: 0.5rem;
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;

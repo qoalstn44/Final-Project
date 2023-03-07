@@ -114,7 +114,7 @@ const SearchForm = styled.form`
   display: flex;
   justify-content: center;
   width: 30rem;
-  height: 1rem;
+  height: 1.2rem;
   margin-top: 7rem;
   margin-bottom: 3rem;
   padding: 0.8rem 0.4rem;
