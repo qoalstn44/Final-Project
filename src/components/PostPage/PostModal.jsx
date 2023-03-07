@@ -8,7 +8,6 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
 
   const openPostModal = () => {
     setPostModalOpen(false);
-    navigate('/');
   };
 
   const deletePostModalChange = () => {
@@ -29,9 +28,6 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
     return setSelectedCategory(event.target.value);
   };
   const categoryNavigate = () => {
-    console.log('1번', categories[1].value);
-    console.log('2번', selectedCategory);
-    console.log('3번', categories[2].value);
     if (categories[1].value === selectedCategory) {
       navigate('/communitypage');
     } else if (categories[2].value === selectedCategory) {

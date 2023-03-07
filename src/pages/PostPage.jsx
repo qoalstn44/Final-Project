@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 const PostPage = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState('');
-  const [image, setImage] = useState(null);
+
   // 글쓰기 게시판
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
@@ -91,8 +91,6 @@ const PostPage = () => {
 
     callback(url);
   };
-
-  // 디폴트 이미지
 
   // 카테고리
   const categories = [
