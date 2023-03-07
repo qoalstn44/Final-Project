@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
+const PostModal = ({
+  setPostModalOpen,
+  setPostModalCancel,
+  children,
+  categorySelect,
+}) => {
   const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(0);
 
-  const openPostModal = () => {
+  const closePostModal = () => {
     setPostModalOpen(false);
   };
 
-  const deletePostModalChange = () => {
+  const cancelPostModalChange = () => {
     setPageNumber(1);
   };
-  const deletePostModal = () => {
-    setPostModalDelete(false);
+  const cancelPostModal = () => {
+    setPostModalCancel(false);
   };
 
   // 카테고리
@@ -24,9 +29,6 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
     { value: '제품리뷰', name: '제품리뷰', id: 2 },
   ];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
-  const categorySelect = (event) => {
-    return setSelectedCategory(event.target.value);
-  };
   const categoryNavigate = () => {
     if (categories[1].value === selectedCategory) {
       navigate('/communitypage');
@@ -41,7 +43,14 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
         <StyledPostModalDiv>
           <StyledPostP>{children}</StyledPostP>
           <StyledPostModalButton
-            onClick={setPostModalOpen ? openPostModal : deletePostModalChange}
+            onClick={() => {
+              if (setPostModalOpen) {
+                categoryNavigate();
+                closePostModal();
+              } else {
+                cancelPostModal();
+              }
+            }}
           >
             확인
           </StyledPostModalButton>
@@ -51,7 +60,14 @@ const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
         <StyledPostModalDiv>
           <StyledPostP>취소 되었습니다.</StyledPostP>
           <StyledPostModalButton
-            onClick={setPostModalOpen ? openPostModal : deletePostModal}
+            onClick={() => {
+              if (setPostModalCancel) {
+                cancelPostModalChange();
+                cancelPostModalChange();
+              } else {
+                closePostModal();
+              }
+            }}
           >
             확인
           </StyledPostModalButton>

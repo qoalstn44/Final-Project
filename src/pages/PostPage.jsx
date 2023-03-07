@@ -68,9 +68,9 @@ const PostPage = () => {
     setPostModalOpen(true);
   };
   // 취소 모달
-  const [postModalDelete, setPostModalDelete] = useState(false);
+  const [postModalCancel, setPostModalCancel] = useState(false);
   const deleteModal = () => {
-    setPostModalDelete(true);
+    setPostModalCancel(true);
   };
 
   // 모달창 닫혔을 경우 메시지 초기화
@@ -86,9 +86,7 @@ const PostPage = () => {
   const upload = async (blob, callback) => {
     const uploadBytesRes = await uploadBytes(storageRef, blob);
     const url = await getDownloadURL(uploadBytesRes.ref);
-
     setImg(url);
-
     callback(url);
   };
 
@@ -109,13 +107,6 @@ const PostPage = () => {
       return handleFormCommunity();
     } else if (categories[2].value === selectedCategory) {
       return handleFormItem();
-    }
-  };
-  const categoryNavigate = () => {
-    if (categories[1].value === selectedCategory) {
-      return navigate('/communitypage');
-    } else if (categories[2].value === selectedCategory) {
-      return navigate('/itempage');
     }
   };
 
@@ -172,7 +163,8 @@ const PostPage = () => {
           {postModalOpen && (
             <PostModal
               setPostModalOpen={setPostModalOpen}
-              setPostModalDelete={undefined}
+              setPostModalCancel={undefined}
+              categorySelect={categorySelect}
             >
               {selectModalOpen}
             </PostModal>
@@ -184,9 +176,9 @@ const PostPage = () => {
           >
             취소
           </Button>
-          {postModalDelete && (
+          {postModalCancel && (
             <PostModal
-              setPostModalDelete={setPostModalDelete}
+              setPostModalCancel={setPostModalCancel}
               setPostModalOpen={undefined}
             >
               취소 하시겠습니까?

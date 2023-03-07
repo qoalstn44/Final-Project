@@ -194,7 +194,7 @@ const CardContent = styled.p`
 `;
 
 const CardImg = styled.img`
-  width: rem;
+  width: 1rem;
 `;
 
 const CardName = styled.div`
