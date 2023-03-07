@@ -80,15 +80,16 @@ function setNews(documents: any) {
 }
 
 const NewsBContainer = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 4rem;
-  width: 80rem;
-
-  grid-gap: 1rem;
-  grid-template-columns: repeat(1, 1fr);
+  width: 65rem;
+  gap: 1rem;
 `;
 
 const Stdiv = styled.div`
   width: 90rem;
-  margin-left: 3rem;
+  margin-left: 6rem;
 `;
