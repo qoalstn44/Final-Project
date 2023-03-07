@@ -48,5 +48,5 @@ const ItemUrl = styled.a`
 const ItemDatetime = styled.p`
   font-size: 0.8rem;
   margin-top: 0.5rem;
-  padding-left: 21rem;
+  padding-left: 46rem;
 `;

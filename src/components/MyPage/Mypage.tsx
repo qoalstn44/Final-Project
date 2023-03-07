@@ -15,47 +15,6 @@ type UserData = {
   gender: 'male' | 'female';
 };
 
-const Sidebar: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const FaCommentDotsIcon = () => (
-    <UserIcon>
-      <FaCommentDots />
-    </UserIcon>
-  );
-  const FaFileSignatureIcon = () => (
-    <UserIcon>
-      <FaFileSignature />
-    </UserIcon>
-  );
-  const FaUserAltIcon = () => (
-    <UserIcon>
-      <FaUserAlt />
-    </UserIcon>
-  );
-
-  return (
-    <SidebarContainer>
-      <Logo src="img/Petalk.png" onClick={() => navigate('/')} />
-      <Button
-        onClick={() => navigate('/mypage')}
-        className={location.pathname === '/mypage' ? 'active' : ''}
-      >
-        <FaUserAltIcon />내 정보
-      </Button>
-      <Button onClick={() => navigate('/myfile')}>
-        <FaFileSignatureIcon />
-        내가 작성한 글
-      </Button>
-      <Button onClick={() => navigate('/mycomment')}>
-        <FaCommentDotsIcon />
-        내가 작성한 댓글
-      </Button>
-    </SidebarContainer>
-  );
-};
-
 const MyPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const auth = authService;
@@ -65,8 +24,6 @@ const MyPage: React.FC = () => {
     age: 0,
     gender: 'male',
   });
-
-  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,21 +42,24 @@ const MyPage: React.FC = () => {
 
   return (
     <UserCardContainer>
-      <UserCard>
-        <img src="https://picsum.photos/1" alt="Dummy image" />
-
-        <div>{`닉네임: ${user?.displayName}`}</div>
-        <p>{`이메일: ${user?.email}`}</p>
-        <EditButton onClick={() => setModalOpen(true)}>수정하기</EditButton>
-        <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-          <StyledModalImg src="img/x.png" alt="이미지" />
-          <div>
-            <h2>닉네임</h2>
-            {/* <StyledModalChangeImg src="img/combine.png" alt="" /> */}
-          </div>
-          <StyledModalP>sparta@gmail.com</StyledModalP>
-        </Modal>
-      </UserCard>
+      <MyPageUI>
+        <UserCard>
+          <div>내정보</div>
+          <img src="https://picsum.photos/1" alt="Dummy image" />
+          <div>{`닉네임: ${user?.displayName}`}</div>
+          <p>{`이메일: ${user?.email}`}</p>
+          <EditButton onClick={() => setModalOpen(true)}>수정하기</EditButton>
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+            <>
+              <img src="https://picsum.photos/1" alt="Dummy image" />
+              <div>{`닉네임: ${user?.displayName}`}</div>
+              <p>{`이메일: ${user?.email}`}</p>
+            </>
+          </Modal>
+        </UserCard>
+        <MyWrote>내가 쓴 게시글</MyWrote>
+        <MyComment>내가 작성한 댓글</MyComment>
+      </MyPageUI>
     </UserCardContainer>
   );
 };
@@ -130,7 +90,6 @@ type ModalProps = {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <LayoutContainer>
-      <Sidebar />
       <Main>{children}</Main>
     </LayoutContainer>
   );
@@ -154,18 +113,9 @@ const App: React.FC = () => {
 
 export default App;
 
-const UserCardContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-`;
-
 const UserCard = styled.div`
-  width: 600px;
-  height: 500px;
+  width: 25rem;
+  height: 35rem;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
@@ -203,6 +153,59 @@ const UserCard = styled.div`
   .data {
     font-size: 20px;
   }
+`;
+
+const MyWrote = styled.div`
+  width: 25rem;
+  height: 35rem;
+  margin: 0 70px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #3f3030;
+  font-size: 24px;
+  padding: 40px;
+  gap: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+`;
+
+const MyComment = styled.div`
+  width: 25rem;
+  height: 35rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #3f3030;
+  font-size: 24px;
+  padding: 40px;
+  gap: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+`;
+
+const MyPageUI = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+`;
+
+const UserCardContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
 `;
 
 const EditButton = styled.button`
@@ -344,26 +347,9 @@ const StyledButton = styled.button`
     color: #fffffc;
   }
 `;
-
-const StyledModalImg = styled.img`
-  width: 1rem;
-  margin-top: 1rem;
-`;
-
-const StyledModalChangeImg = styled.img`
-  width: 0.1rem;
-`;
-
 const StyledModalDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-
-const StyledModalP = styled.p`
-  font-size: 1rem;
-  color: #8d8d8a;
-  position: relative;
-  bottom: 1rem;
 `;

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import CommunitySlide from './CommunitySlide';
 import NewspidSlide from './NewspidSlide';
 import ProductSlide from './ProductSlide';
+import Footer from '../../pages/Footer';
 
 interface CardProps {
   title: string;
@@ -77,6 +78,7 @@ const CardSlide: React.FC = () => {
       </CpSlide>
 
       <NewspidSlide />
+      <Footer />
     </div>
   );
 };
@@ -121,7 +123,7 @@ const SSBox = styled.div`
 
 const CpSlide = styled.div`
   width: 100%;
-  height: 80rem;
+  height: 55rem;
   display: flex;
   flex-direction: row;
   margin: auto;

@@ -51,6 +51,7 @@ function Header() {
               <SmallButton onClick={() => navigate('/PostPage')}>
                 글쓰기
               </SmallButton>
+              <div>이미지</div>
               <SmallButton onClick={() => navigate('/Mypage')}>
                 마이페이지
               </SmallButton>
