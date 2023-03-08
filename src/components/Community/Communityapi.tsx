@@ -187,9 +187,12 @@ const CardBox = styled.div<{ onClick: any }>`
 const CardTitle = styled.h5`
   font-size: 1rem;
   font-weight: 700;
-  /* bottom: 0.2rem; */
-  position: relative;
   bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 14ch;
 `;
 
 const CardContent = styled.p`

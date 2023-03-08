@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 import { authService } from '../../common/firebase';
 import styled from 'styled-components';
 import MyPageCommunities from './MyPageCommunities';
@@ -12,6 +13,7 @@ type UserData = {
   name: string;
   age: number;
   gender: 'male' | 'female';
+  imgUrl?: string;
 };
 
 const MyPage: React.FC = () => {
@@ -43,20 +45,32 @@ const MyPage: React.FC = () => {
     setCategoryToggle(!categoryToggle);
     console.log(categoryToggle);
   };
+
+  const handleImgClick = () => {
+    setModalOpen(true);
+  };
+
   return (
     <UserCardContainer>
       <MyPageUI>
         <UserCard>
           <div>내정보</div>
-          <img src="https://picsum.photos/1" alt="Dummy image" />
+          <img
+            src={data.imgUrl || 'https://picsum.photos/1'}
+            alt="Profile"
+            onClick={handleImgClick}
+          />{' '}
+          {/* Use imgUrl property */}
           <div>{`닉네임: ${user?.displayName}`}</div>
           <p>{`이메일: ${user?.email}`}</p>
           <EditButton onClick={() => setModalOpen(true)}>수정하기</EditButton>
           <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
             <>
-              <img src="https://picsum.photos/1" alt="Dummy image" />
+              <img
+                src={data.imgUrl || 'https://picsum.photos/1'}
+                alt="Profile"
+              />
               <div>{`닉네임: ${user?.displayName}`}</div>
-              <p>{`이메일: ${user?.email}`}</p>
             </>
           </Modal>
         </UserCard>
@@ -69,13 +83,81 @@ const MyPage: React.FC = () => {
   );
 };
 
+type Modal = {
+  open: boolean;
+  onClose: () => void;
+  imgFile?: File | undefined; // make imgFile optional
+  setImgFile: Dispatch<SetStateAction<File | undefined>>;
+  children: React.ReactNode;
+};
+
 const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
+  const [name, setName] = useState<string>('');
+  const auth = authService;
+  const [user] = useAuthState(auth);
+  const [data, setData] = useState<UserData>({
+    name: '',
+    age: 0,
+    gender: 'male',
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userRef = firebase.firestore().collection('users').doc(user?.uid!);
+      const snapshot = await userRef.get();
+      setData(
+        (snapshot.data() as UserData) || { name: '', age: 0, gender: 'male' },
+      );
+    };
+
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
+  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImgFile(file);
+    }
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleSaveChanges = async () => {
+    if (imgFile) {
+      const storageRef = firebase.storage().ref();
+      const fileRef = storageRef.child(`${user?.uid}/profile.jpg`);
+      await fileRef.put(imgFile);
+      const imgUrl = await fileRef.getDownloadURL();
+      const userRef = firebase.firestore().collection('users').doc(user?.uid!);
+      await userRef.update({ imgUrl });
+    }
+
+    if (name) {
+      const userRef = firebase.firestore().collection('users').doc(user?.uid!);
+      await userRef.update({ name });
+    }
+
+    onClose();
+  };
+
   return (
     <ModalOverlay open={open}>
       <ModalContent>
         <StyledModalDiv>
+          <input type="file" accept="image/*" onChange={handleImgChange} />
           {children}
-          <StyledButton onClick={onClose}>변경사항 저장</StyledButton>
+          <input
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="닉네임"
+          />
+          <StyledButton onClick={handleSaveChanges}>변경사항 저장</StyledButton>
         </StyledModalDiv>
       </ModalContent>
     </ModalOverlay>

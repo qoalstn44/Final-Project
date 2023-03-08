@@ -100,11 +100,11 @@ const Productapi = () => {
             {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
             <CardName>
               <CardTitle>{data.title}</CardTitle>
-              <StyledHashTagDiv>
-                <StyledHashTag>#데일리</StyledHashTag>
-                <StyledHashTag>#내 새끼 자랑</StyledHashTag>
-              </StyledHashTagDiv>
             </CardName>
+            <StyledHashTagDiv>
+              <StyledHashTag>#데일리</StyledHashTag>
+              <StyledHashTag>#내 새끼 자랑</StyledHashTag>
+            </StyledHashTagDiv>
           </CardBox>
         ))}
       </ProductContainer>
@@ -186,6 +186,10 @@ const CardTitle = styled.h2`
   font-size: 1.2rem;
   position: relative;
   bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14ch;
 `;
 
 const CardContent = styled.p`
@@ -230,7 +234,7 @@ const StyledHashTagDiv = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-  top: 1rem;
+  bottom: 1rem;
 `;
 
 const StyledHashTag = styled.h5`
