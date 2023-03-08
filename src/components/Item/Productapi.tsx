@@ -67,7 +67,7 @@ const Productapi = () => {
       <SearchForm onSubmit={handleSearch}>
         <Searchs type="text" name="search" placeholder="검색" />
         <SearchButton type="submit">
-          <SearchButtonImg src="img/search.png" />
+          <SearchButtonImg src="/img/search.png" />
         </SearchButton>
       </SearchForm>
       <SortByContainer>

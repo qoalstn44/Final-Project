@@ -78,7 +78,7 @@ const NewsPage = () => {
           value={text}
         />
         <SearchButton type="submit">
-          <SearchButtonImg src="img/search.png" />
+          <SearchButtonImg src="/img/search.png" />
         </SearchButton>
       </NewsAContainer>
       <NewsBContainer>
