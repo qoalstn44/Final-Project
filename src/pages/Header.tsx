@@ -80,6 +80,7 @@ const HeadBox = styled.div`
   position: fixed;
   top: 0;
   z-index: 1;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledHeaderLogo = styled.img`
@@ -98,6 +99,9 @@ const HeadButton = styled.button`
   font-size: 20px;
   margin: auto;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const StyledSmallButtonDiv = styled.div`
@@ -112,6 +116,9 @@ const SmallButton = styled.button`
   color: white;
   font-size: 1rem;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const StyledLogin = styled.button`
@@ -122,4 +129,7 @@ const StyledLogin = styled.button`
   color: white;
   font-size: 1rem;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;

@@ -267,6 +267,9 @@ const Page = styled.div`
   background-color: #1b1b18;
   height: 100vh;
   width: 100vw;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const InputTitle = styled.div`
@@ -274,12 +277,18 @@ const InputTitle = styled.div`
   font-size: 20px;
   font-weight: 600;
   color: #262626;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const IdInputWrap = styled.div`
   display: flex;
   border-radius: 8px;
   padding: 16px;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const Line = styled.div`
@@ -292,6 +301,9 @@ const PwInputWrap = styled.div`
   display: flex;
   border-radius: 8px;
   padding: 16px;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const Input = styled.input`
@@ -301,6 +313,9 @@ const Input = styled.input`
   outline: none;
   border: none;
   background-color: transparent;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const ErrorMessageWrap = styled.div`
@@ -313,6 +328,9 @@ const ErrorMessageWrap = styled.div`
   color: #ff0000;
   font-size: 1rem;
   font-weight: 600;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const LoginBox = styled.div`
@@ -349,6 +367,9 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -364,6 +385,9 @@ const LoginButton = styled.button`
   :disabled {
     background: #c6c6c3;
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SignUpButton = styled.button`
@@ -374,6 +398,9 @@ const SignUpButton = styled.button`
   cursor: pointer;
   :disabled {
     background: #c6c6c3;
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 
@@ -391,6 +418,9 @@ const StyledGoogleLoginButton = styled.button`
   width: 15rem;
   border-radius: 4rem;
   margin-bottom: 2rem;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const StyledGoogleLogin = styled.div`

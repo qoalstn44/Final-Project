@@ -187,6 +187,7 @@ const StyledFormDiv = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 8rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const AContainer = styled.div`

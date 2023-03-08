@@ -142,6 +142,7 @@ const Container = styled.div`
   display: flex;
   background-color: #fffffc;
   height: 40rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledPost = styled.div`
@@ -159,6 +160,7 @@ const StyledTitle = styled.h1`
   margin-bottom: 1rem;
   position: relative;
   bottom: 0.25rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledInfo = styled.div`
@@ -169,15 +171,9 @@ const StyledInfo = styled.div`
 const StyledId = styled.h4`
   position: relative;
   top: 0.7rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
-const StyledImg = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.5rem;
-  display: inline-block;
-  vertical-align: middle;
-`;
 const LikeButton = styled.button`
   background-color: transparent;
   border: none;
@@ -202,6 +198,7 @@ const StyledContent = styled.p`
   font-size: 1rem;
   text-align: justify;
   margin-bottom: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledImgContainer = styled.div`
@@ -223,12 +220,6 @@ const CommentListWrap = styled.div`
   position: relative;
 `;
 
-const TotalComments = styled.p`
-  font-size: 1rem;
-  margin-top: 1rem;
-  margin-right: 40rem;
-`;
-
 const BodyDiv = styled.div`
   position: relative; /* Make the positioning of the button relative to this div */
   width: 30rem;
@@ -241,6 +232,9 @@ const BodyDiv = styled.div`
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 0.5rem;
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 
@@ -256,6 +250,9 @@ const DeleteBtn = styled.button`
   bottom: 0.5rem;
   right: 0.5rem;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 const BodyInput = styled.input`
   border: none;
@@ -269,6 +266,9 @@ const BodyInput = styled.input`
   background-color: #eee;
   margin-bottom: 1.25rem;
   outline: none;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const CommentBtn = styled.button`
@@ -286,12 +286,16 @@ const CommentBtn = styled.button`
   &:hover {
     transform: scale(1.1);
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const Comment = styled.h5`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
   font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #1b1b18;
   margin-left: 1rem;
 `;
@@ -310,12 +314,8 @@ const StyledTotalDiv = styled.div`
   margin-top: -1rem;
 `;
 
-const StyledPostDivDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const StyledPostComment = styled.p`
   position: absolute;
+  font-family: 'Noto Sans KR', sans-serif;
   top: 2rem;
 `;

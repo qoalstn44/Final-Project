@@ -84,6 +84,9 @@ const DataContainer = styled.div`
 const Container = styled.h1`
   text-align: center;
   font-size: 1.3rem;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const DataTitle = styled.h4`
@@ -94,17 +97,26 @@ const DataTitle = styled.h4`
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 18ch;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const DataTime = styled.p`
   font-size: 1.1rem;
   color: #545451;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const DeletButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const DeletButtonImg = styled.img`

@@ -28,6 +28,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fffffc;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const MainContainer = styled.div``;

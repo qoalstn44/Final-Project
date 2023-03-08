@@ -53,6 +53,7 @@ const StyledPostP = styled.p`
   font-weight: 400;
   font-size: 1rem;
   margin-bottom: 1.5rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledPostModalButton = styled.button`
@@ -63,5 +64,8 @@ const StyledPostModalButton = styled.button`
   :hover {
     color: white;
     background-color: #e65925;
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;

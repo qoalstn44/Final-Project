@@ -18,6 +18,7 @@ const FooterBox = styled.div`
   width: 100%;
   height: 4rem;
   top: 92%;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const StyledFooterImg = styled.img`

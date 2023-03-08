@@ -39,4 +39,7 @@ const ASelectCategory = styled.select`
   border: 1px solid #c6c6c3;
   padding: 0.5rem 0.4rem;
   font-weight: bold;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;

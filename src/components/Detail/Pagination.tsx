@@ -106,6 +106,9 @@ const Button = styled.button`
     font-weight: bold;
     cursor: pointer;
     transform: revert;
+    text {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
   }
 `;
 

@@ -32,4 +32,7 @@ const StyledButton = styled.button`
     background-color: #e65925;
     color: #fffffc;
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
