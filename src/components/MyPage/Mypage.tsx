@@ -70,8 +70,6 @@ const MyPage: React.FC = () => {
             </>
           </Modal>
         </UserCard>
-        <MyWrote>내가 쓴 게시글</MyWrote>
-        <MyComment>내가 작성한 댓글</MyComment>
       </MyPageUI>
     </UserCardContainer>
   );
