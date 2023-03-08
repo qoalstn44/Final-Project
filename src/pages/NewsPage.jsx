@@ -110,7 +110,7 @@ const NewsAContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 30rem;
-  height: 1.2rem;
+  height: 1rem;
   margin-top: 7rem;
   margin-bottom: 3rem;
   padding: 0.8rem 0.4rem;
