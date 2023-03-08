@@ -240,6 +240,9 @@ const UserCard = styled.div`
   .data {
     font-size: 20px;
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const MyWrote = styled.div`
@@ -305,6 +308,9 @@ const EditButton = styled.button`
     background-color: #3f3030;
     color: #fff;
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SidebarContainer = styled.div`
@@ -354,6 +360,9 @@ const UserIcon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const ModalOverlay = styled.div<{ open: boolean }>`
@@ -416,6 +425,9 @@ const ModifyModal = styled(Modal)`
     &:hover {
       background-color: #005fa3;
     }
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 

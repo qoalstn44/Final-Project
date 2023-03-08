@@ -25,6 +25,9 @@ const ItemContainer = styled.div`
   list-style-type: none;
   border: 1px solid #dddddd;
   padding: 3rem;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const ItemData = styled.div`
@@ -33,10 +36,12 @@ const ItemData = styled.div`
 `;
 
 const Title = styled.h1`
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 1rem;
 `;
 
 const ItemContents = styled.p`
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.8rem;
 `;
 
@@ -45,6 +50,7 @@ const ItemUrl = styled.a`
   margin-top: 0.5rem;
   text-decoration: none;
   color: #8d8d8a;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const ItemDatetime = styled.p`
@@ -54,4 +60,5 @@ const ItemDatetime = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'Noto Sans KR', sans-serif;
 `;

@@ -142,12 +142,19 @@ const Searchs = styled.input`
   color: #545451;
   padding-left: 1rem;
   background-color: transparent;
+
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SearchButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SearchButtonImg = styled.img`
@@ -185,6 +192,7 @@ const CardBox = styled.div<{ onClick: any }>`
 `;
 
 const CardTitle = styled.h5`
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   bottom: 1rem;
@@ -197,6 +205,7 @@ const CardTitle = styled.h5`
 
 const CardContent = styled.p`
   font-size: 0.4rem;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 700;
   position: relative;
   top: 0.5rem;
@@ -225,6 +234,7 @@ const imgHeart = styled.img`
 const SortByButton = styled.button<{ isActive: boolean }>`
   border: ${(props) => (props.isActive ? 'none' : '1px solid #8D8D8A')};
   font-size: 0.5rem;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
   background-color: ${(props) => (props.isActive ? '#e65925' : 'transparent')};
@@ -237,6 +247,9 @@ const SortByButton = styled.button<{ isActive: boolean }>`
     color: white;
     border: none;
   }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const StyledHashTagDiv = styled.div`
@@ -247,6 +260,7 @@ const StyledHashTagDiv = styled.div`
 `;
 
 const StyledHashTag = styled.h5`
+  font-family: 'Noto Sans KR', sans-serif;
   display: inline-block;
   background-color: #f39340;
   color: #fffffc;

@@ -90,6 +90,9 @@ export default PasswordResetModal;
 const Label = styled.label`
   font-size: 1rem;
   font-weight: bold;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const CompleteButton = styled.button`
@@ -104,6 +107,9 @@ const CompleteButton = styled.button`
   cursor: pointer;
   :disabled {
     background: #c6c6c3;
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 
@@ -122,6 +128,9 @@ const StyledModal = styled(Modal)`
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const Input = styled.input`
@@ -134,6 +143,9 @@ const Input = styled.input`
   box-sizing: border-box;
   margin-bottom: 10px;
   margin-bottom: 1rem;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -150,5 +162,8 @@ const CloseButton = styled.button`
   color: #ccc;
   &:hover {
     color: #333;
+  }
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;

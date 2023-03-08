@@ -104,6 +104,9 @@ const NewsContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #fffffc;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const NewsAContainer = styled.div`
@@ -139,12 +142,18 @@ const NewsInput = styled.input`
   position: relative;
   top: 0.08rem;
   background-color: transparent;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SearchButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SearchButtonImg = styled.img`

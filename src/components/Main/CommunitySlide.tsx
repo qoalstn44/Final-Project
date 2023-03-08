@@ -86,6 +86,7 @@ const BigDiv = styled.div`
 const BoxTitle = styled.h1`
   color: gray;
   margin-left: 6rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const DDD = styled.div`
@@ -100,6 +101,9 @@ const DDD = styled.div`
 
   border-radius: 10%;
   box-shadow: 3px 3px 3px 3px #d2d2d2;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const OnclickButton = styled.button`
@@ -112,6 +116,9 @@ const OnclickButton = styled.button`
   margin-left: 3rem;
   margin-top: 1rem;
   background-color: white;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const SmallBox = styled.div`
@@ -138,6 +145,9 @@ const StTitle = styled.div`
   margin-top: 1rem;
   margin-left: 4rem;
   font-weight: bolder;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const IconImage = styled.img`
@@ -171,4 +181,7 @@ const CardContent = styled.p`
   font-size: 0.8rem;
   margin-left: 15rem;
   bottom: 2rem;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;

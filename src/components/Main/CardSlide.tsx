@@ -96,6 +96,9 @@ const CardContainer = styled.div`
   margin-top: 3%;
   background-size: cover;
   background-position: center;
+  text {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const BigBox = styled.div`
@@ -132,6 +135,7 @@ const CpSlide = styled.div`
 const StText = styled.h4`
   color: black;
   margin-left: 10rem;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const Stimage = styled.img`
