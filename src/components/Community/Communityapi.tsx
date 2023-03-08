@@ -102,6 +102,10 @@ const Communityapi = () => {
                 <CardTitle>{data.title}</CardTitle>
                 <CardContent>{data.author.name}</CardContent>
               </CardName>
+              <StyledHashTagDiv>
+                <StyledHashTag>#데일리</StyledHashTag>
+                <StyledHashTag>#내 새끼 자랑</StyledHashTag>
+              </StyledHashTagDiv>
             </CardBox>
           );
         })}
@@ -177,14 +181,14 @@ const CardBox = styled.div<{ onClick: any }>`
     border-radius: 1.8rem 1.8rem 0 0;
     width: 15rem;
     height: 11rem;
-    object-fit: cover;
   }
 `;
 
-const CardTitle = styled.h2`
-  font-size: 1.2rem;
+const CardTitle = styled.h5`
+  font-size: 1rem;
+  font-weight: 700;
+  bottom: 1rem;
   position: relative;
-  bottom: 0.2rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -192,13 +196,15 @@ const CardTitle = styled.h2`
 `;
 
 const CardContent = styled.p`
+  font-size: 0.4rem;
+  font-weight: 700;
   position: relative;
-  font-size: 0.8rem;
-  top: 0.3rem;
+  top: 0.5rem;
+  /* top: 0.3rem; */
 `;
 
 const CardImg = styled.img`
-  width: 10rem;
+  width: 1rem;
 `;
 
 const CardName = styled.div`
@@ -231,4 +237,21 @@ const SortByButton = styled.button<{ isActive: boolean }>`
     color: white;
     border: none;
   }
+`;
+
+const StyledHashTagDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  bottom: 2.5rem;
+`;
+
+const StyledHashTag = styled.h5`
+  display: inline-block;
+  background-color: #f39340;
+  color: #fffffc;
+  border-radius: 3px;
+  padding: 0.1rem;
+  font-size: 0.1rem;
+  margin-left: 1rem;
 `;

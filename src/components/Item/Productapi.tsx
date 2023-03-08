@@ -100,8 +100,11 @@ const Productapi = () => {
             {/* imgUrl 속성을 사용하여 이미지 불러오기 */}
             <CardName>
               <CardTitle>{data.title}</CardTitle>
-              <CardContent>{data.author.name}</CardContent>
             </CardName>
+            <StyledHashTagDiv>
+              <StyledHashTag>#데일리</StyledHashTag>
+              <StyledHashTag>#내 새끼 자랑</StyledHashTag>
+            </StyledHashTagDiv>
           </CardBox>
         ))}
       </ProductContainer>
@@ -176,7 +179,6 @@ const CardBox = styled.div<{ onClick: any }>`
     border-radius: 1.8rem 1.8rem 0 0;
     width: 15rem;
     height: 11rem;
-    object-fit: cover;
   }
 `;
 
@@ -226,4 +228,22 @@ const SortByButton = styled.button<{ isActive: boolean }>`
     color: white;
     border: none;
   }
+`;
+
+const StyledHashTagDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  bottom: 1rem;
+`;
+
+const StyledHashTag = styled.h5`
+  display: inline-block;
+  background-color: #f39340;
+  color: #fffffc;
+  border-radius: 3px;
+  padding: 0.1rem;
+  font-size: 0.1rem;
+  margin-left: 1rem;
+  height: 0.8rem;
 `;

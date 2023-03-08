@@ -37,7 +37,7 @@ const MyPageCommunities = () => {
   };
 
   return (
-    <div>
+    <StyledContainerDiv>
       <Container>내가 작성한 커뮤니티</Container>
       {userData.map((data: any) => (
         <DataContainer key={data.id}>
@@ -57,11 +57,15 @@ const MyPageCommunities = () => {
           </DataDiv>
         </DataContainer>
       ))}
-    </div>
+    </StyledContainerDiv>
   );
 };
 
 export default MyPageCommunities;
+
+const StyledContainerDiv = styled.div`
+  /* z-index: -1; */
+`;
 
 const DataContainer = styled.div`
   width: 27rem;
