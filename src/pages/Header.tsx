@@ -28,7 +28,7 @@ function Header() {
     <div>
       <HeadBox>
         <HeadButton onClick={() => navigate('/')}>
-          <StyledHeaderLogo src="img/Petalk.png" alt="로고" />
+          <StyledHeaderLogo src="/img/Petalk.png" alt="로고" />
         </HeadButton>
         <HeadButton onClick={() => navigate('/CommunityPage')}>
           커뮤니티

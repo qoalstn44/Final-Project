@@ -69,83 +69,96 @@ const DetailPage = () => {
     setLiked(!liked);
   };
   return (
-    <StyledPost>
-      <StyledTitle>{post.title}</StyledTitle>
-      <StyledInfo>
-        <StyledId>
-          <StyledImg src={post.author && post.author.profileImage} />
-          {post.author && post.author.name}
-        </StyledId>
-        <LikeButton onClick={toggleLiked}>
-          {liked ? (
-            <LikeButtonimg src="img/red.png" alt="빨간하트" />
-          ) : (
-            <LikeButtonimg src="img/black.png" alt="검정하트" />
-          )}
-        </LikeButton>
-      </StyledInfo>
-
-      <Contents>
-        <StyledContent>{stripHtmlTags(post.contents)}</StyledContent>
-        <StyledImgContainer>
-          <StyledImgContent src={stripHtmlTags(post.imgUrl)} />
-        </StyledImgContainer>
-      </Contents>
-      <div>
-        <CommentListWrap>
-          <TotalComments>
-            댓글<span style={{ color: 'green' }}>{commentLists.length}</span>
-          </TotalComments>
-          {commentLists.map((comments) => {
-            return (
-              <div key={comments.id}>
-                <BodyDiv>
-                  <img src={post.author && post.author.profileImage} />
-                  {comments.author.name} (
-                  {comments.timestamp &&
-                    new Date(comments.timestamp.toDate()).toLocaleDateString()}
-                  )<p>{comments.postComment}</p>
-                </BodyDiv>
-                <DeleteBtn
-                  onClick={() => {
-                    deleteComment(comments.id);
-                  }}
-                >
-                  &#128465;
-                </DeleteBtn>
-              </div>
-            );
-          })}
-        </CommentListWrap>
-        <Comment>댓글작성</Comment>
-        <BodyInput
-          maxLength={200}
-          onChange={(event) => setPostComment(event.target.value)}
-          placeholder="입력 (최대 200글자)"
-          required
-          value={postComment}
-        />
-        <CommentBtn onClick={createComment}>등록</CommentBtn>
-      </div>
-    </StyledPost>
+    <Container>
+      <StyledPost>
+        <Contents>
+          <StyledContent>{stripHtmlTags(post.contents)}</StyledContent>
+          <StyledImgContainer>
+            <StyledImgContent src={stripHtmlTags(post.imgUrl)} />
+          </StyledImgContainer>
+        </Contents>
+        <StyledTotalDiv>
+          <StyledTitleDiv>
+            <StyledTitle>{post.title}</StyledTitle>
+            <StyledInfo>
+              <StyledId>{post.author && post.author.name}</StyledId>
+              <LikeButton onClick={toggleLiked}>
+                {liked ? (
+                  <img src="/img/red.png" alt="red heart" />
+                ) : (
+                  <img src="/img/black.png" alt="black heart" />
+                )}
+              </LikeButton>
+            </StyledInfo>
+          </StyledTitleDiv>
+          <Comment>
+            댓글 <span style={{ color: 'green' }}>{commentLists.length}</span>
+          </Comment>
+          <StyledPostDiv>
+            <CommentListWrap>
+              {commentLists.map((comments) => {
+                return (
+                  <div key={comments.id}>
+                    <BodyDiv>
+                      {comments.author.name} (
+                      {comments.timestamp &&
+                        new Date(
+                          comments.timestamp.toDate(),
+                        ).toLocaleDateString()}
+                      )
+                      <StyledPostComment>
+                        {comments.postComment}
+                      </StyledPostComment>
+                      <DeleteBtn
+                        onClick={() => {
+                          deleteComment(comments.id);
+                        }}
+                      >
+                        삭제
+                      </DeleteBtn>
+                    </BodyDiv>
+                  </div>
+                );
+              })}
+            </CommentListWrap>
+            <BodyInput
+              maxLength={35}
+              onChange={(event) => setPostComment(event.target.value)}
+              placeholder="입력 (최대 35글자)"
+              required
+              value={postComment}
+            />
+            <CommentBtn onClick={createComment}>등록</CommentBtn>
+          </StyledPostDiv>
+        </StyledTotalDiv>
+      </StyledPost>
+    </Container>
   );
 };
 
 export default DetailPage;
 
+const Container = styled.div`
+  display: flex;
+  background-color: #fffffc;
+  height: 40rem;
+`;
+
 const StyledPost = styled.div`
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  margin: 10rem auto;
+  width: 100%;
+  margin: 4rem;
   padding: 1rem;
+  background-color: #fffffc;
+  /* margin-bottom: 10rem; */
 `;
 
 const StyledTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 1rem;
+  position: relative;
+  bottom: 0.25rem;
 `;
 
 const StyledInfo = styled.div`
@@ -153,9 +166,9 @@ const StyledInfo = styled.div`
   justify-content: space-between;
 `;
 
-const StyledId = styled.p`
-  display: flex;
-  align-items: center;
+const StyledId = styled.h4`
+  position: relative;
+  top: 0.7rem;
 `;
 
 const StyledImg = styled.img`
@@ -165,14 +178,28 @@ const StyledImg = styled.img`
   display: inline-block;
   vertical-align: middle;
 `;
+const LikeButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 1rem;
+  img {
+    width: 3rem;
+    height: 3rem;
+  }
+`;
 const Contents = styled.div`
-  width: 40rem;
+  width: 30rem;
+  height: 38.5rem;
   border-top: #c6c6c3 0.1rem solid;
   border-bottom: #c6c6c3 0.1rem solid;
+  margin-right: 6rem;
+  overflow-y: scroll;
+  padding: 1rem;
 `;
 
 const StyledContent = styled.p`
-  font-size: 2rem;
+  font-size: 1rem;
   text-align: justify;
   margin-bottom: 1rem;
 `;
@@ -191,8 +218,9 @@ const StyledImgContent = styled.img`
 const CommentListWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  overflow-y: scroll;
+  height: 25rem;
+  position: relative;
 `;
 
 const TotalComments = styled.p`
@@ -202,10 +230,10 @@ const TotalComments = styled.p`
 `;
 
 const BodyDiv = styled.div`
-  width: 40rem;
+  position: relative; /* Make the positioning of the button relative to this div */
+  width: 30rem;
   height: 5rem;
   padding: 0 1.25rem;
-  border-top: #c6c6c3 0.05rem solid;
   border-bottom: #c6c6c3 0.05rem solid;
   background-color: transparent;
   margin-bottom: 1.25rem;
@@ -217,21 +245,21 @@ const BodyDiv = styled.div`
 `;
 
 const DeleteBtn = styled.button`
-  padding: 0.5rem 1.5rem;
+  position: absolute;
   border-radius: 0.313rem;
   background-color: #e65925;
   color: white;
   border: none;
-  &:hover {
-    transform: scale(1.2);
-    display: flex;
-    justify-content: flex-end;
-  }
+  font-size: 0.3rem;
+  width: 2rem;
+  height: 1.5rem;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
 `;
-
 const BodyInput = styled.input`
   border: none;
-  width: 40rem;
+  width: 30rem;
   height: 5rem;
   display: flex;
   justify-content: space-between;
@@ -240,35 +268,54 @@ const BodyInput = styled.input`
   border-radius: 0.625rem;
   background-color: #eee;
   margin-bottom: 1.25rem;
+  outline: none;
 `;
 
 const CommentBtn = styled.button`
+  z-index: 3;
+  position: absolute;
+  right: 0.1rem;
   font-size: 0.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 0.313rem;
   background-color: #e65925;
   color: white;
   border: none;
+  margin-bottom: 10rem;
+  cursor: pointer;
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
 `;
 
-const Comment = styled.div`
+const Comment = styled.h5`
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1rem;
-  font-color: #1b1b18;
-`;
-
-const LikeButton = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
+  color: #1b1b18;
   margin-left: 1rem;
 `;
 
-const LikeButtonimg = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+const StyledTitleDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #c6c6c3;
+`;
+
+const StyledPostDiv = styled.div`
+  position: relative;
+`;
+
+const StyledTotalDiv = styled.div`
+  margin-top: -1rem;
+`;
+
+const StyledPostDivDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledPostComment = styled.p`
+  position: absolute;
+  top: 2rem;
 `;

@@ -79,6 +79,8 @@ const BigDiv = styled.div`
   width: 90rem;
   margin-left: 5rem;
   position: relative;
+  height: 60rem;
+  margin-bottom: 0rem;
 `;
 
 const BoxTitle = styled.h1`

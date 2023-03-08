@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 const PostPage = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState('');
+
   // 글쓰기 게시판
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
@@ -66,25 +67,12 @@ const PostPage = () => {
     setSelectModalOpen(message);
     setPostModalOpen(true);
   };
-  // 취소 모달
-  const [postModalDelete, setPostModalDelete] = useState(false);
-  const deleteModal = () => {
-    setPostModalDelete(true);
-  };
 
   // 모달창 닫혔을 경우 메시지 초기화
   useEffect(() => {
     if (postModalOpen) return;
-
     setSelectModalOpen('');
   }, [postModalOpen]);
-
-  // 테스트용
-  useEffect(() => {
-    console.log('모달창 변수 수정');
-    console.log('postModalOpen: ', postModalOpen);
-    console.log('selectModalOpen: ', selectModalOpen);
-  }, [postModalOpen, selectModalOpen]);
 
   // 이미지 업로드
   const storage = getStorage();
@@ -92,9 +80,7 @@ const PostPage = () => {
   const upload = async (blob, callback) => {
     const uploadBytesRes = await uploadBytes(storageRef, blob);
     const url = await getDownloadURL(uploadBytesRes.ref);
-
     setImg(url);
-
     callback(url);
   };
 
@@ -119,9 +105,9 @@ const PostPage = () => {
   };
   const categoryNavigate = () => {
     if (categories[1].value === selectedCategory) {
-      return navigate('/communitypage');
+      navigate('/communitypage');
     } else if (categories[2].value === selectedCategory) {
-      return navigate('/itempage');
+      navigate('/itempage');
     }
   };
 
@@ -166,7 +152,7 @@ const PostPage = () => {
                 // 카테고리 선택됨
                 categoryChange();
                 openModal();
-                // categoryNavigate();
+                categoryNavigate();
               } else {
                 // 카테고리 선택 안됨
                 openModal('카테고리를 정해주세요.');
@@ -176,28 +162,17 @@ const PostPage = () => {
             입력
           </Button>
           {postModalOpen && (
-            <PostModal
-              setPostModalOpen={setPostModalOpen}
-              setPostModalDelete={undefined}
-            >
+            <PostModal setPostModalOpen={setPostModalOpen}>
               {selectModalOpen}
             </PostModal>
           )}
           <Button
             onClick={() => {
-              deleteModal();
+              navigate('/');
             }}
           >
             취소
           </Button>
-          {postModalDelete && (
-            <PostModal
-              setPostModalDelete={setPostModalDelete}
-              setPostModalOpen={undefined}
-            >
-              취소 하시겠습니까?
-            </PostModal>
-          )}
         </StyledButtonDiv>
       </StyledFormDiv>
     </div>

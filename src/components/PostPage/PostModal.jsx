@@ -1,66 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-const PostModal = ({ setPostModalOpen, setPostModalDelete, children }) => {
-  const navigate = useNavigate();
-  const [pageNumber, setPageNumber] = useState(0);
-
-  const openPostModal = () => {
+const PostModal = ({ setPostModalOpen, setPostModalCancel, children }) => {
+  const closePostModal = () => {
     setPostModalOpen(false);
-    navigate('/');
-  };
-
-  const deletePostModalChange = () => {
-    setPageNumber(1);
-  };
-  const deletePostModal = () => {
-    setPostModalDelete(false);
-  };
-
-  // 카테고리
-  const categories = [
-    { value: '카테고리', name: '카테고리', id: 0 },
-    { value: '커뮤니티', name: '커뮤니티', id: 1 },
-    { value: '제품리뷰', name: '제품리뷰', id: 2 },
-  ];
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
-  const categorySelect = (event) => {
-    return setSelectedCategory(event.target.value);
-  };
-  const categoryNavigate = () => {
-    console.log('1번', categories[1].value);
-    console.log('2번', selectedCategory);
-    console.log('3번', categories[2].value);
-    if (categories[1].value === selectedCategory) {
-      navigate('/communitypage');
-    } else if (categories[2].value === selectedCategory) {
-      navigate('/itempage');
-    }
   };
 
   return (
     <StyledPostModalBackground>
-      {pageNumber === 0 && (
-        <StyledPostModalDiv>
-          <StyledPostP>{children}</StyledPostP>
-          <StyledPostModalButton
-            onClick={setPostModalOpen ? openPostModal : deletePostModalChange}
-          >
-            확인
-          </StyledPostModalButton>
-        </StyledPostModalDiv>
-      )}
-      {pageNumber === 1 && (
-        <StyledPostModalDiv>
-          <StyledPostP>취소 되었습니다.</StyledPostP>
-          <StyledPostModalButton
-            onClick={setPostModalOpen ? openPostModal : deletePostModal}
-          >
-            확인
-          </StyledPostModalButton>
-        </StyledPostModalDiv>
-      )}
+      <StyledPostModalDiv>
+        <StyledPostP>{children}</StyledPostP>
+        <StyledPostModalButton
+          onClick={() => {
+            closePostModal();
+          }}
+        >
+          확인
+        </StyledPostModalButton>
+      </StyledPostModalDiv>
     </StyledPostModalBackground>
   );
 };
@@ -91,14 +47,6 @@ const StyledPostModalDiv = styled.div`
   position: relative;
   top: 39%;
   left: 36%;
-`;
-
-const StyledX = styled.img`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  cursor: pointer;
-  width: 1.3rem;
 `;
 
 const StyledPostP = styled.p`

@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 const NewsItem = (props) => {
+  const date = new Date(props.datetime);
+  const formattedDate = date.toISOString().slice(0, 10);
   return (
     <ItemContainer>
       <ItemData>
         <Title>{props.title}</Title>
-        <ItemDatetime>{props.datetime}</ItemDatetime>
+        <ItemDatetime>{formattedDate}</ItemDatetime>
         <ItemContents>{props.contents}</ItemContents>
         <ItemUrl href={props.url}>링크 바로가기</ItemUrl>
       </ItemData>
@@ -48,5 +50,8 @@ const ItemUrl = styled.a`
 const ItemDatetime = styled.p`
   font-size: 0.8rem;
   margin-top: 0.5rem;
-  padding-left: 21rem;
+  padding-left: 46rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
