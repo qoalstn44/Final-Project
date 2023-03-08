@@ -171,6 +171,7 @@ const MyWrote = styled.div`
   padding: 40px;
   line-height: 1.5;
   position: relative;
+  z-index: 1;
 `;
 
 const MyComment = styled.div`
@@ -275,6 +276,7 @@ const UserIcon = styled.span`
 
 const ModalOverlay = styled.div<{ open: boolean }>`
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   bottom: 0;
@@ -284,6 +286,7 @@ const ModalOverlay = styled.div<{ open: boolean }>`
 `;
 
 const ModalContent = styled.div`
+  z-index: 9999;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -295,6 +298,7 @@ const ModalContent = styled.div`
   width: 10rem;
   height: 30rem;
   padding: 1rem 8rem;
+  /* z-index: 999; */
 `;
 
 const ModifyModal = styled(Modal)`
@@ -355,10 +359,11 @@ const StyledModalDiv = styled.div`
 `;
 
 const StyledToggleButton = styled.button`
+  /* z-index: 10; */
   width: 6rem;
   height: 2rem;
   position: absolute;
-  right: 22.5rem;
+  right: 22rem;
   bottom: 37rem;
   background-color: transparent;
   border: none;
