@@ -41,6 +41,7 @@ const PostPage = () => {
       console.log(error);
     }
   };
+
   const handleFormItem = async () => {
     try {
       await addDoc(collection(dbService, 'items'), {
@@ -114,15 +115,13 @@ const PostPage = () => {
   return (
     <div>
       <StyledFormDiv>
-        <AContainer>
-          <ASelectCategory value={selectedCategory} onChange={categorySelect}>
-            {categories.map((category) => (
-              <option key={categories.id} value={category.value}>
-                {category.name}
-              </option>
-            ))}
-          </ASelectCategory>
-        </AContainer>
+        <ASelectCategory value={selectedCategory} onChange={categorySelect}>
+          {categories.map((category) => (
+            <option key={categories.id} value={category.value}>
+              {category.name}
+            </option>
+          ))}
+        </ASelectCategory>
         <StyledInput
           name="title"
           type="text"
@@ -150,9 +149,13 @@ const PostPage = () => {
             onClick={() => {
               if (categorySelected) {
                 // 카테고리 선택됨
-                categoryChange();
-                openModal();
-                categoryNavigate();
+                if (title === '') {
+                  openModal('제목을 입력해주세요.');
+                } else {
+                  categoryChange();
+                  openModal();
+                  categoryNavigate();
+                }
               } else {
                 // 카테고리 선택 안됨
                 openModal('카테고리를 정해주세요.');
@@ -189,17 +192,19 @@ const StyledFormDiv = styled.div`
   margin-top: 8rem;
 `;
 
-const AContainer = styled.div`
+const ASelectCategory = styled.select`
   position: relative;
   right: 23.1rem;
   bottom: 1rem;
-`;
-
-const ASelectCategory = styled.select`
+  float: right;
   color: #c6c6c3;
   border: 1px solid #c6c6c3;
   padding: 0.5rem 0.4rem;
   font-weight: bold;
+  @media screen and (max-width: 768px) {
+    position: relative;
+    right: 12.05rem;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -210,6 +215,9 @@ const StyledInput = styled.input`
   font-size: 1rem;
   width: 47.2rem;
   border: 1px solid #c6c6c3;
+  @media screen and (max-width: 768px) {
+    width: 25rem;
+  }
 `;
 
 const StyledButtonDiv = styled.div`

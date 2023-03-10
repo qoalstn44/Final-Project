@@ -210,7 +210,7 @@ const StyledImgContainer = styled.div`
 `;
 
 const StyledImgContent = styled.img`
-  width: 40%;
+  width: 100%;
   height: auto;
   margin-bottom: 1rem;
 `;

@@ -32,4 +32,8 @@ const StyledButton = styled.button`
     background-color: #e65925;
     color: #fffffc;
   }
+  @media screen and (max-width: 768px) {
+    position: relative;
+    left: 2.5rem;
+  }
 `;
