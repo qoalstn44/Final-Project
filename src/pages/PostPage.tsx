@@ -16,9 +16,9 @@ const PostPage = () => {
   const [img, setImg] = useState('');
 
   // 글쓰기 게시판
-  const editorRef = useRef(null);
+  const editorRef = useRef<Editor>(null);
   const [title, setTitle] = useState('');
-  const handleTitleInput = (event) => {
+  const handleTitleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
@@ -29,8 +29,8 @@ const PostPage = () => {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         author: {
-          name: authService.currentUser.displayName,
-          id: authService.currentUser.uid,
+          name: authService.currentUser?.displayName,
+          id: authService.currentUser?.uid,
         },
         imgUrl: img,
         createAt: new Date(),
@@ -48,8 +48,8 @@ const PostPage = () => {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         author: {
-          name: authService.currentUser.displayName,
-          id: authService.currentUser.uid,
+          name: authService.currentUser?.displayName,
+          id: authService.currentUser?.uid,
         },
         imgUrl: img,
         createAt: new Date(),
@@ -78,7 +78,7 @@ const PostPage = () => {
   // 이미지 업로드
   const storage = getStorage();
   const storageRef = ref(storage, uuidv4());
-  const upload = async (blob, callback) => {
+  const upload = async (blob: Blob, callback: (url: string) => void) => {
     const uploadBytesRes = await uploadBytes(storageRef, blob);
     const url = await getDownloadURL(uploadBytesRes.ref);
     setImg(url);
@@ -93,7 +93,7 @@ const PostPage = () => {
   ];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
   const [categorySelected, setCategorySelected] = useState(false);
-  const categorySelect = (event) => {
+  const categorySelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
     setCategorySelected(true);
   };
@@ -117,7 +117,7 @@ const PostPage = () => {
       <StyledFormDiv>
         <ASelectCategory value={selectedCategory} onChange={categorySelect}>
           {categories.map((category) => (
-            <option key={categories.id} value={category.value}>
+            <option key={category.id} value={category.value}>
               {category.name}
             </option>
           ))}
@@ -129,21 +129,23 @@ const PostPage = () => {
           value={title}
           onChange={handleTitleInput}
         />
-        <Editor
-          initialValue=""
-          placeholder="글을 작성해주세요."
-          previewStyle="vertical"
-          height="25rem"
-          initialEditType="wysiwyg"
-          useCommandShortcut={false}
-          language="ko-KR"
-          previewHighlight={false}
-          hideModeSwitch={true}
-          ref={editorRef}
-          hooks={{
-            addImageBlobHook: upload,
-          }}
-        />
+        <StyledEditorDiv>
+          <Editor
+            initialValue=""
+            placeholder="글을 작성해주세요."
+            previewStyle="vertical"
+            height="25rem"
+            initialEditType="wysiwyg"
+            useCommandShortcut={false}
+            language="ko-KR"
+            previewHighlight={false}
+            hideModeSwitch={true}
+            ref={editorRef}
+            hooks={{
+              addImageBlobHook: upload,
+            }}
+          />
+        </StyledEditorDiv>
         <StyledButtonDiv>
           <Button
             onClick={() => {
@@ -217,6 +219,12 @@ const StyledInput = styled.input`
   border: 1px solid #c6c6c3;
   @media screen and (max-width: 768px) {
     width: 25rem;
+  }
+`;
+
+const StyledEditorDiv = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 29rem;
   }
 `;
 
