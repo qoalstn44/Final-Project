@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
-const PostModal = ({ setPostModalOpen, setPostModalCancel, children }) => {
+interface props {
+  setPostModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
+}
+
+const PostModal = ({ setPostModalOpen, children }: props) => {
   const closePostModal = () => {
     setPostModalOpen(false);
   };
@@ -47,6 +52,11 @@ const StyledPostModalDiv = styled.div`
   position: relative;
   top: 39%;
   left: 36%;
+  @media screen and (max-width: 768px) {
+    width: 10rem;
+    position: relative;
+    left: 2.5rem;
+  }
 `;
 
 const StyledPostP = styled.p`

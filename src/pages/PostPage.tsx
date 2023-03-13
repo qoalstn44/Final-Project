@@ -16,9 +16,9 @@ const PostPage = () => {
   const [img, setImg] = useState('');
 
   // 글쓰기 게시판
-  const editorRef = useRef(null);
+  const editorRef = useRef<Editor>(null);
   const [title, setTitle] = useState('');
-  const handleTitleInput = (event) => {
+  const handleTitleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
@@ -29,8 +29,8 @@ const PostPage = () => {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         author: {
-          name: authService.currentUser.displayName,
-          id: authService.currentUser.uid,
+          name: authService.currentUser?.displayName,
+          id: authService.currentUser?.uid,
         },
         imgUrl: img,
         createAt: new Date(),
@@ -41,14 +41,15 @@ const PostPage = () => {
       console.log(error);
     }
   };
+
   const handleFormItem = async () => {
     try {
       await addDoc(collection(dbService, 'items'), {
         title,
         contents: editorRef.current?.getInstance().getHTML(),
         author: {
-          name: authService.currentUser.displayName,
-          id: authService.currentUser.uid,
+          name: authService.currentUser?.displayName,
+          id: authService.currentUser?.uid,
         },
         imgUrl: img,
         createAt: new Date(),
@@ -77,7 +78,7 @@ const PostPage = () => {
   // 이미지 업로드
   const storage = getStorage();
   const storageRef = ref(storage, uuidv4());
-  const upload = async (blob, callback) => {
+  const upload = async (blob: Blob, callback: (url: string) => void) => {
     const uploadBytesRes = await uploadBytes(storageRef, blob);
     const url = await getDownloadURL(uploadBytesRes.ref);
     setImg(url);
@@ -92,7 +93,7 @@ const PostPage = () => {
   ];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
   const [categorySelected, setCategorySelected] = useState(false);
-  const categorySelect = (event) => {
+  const categorySelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
     setCategorySelected(true);
   };
@@ -114,15 +115,13 @@ const PostPage = () => {
   return (
     <div>
       <StyledFormDiv>
-        <AContainer>
-          <ASelectCategory value={selectedCategory} onChange={categorySelect}>
-            {categories.map((category) => (
-              <option key={categories.id} value={category.value}>
-                {category.name}
-              </option>
-            ))}
-          </ASelectCategory>
-        </AContainer>
+        <ASelectCategory value={selectedCategory} onChange={categorySelect}>
+          {categories.map((category) => (
+            <option key={category.id} value={category.value}>
+              {category.name}
+            </option>
+          ))}
+        </ASelectCategory>
         <StyledInput
           name="title"
           type="text"
@@ -130,29 +129,35 @@ const PostPage = () => {
           value={title}
           onChange={handleTitleInput}
         />
-        <Editor
-          initialValue=""
-          placeholder="글을 작성해주세요."
-          previewStyle="vertical"
-          height="25rem"
-          initialEditType="wysiwyg"
-          useCommandShortcut={false}
-          language="ko-KR"
-          previewHighlight={false}
-          hideModeSwitch={true}
-          ref={editorRef}
-          hooks={{
-            addImageBlobHook: upload,
-          }}
-        />
+        <StyledEditorDiv>
+          <Editor
+            initialValue=""
+            placeholder="글을 작성해주세요."
+            previewStyle="vertical"
+            height="25rem"
+            initialEditType="wysiwyg"
+            useCommandShortcut={false}
+            language="ko-KR"
+            previewHighlight={false}
+            hideModeSwitch={true}
+            ref={editorRef}
+            hooks={{
+              addImageBlobHook: upload,
+            }}
+          />
+        </StyledEditorDiv>
         <StyledButtonDiv>
           <Button
             onClick={() => {
               if (categorySelected) {
                 // 카테고리 선택됨
-                categoryChange();
-                openModal();
-                categoryNavigate();
+                if (title === '') {
+                  openModal('제목을 입력해주세요.');
+                } else {
+                  categoryChange();
+                  openModal();
+                  categoryNavigate();
+                }
               } else {
                 // 카테고리 선택 안됨
                 openModal('카테고리를 정해주세요.');
@@ -189,17 +194,19 @@ const StyledFormDiv = styled.div`
   margin-top: 8rem;
 `;
 
-const AContainer = styled.div`
+const ASelectCategory = styled.select`
   position: relative;
   right: 23.1rem;
   bottom: 1rem;
-`;
-
-const ASelectCategory = styled.select`
+  float: right;
   color: #c6c6c3;
   border: 1px solid #c6c6c3;
   padding: 0.5rem 0.4rem;
   font-weight: bold;
+  @media screen and (max-width: 768px) {
+    position: relative;
+    right: 12.05rem;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -210,6 +217,15 @@ const StyledInput = styled.input`
   font-size: 1rem;
   width: 47.2rem;
   border: 1px solid #c6c6c3;
+  @media screen and (max-width: 768px) {
+    width: 25rem;
+  }
+`;
+
+const StyledEditorDiv = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 29rem;
+  }
 `;
 
 const StyledButtonDiv = styled.div`
