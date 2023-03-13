@@ -40,10 +40,7 @@ function CommunitySlide() {
             onClick={() => navigate(`/DetailPage/${data.author.id}`)}
           >
             <SmallBox>
-              <Stimage
-                src={data.imgUrl}
-                alt="이미지를 불러오는 과정에서 오류가 발생했습니다."
-              />
+              <Stimage src={data.imgUrl} />
             </SmallBox>
             <StTitle>{data.title}</StTitle>
             <CardContent>{data.author.name}</CardContent>
